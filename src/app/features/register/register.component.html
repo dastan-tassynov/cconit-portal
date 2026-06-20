@@ -1,0 +1,90 @@
+<div class="auth-container">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <div class="logo-dot"></div>
+      <span>qPortal</span>
+    </div>
+
+    <h2 class="auth-title">Регистрация</h2>
+    <p class="auth-subtitle">Создайте аккаунт, чтобы начать обучение</p>
+
+    <form (ngSubmit)="onRegister()">
+
+      <div class="form-group">
+        <label class="form-label">Полное ФИО</label>
+        <input
+          type="text"
+          name="username"
+          placeholder="Иванов Иван Иванович"
+          class="form-input"
+          [(ngModel)]="registerData.username"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">ИИН (12 цифр)</label>
+        <input
+          type="text"
+          name="iin"
+          placeholder="Введите ваш ИИН"
+          class="form-input"
+          maxlength="12"
+          [(ngModel)]="registerData.iin"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">E-mail (используется для входа)</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="name@example.com"
+          class="form-input"
+          [(ngModel)]="registerData.email"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="••••••••"
+          class="form-input"
+          [(ngModel)]="registerData.password"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Подтвердите пароль</label>
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="••••••••"
+          class="form-input"
+          [(ngModel)]="registerData.confirmPassword"
+          required
+        >
+      </div>
+
+      <div class="error-message-block" *ngIf="errorMessage" style="color: #dc3545; margin-bottom: 15px; font-size: 14px; text-align: left;">
+        ⚠️ {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="isLoading">
+        {{ isLoading ? 'Создание аккаунта...' : 'Создать аккаунт' }}
+      </button>
+    </form>
+
+    <div class="auth-toggle">
+      Уже есть аккаунт?
+      <a routerLink="/auth" class="auth-link">Войти</a>
+    </div>
+
+  </div>
+</div>

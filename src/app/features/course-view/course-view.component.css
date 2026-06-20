@@ -1,0 +1,572 @@
+.course-page-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #111827;
+}
+
+.course-header {
+  background-color: #ffffff;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.btn-back {
+  background: none;
+  border: 1px solid #e5e7eb;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #4b5563;
+  transition: background-color 0.2s;
+}
+
+.btn-back:hover {
+  background-color: #f3f4f6;
+}
+
+.course-page-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.course-main-content {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.video-section {
+  margin-bottom: 32px;
+}
+
+.video-wrapper {
+  background-color: #000000;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  aspect-ratio: 16 / 9;
+}
+
+.lesson-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.text-section {
+  margin-bottom: 40px;
+}
+
+.text-card {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+}
+
+.lesson-text {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #374151;
+  margin: 0;
+  white-space: pre-line;
+}
+
+/* Стили футера и финальной кнопки */
+.course-action-footer {
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 32px;
+  margin-top: 40px;
+}
+
+.action-hint {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+.btn-finish {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+  transition: all 0.2s;
+}
+
+.btn-finish:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* Делаем обертку видео родителем для водяного знака */
+.video-wrapper {
+  position: relative;
+  background-color: #000000;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  aspect-ratio: 16 / 9;
+  display: flex; /* Для центровки */
+  align-items: center;
+}
+
+/* Стиль водяного знака */
+.video-watermark {
+  position: absolute;
+  top: 15%; /* Размещаем в случайном месте поверх видео */
+  left: 10%;
+  color: rgba(255, 255, 255, 0.25); /* Делаем текст очень блеклым, чтобы не мешал смотреть, но читался */
+  font-size: 14px;
+  font-weight: 600;
+  pointer-events: none; /* Пропускает клики сквозь себя к плееру */
+  user-select: none;
+  letter-spacing: 0.1em;
+  z-index: 30; /* Всегда выше видеоплеера */
+  transform: rotate(-15deg); /* Слегка наклоняем для усложнения замазывания */
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* Базовый стиль ватермарки для ПК */
+.video-watermark {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 14px;
+  font-weight: 600;
+  pointer-events: none;
+  user-select: none;
+  z-index: 30;
+  transform: rotate(-15deg);
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* АДАПТИВНАЯ ЗАЩИТА ДЛЯ МОБИЛЬНЫХ ТЕЛЕФОНОВ (Экраны меньше 768px) */
+@media (max-width: 768px) {
+  .video-watermark {
+    top: 45%; /* Сдвигаем строго по центру видео-плеера */
+    left: 15%;
+    font-size: 16px; /* Делаем шрифт крупнее, чтобы его четко зафиксировала запись */
+    color: rgba(255, 255, 255, 0.25); /* Немного увеличиваем видимость */
+    transform: rotate(-20deg); /* Меняем угол наклона */
+    background-color: rgba(0, 0, 0, 0.15);
+  }
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #000000;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  aspect-ratio: 16 / 9;
+}
+
+.video-wrapper,
+.video-wrapper * {
+  pointer-events: auto; /* Разрешаем клики */
+}
+
+/* А для самого плеера принудительно ставим высокий приоритет */
+.lesson-video {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* Стиль прыгающей ватермарки */
+.video-watermark {
+  position: absolute;
+  /* Убери z-index: 9999, это слишком много и блокирует всё */
+  z-index: 5;
+  pointer-events: none; /* ЭТО КРИТИЧНО: позволяет кликать сквозь текст */
+  user-select: none;
+  /* ... остальные стили ... */
+}
+
+/* Стили для блока с кодом лекции */
+pre {
+  background-color: #f8f9fa; /* Легкий серый фон, как в редакторах кода */
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  margin: 0;
+  overflow-x: auto; /* Горизонтальный скролл, если строка экстремально длинная */
+}
+
+.lesson-text-code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; /* Моноширинный шрифт */
+  font-size: 14px;
+  line-height: 1.5;
+  color: #212529;
+  white-space: pre-wrap; /* Обязательно: переносит длинные строки кода на новую строку */
+  word-break: break-word;
+}
+
+
+.syllabus-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+.syllabus-card-info {
+  background: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 25px;
+}
+.syllabus-desc {
+  margin: 0;
+  color: #1e40af;
+  font-size: 14px;
+}
+.modules-title {
+  font-size: 18px;
+  color: #1e293b;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+.lessons-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.step-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.step-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+.step-number-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+.step-details {
+  flex-grow: 1;
+}
+.step-title {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+  color: #334155;
+  font-weight: 600;
+}
+.step-status-text {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+}
+.step-arrow-indicator {
+  font-size: 16px;
+  color: #94a3b8;
+  padding-left: 10px;
+}
+
+/* Стили состояний */
+.step-item.completed {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+.step-item.completed .step-number-badge {
+  background: #dcfce7;
+  color: #15803d;
+}
+.step-item.completed .step-title {
+  color: #14532d;
+}
+
+.step-item.active-step {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+.step-item.active-step .step-number-badge {
+  background: #3b82f6;
+  color: white;
+}
+.step-item.active-step .step-title {
+  color: #1d4ed8;
+}
+
+.step-item.locked {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.step-item.locked:hover {
+  transform: none;
+  box-shadow: none;
+}
+.step-counter-top {
+  font-size: 13px;
+  background: #e2e8f0;
+  color: #334155;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.final-action-zone {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.course-done-btn {
+  background-color: #9ca3af !important; /* Серый цвет */
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* Стили для кастомного модального окна */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.4); /* Полупрозрачный темный фон */
+  backdrop-filter: blur(8px); /* Красивое размытие заднего плана */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 440px;
+  padding: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-icon {
+  font-size: 32px;
+  background: #f1f5f9;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  color: #1e293b;
+  font-weight: 700;
+  margin: 0;
+}
+
+.modal-body {
+  text-align: center;
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.modal-body .sub-text {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 8px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-btn-primary {
+  background: #2563eb; /* Красивый интерактивный синий цвет */
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s ease;
+}
+
+.modal-btn-primary:hover {
+  background: #1d4ed8;
+}
+
+/* Анимации появления */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Затемнение фона и размытие */
+.course-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6); /* Темный slate фон */
+  backdrop-filter: blur(4px); /* Эффект размытия */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+/* Карточка модального окна */
+.course-modal-card {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: modalScaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Большая иконка праздника */
+.course-modal-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+/* Заголовок */
+.course-modal-title {
+  color: #1e293b;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+
+/* Описание */
+.course-modal-text {
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 28px 0;
+}
+
+/* Контейнер кнопок */
+.course-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Кнопка: В дашборд */
+.btn-modal-secondary {
+  flex: 1;
+  background: #f1f5f9;
+  color: #475569;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-modal-secondary:hover {
+  background: #e2e8f0;
+}
+
+/* Кнопка: Начать тест */
+.btn-modal-primary {
+  flex: 1;
+  background: #4f46e5; /* Индиго */
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+  transition: background 0.2s;
+}
+
+.btn-modal-primary:hover {
+  background: #4338ca;
+}
+
+/* Анимация "выпрыгивания" окна */
+@keyframes modalScaleUp {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

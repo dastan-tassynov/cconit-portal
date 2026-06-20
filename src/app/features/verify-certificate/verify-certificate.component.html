@@ -1,0 +1,50 @@
+<div class="verify-container">
+  <div class="verify-card" [ngClass]="{'valid-border': certData?.status === 'VALID', 'invalid-border': errorMessage}">
+
+    <div class="loader-block" *ngIf="isLoading">
+      <div class="spinner"></div>
+      <p>Проверка подлинности документа в реестре...</p>
+    </div>
+
+    <div *ngIf="!isLoading">
+      <div class="result-success" *ngIf="certData?.status === 'VALID'">
+        <div class="status-icon success-icon">🛡️</div>
+        <h2 class="status-title text-success">Документ подтвержден</h2>
+        <p class="status-subtitle">{{ certData.message }}</p>
+
+        <div class="cert-details">
+          <div class="detail-row">
+            <span class="detail-label">Официальный номер:</span>
+            <span class="detail-value highlight">{{ certData.certificateNumber }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Выдан сотруднику / Студенту:</span>
+            <span class="detail-value">{{ certData.studentName }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Наименование курса:</span>
+            <span class="detail-value">«{{ certData.subjectTitle }}»</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Дата регистрации:</span>
+            <span class="detail-value">{{ certData.issueDate | date:'dd.MM.yyyy HH:mm' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-error" *ngIf="errorMessage">
+        <div class="status-icon error-icon">❌</div>
+        <h2 class="status-title text-danger">Внимание! Ошибка проверки</h2>
+        <p class="status-subtitle">{{ errorMessage }}</p>
+        <p class="error-notice">Данный QR-код не принадлежит легитимному документу qPortal или был отозван администрацией.</p>
+      </div>
+
+      <div class="card-footer">
+        <hr>
+        <div class="footer-logo">qPortal • Центр NIT</div>
+        <a routerLink="/" class="btn-home">На главную страницу</a>
+      </div>
+    </div>
+
+  </div>
+</div>

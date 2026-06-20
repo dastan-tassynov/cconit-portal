@@ -1,0 +1,156 @@
+<div class="course-page-container">
+
+  <!-- ШАБЛОН 1: СТАТУС-ЭКРАН КУРСА (СОДЕРЖАНИЕ И МОДУЛИ) -->
+  @if (viewMode === 'syllabus') {
+    <header class="course-header">
+      <button class="btn-back" (click)="goBack()">← Вернуться на панель</button>
+      <h1 class="course-page-title">План обучения по курсу</h1>
+    </header>
+
+    <div class="syllabus-container">
+      <div class="syllabus-card-info">
+        <p class="syllabus-desc">
+          Для получения допуска к итоговому тестированию и генерации сертификата, вам необходимо последовательно изучить все лекционные материалы и видеоуроки.
+        </p>
+      </div>
+
+      <h3 class="modules-title">📚 Список учебных модулей:</h3>
+      <div class="lessons-steps-list">
+        @for (lesson of lessons; track lesson.id; let idx = $index) {
+          <div class="step-item"
+               [class.completed]="lesson.stepOrder < maxAvailableStep"
+               [class.active-step]="lesson.stepOrder === maxAvailableStep"
+               [class.locked]="lesson.stepOrder > maxAvailableStep"
+               (click)="openLesson(lesson)">
+
+            <div class="step-number-badge">
+              @if (lesson.stepOrder < maxAvailableStep) { ✅ } @else { {{ lesson.stepOrder }} }
+            </div>
+
+            <div class="step-details">
+              <h4 class="step-title">{{ lesson.title || 'Модуль без названия' }}</h4>
+              <p class="step-status-text">
+                @if (lesson.stepOrder < maxAvailableStep) { Материал усвоен }
+                @else if (lesson.stepOrder === maxAvailableStep) { Доступно к изучению (Текущий шаг) }
+                @else { Блок закрыт (Пройдите предыдущие темы) }
+              </p>
+            </div>
+
+            <div class="step-arrow-indicator">
+              @if (lesson.stepOrder > maxAvailableStep) { 🔒 } @else { → }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Кнопка быстрого перехода к тесту, если все шаги уже пройдены -->
+      @if (lessons.length > 0 && maxAvailableStep > lessons[lessons.length - 1].stepOrder) {
+        <div class="final-action-zone">
+          <button
+            class="btn-finish"
+            [class.course-done-btn]="isCourseFinished"
+            [disabled]="isCourseFinished"
+            (click)="nextStep()"
+          >
+            @if (isCourseFinished) {
+              🔒 Курс успешно завершен и сдан!
+            } @else {
+              🎯 Все модули изучены! Начать тестирование →
+            }
+          </button>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ШАБЛОН 2: ЭКРАН ИЗУЧЕНИЯ КОНКРЕТНОГО УРОКА -->
+  @if (viewMode === 'lesson' && currentLesson) {
+    <header class="course-header">
+      <button class="btn-back" (click)="showSyllabus()">← К списку модулей</button>
+      <span class="step-counter-top">Шаг {{ currentLesson.stepOrder }} из {{ lessons.length }}</span>
+    </header>
+
+    <h1 class="lesson-active-title" style="margin: 15px 0; font-size: 22px; color: #1e293b; font-weight: 700;">
+      {{ currentLesson.title }}
+    </h1>
+
+    <div class="course-main-content">
+
+      @if (currentLesson.videoUrl) {
+        <div class="video-section">
+          <h3 class="section-subtitle">📺 Видеолекция к материалу</h3>
+          <div class="video-wrapper">
+            <video
+              controls
+              [src]="currentLesson.videoUrl"
+              class="lesson-video"
+              preload="metadata"
+              (error)="onVideoError($event)">
+              Ваш браузер не поддерживает видео.
+            </video>
+          </div>
+        </div>
+      }
+
+      <div class="text-section">
+        <h3 class="section-subtitle">📖 Теоретический материал шага</h3>
+        <div class="text-card">
+          <p class="lesson-text" style="white-space: pre-wrap;">{{ currentLesson.textMaterial || 'Текст лекции отсутствует.' }}</p>
+        </div>
+      </div>
+
+      <footer class="course-action-footer">
+        <p class="action-hint">Внимательно изучили информацию? Подтвердите прочтение для перехода.</p>
+
+        <button class="btn-finish" (click)="nextStep()" style="background: #10b981;">
+          @if (currentStepOrder < lessons[lessons.length - 1].stepOrder) {
+            Завершить модуль и перейти к следующему Шагу →
+          } @else {
+            Финализировать курс и открыть тест →
+          }
+        </button>
+      </footer>
+
+    </div>
+  }
+
+  @if (showBlockedModal) {
+    <div class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-icon">🔒</div>
+          <h2>Доступ ограничен</h2>
+        </div>
+        <div class="modal-body">
+          <p>Вы уже успешно сдали итоговое тестирование по этому курсу!</p>
+          <p class="sub-text">Официальный сертификат сформирован и отправлен в систему реестра. Повторное прохождение контрольного теста заблокировано.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn-primary" (click)="closeBlockedModal()">Понятно</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- КРАСИВОЕ МОДАЛЬНОЕ ОКНО ЗАВЕРШЕНИЯ КУРСА -->
+  <div class="course-modal-overlay" *ngIf="isCompletionModalOpen">
+    <div class="course-modal-card">
+      <div class="course-modal-icon">🎉</div>
+
+      <h2 class="course-modal-title">Поздравляем!</h2>
+      <p class="course-modal-text">
+        Все учебные модули успешно пройдены. Вы полностью завершили курс! Хотите пройти итоговое тестирование прямо сейчас или вернуться на главную?
+      </p>
+
+      <div class="course-modal-actions">
+        <button class="btn-modal-secondary" (click)="goToDashboard()">
+          🏠 В дашборд
+        </button>
+        <button class="btn-modal-primary" (click)="goToQuiz()">
+          📝 Пройти итоговый тест →
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

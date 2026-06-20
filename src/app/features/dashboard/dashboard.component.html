@@ -1,0 +1,112 @@
+<div class="dashboard-container">
+
+  <header class="main-header">
+    <div class="header-left">
+      <div class="logo-block">
+        <div class="logo-dot"></div>
+        <span class="logo-text">qPortal</span>
+      </div>
+      <div class="search-bar">
+        <span>🔍</span>
+        <input
+          type="text"
+          placeholder="Поиск по названию..."
+          class="search-input"
+          [(ngModel)]="searchQuery"
+          (input)="$any($event.target).value ? onSearch() : loadMockCourses()"
+        />
+      </div>
+    </div>
+
+    <div class="header-right">
+      <nav class="nav-links">
+        <a class="nav-link active">Главная</a>
+        <a class="nav-link" routerLink="/profile" style="cursor: pointer;">Личный кабинет</a>
+        <button class="nav-link" (click)="logout()" style="background: none; border: none; color: #ef4444; font-weight: 600; cursor: pointer;">Выйти</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="main-layout">
+
+    <aside class="sidebar">
+      <h2 class="sidebar-title">Все курсы</h2>
+      <div class="filter-group">
+        <label class="filter-label">Длительность</label>
+        <select class="filter-select">
+          <option>Любая</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Язык обучения</label>
+        <select class="filter-select">
+          <option>Все разделы</option>
+        </select>
+      </div>
+      <div class="custom-tab-container" style="display: flex; gap: 10px; margin-top: 20px;">
+        <button
+          (click)="loadCoursesByTab('all')"
+          [class.active]="currentTab === 'all'"
+          class="tab-button"
+          style="padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer;">
+          Все курсы
+        </button>
+
+        <button
+          (click)="loadCoursesByTab('my')"
+          [class.active]="currentTab === 'my'"
+          class="tab-button"
+          style="padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer;">
+          Мои курсы
+        </button>
+      </div>
+      <div *ngIf="filteredCourses.length === 0" class="text-center py-12 text-gray-500">
+        <p *ngIf="currentTab === 'my'">У вас пока нет купленных или начатых курсов.</p>
+        <p *ngIf="currentTab === 'all'">Ничего не найдено по вашему запросу.</p>
+      </div>
+    </aside>
+
+    <main style="flex: 1;">
+      <div class="promo-banner" [style.backgroundColor]="promoSlides[currentSlideIndex].bgColor">
+
+        <img *ngIf="promoSlides[currentSlideIndex].imageUrl"
+             [src]="'http://localhost:8081' + promoSlides[currentSlideIndex].imageUrl"
+             alt="banner">
+
+        <button class="banner-arrow arrow-left" (click)="prevSlide()">‹</button>
+
+        <div class="banner-content" style="position: relative; z-index: 1;">
+          <h1 class="banner-title">{{ promoSlides[currentSlideIndex].title }}</h1>
+          <p class="banner-text">{{ promoSlides[currentSlideIndex].description }}</p>
+        </div>
+
+        <div class="badge-discount" style="position: relative; z-index: 1;">
+          <span>{{ promoSlides[currentSlideIndex].badge }}</span>
+        </div>
+
+        <button class="banner-arrow arrow-right" (click)="nextSlide()">›</button>
+      </div>
+
+      <div class="courses-grid">
+        <div *ngIf="filteredCourses.length === 0" style="grid-column: 1/-1; text-align: center; color: #9ca3af; padding: 40px;">
+          Ничего не найдено по вашему запросу
+        </div>
+
+        <div
+          *ngFor="let course of filteredCourses"
+          class="course-card"
+          (click)="viewCourse(course.id)"
+        >
+          <div class="course-preview">
+            <div style="color: #ffffff; display: flex; align-items: center; justify-content: center; height: 100%; font-size: 36px;">📚</div>
+          </div>
+          <div class="course-info">
+            <h3 class="course-name">{{ course.title }}</h3>
+            <p class="course-desc">{{ course.description }}</p>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>

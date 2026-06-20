@@ -1,0 +1,56 @@
+<div class="auth-container">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <div class="logo-dot"></div>
+      <span>qPortal</span>
+    </div>
+
+    <h2 class="auth-title">С возвращением</h2>
+    <p class="auth-subtitle">Войдите в свой аккаунт, чтобы продолжить обучение</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label class="form-label">E-mail / ИИН</label>
+        <input
+          type="text"
+          formControlName="username"
+          placeholder="name@example.com или ИИН"
+          class="form-input"
+          (keydown.enter)="onSubmit()"
+          [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          class="form-input"
+          (keydown.enter)="onSubmit()"
+        >
+      </div>
+
+      <div class="error-message-block" *ngIf="errorMessage" style="color: #dc3545; margin-bottom: 15px; font-size: 14px;">
+        ⚠️ {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn-submit"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        {{ isLoading ? 'Вход...' : 'Войти' }}
+      </button>
+    </form>
+
+    <div class="auth-toggle">
+      Нет аккаунта?
+      <a routerLink="/register" class="auth-link">Зарегистрироваться</a>
+    </div>
+
+  </div>
+</div>
