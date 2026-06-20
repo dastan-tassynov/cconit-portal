@@ -17,7 +17,7 @@ export class VerifyCertificateComponent implements OnInit {
   isLoading: boolean = true;
 
   // Замени на свой реальный URL бэкенда при необходимости
-  private apiUrl = 'http://localhost:8081/api/public/verify/certificate';
+  private apiUrl = 'https://c49w5cwg79ul.share.zrok.io/api/public/verify/certificate';
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {}
 

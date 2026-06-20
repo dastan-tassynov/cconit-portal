@@ -9,7 +9,7 @@ export type UserRole = 'ROLE_USER' | 'ROLE_ADMIN' | 'ROLE_SUPERADMIN';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8081/api/auth';
+  private apiUrl = 'https://c49w5cwg79ul.share.zrok.io/api/auth';
 
   private isAuthenticatedUser = false;
   private currentUserRole: UserRole = 'ROLE_USER';

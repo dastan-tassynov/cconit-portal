@@ -19,7 +19,7 @@ export class QuizComponent implements OnInit {
   courseId!: number;
   quizResult: any = null;
 
-  private baseUrl = 'http://localhost:8081/api/student/quiz';
+  private baseUrl = 'https://c49w5cwg79ul.share.zrok.io/api/student/quiz';
 
   constructor(
     private route: ActivatedRoute,
@@ -43,7 +43,7 @@ export class QuizComponent implements OnInit {
   }
 
   checkCourseStatusAndLoad(): void {
-    this.http.get<any>(`http://localhost:8081/api/student/progress/${this.courseId}`, { headers: this.getAuthHeaders() }).subscribe({
+    this.http.get<any>(`https://c49w5cwg79ul.share.zrok.io/api/student/progress/${this.courseId}`, { headers: this.getAuthHeaders() }).subscribe({
       next: (progress) => {
         if (progress && progress.isCompleted) {
           alert('Вы уже успешно сдали этот тест и завершили данный курс! Повторное прохождение заблокировано.');
@@ -116,7 +116,7 @@ export class QuizComponent implements OnInit {
   }
 
   triggerCertificateGeneration(): void {
-    this.http.get(`http://localhost:8081/api/student/certificates/download/${this.courseId}`, {
+    this.http.get(`https://c49w5cwg79ul.share.zrok.io/api/student/certificates/download/${this.courseId}`, {
       headers: this.getAuthHeaders(),
       responseType: 'blob'
     }).subscribe({

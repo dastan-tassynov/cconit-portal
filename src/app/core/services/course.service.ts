@@ -30,7 +30,7 @@ export interface CourseContent {
   providedIn: 'root'
 })
 export class CourseService {
-  private apiUrl = 'http://localhost:8081/api';
+  private apiUrl = 'https://c49w5cwg79ul.share.zrok.io';
 
   // ИСПРАВЛЕНО: Убрано дублирование private
   constructor(

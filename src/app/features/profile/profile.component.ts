@@ -87,7 +87,7 @@ export class ProfileComponent implements OnInit {
   }
 
   loadStudentCourses(): void {
-    this.http.get<SubjectDTO[]>('http://localhost:8081/api/student/courses/subjects', { headers: this.getAuthHeaders() })
+    this.http.get<SubjectDTO[]>('https://c49w5cwg79ul.share.zrok.io/api/student/courses/subjects', { headers: this.getAuthHeaders() })
       .subscribe({
         next: (data) => {
           this.coursesFromBack = data;
@@ -97,7 +97,7 @@ export class ProfileComponent implements OnInit {
   }
 
   downloadCertificate(subjectId: number, courseTitle: string): void {
-    this.http.get(`http://localhost:8081/api/student/certificates/download/${subjectId}`, { headers: this.getAuthHeaders(), responseType: 'blob' })
+    this.http.get(`https://c49w5cwg79ul.share.zrok.io/api/student/certificates/download/${subjectId}`, { headers: this.getAuthHeaders(), responseType: 'blob' })
       .subscribe({
         next: (res: Blob) => {
           const url = window.URL.createObjectURL(res);
@@ -112,7 +112,7 @@ export class ProfileComponent implements OnInit {
   onVideoFileSelected(event: any): void { if (event.target.files.length > 0) this.selectedVideoFile = event.target.files[0]; }
 
   onCreateNewSubject(): void {
-    this.http.post('http://localhost:8081/api/admin/courses/subjects', { title: this.courseTitle, description: this.courseDescription }, { headers: this.getAuthHeaders() })
+    this.http.post('https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects', { title: this.courseTitle, description: this.courseDescription }, { headers: this.getAuthHeaders() })
       .subscribe({ next: () => { this.showToast('Курс создан!'); this.loadStudentCourses(); this.cdr.detectChanges();} });
   }
 
@@ -121,7 +121,7 @@ export class ProfileComponent implements OnInit {
     formData.append('title', this.lessonTitle);
     formData.append('textMaterial', this.lessonTextMaterial);
     if (this.selectedVideoFile) formData.append('videoFile', this.selectedVideoFile);
-    this.http.post(`http://localhost:8081/api/admin/courses/subjects/${this.selectedSubjectIdForLesson}/lessons-multi`, formData, { headers: this.getAuthHeaders() })
+    this.http.post(`https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects/${this.selectedSubjectIdForLesson}/lessons-multi`, formData, { headers: this.getAuthHeaders() })
       .subscribe({ next: () => { this.showToast('Урок добавлен!'); this.lessonTitle = ''; this.lessonTextMaterial = ''; } });
   }
 
@@ -129,12 +129,12 @@ export class ProfileComponent implements OnInit {
 
   onSaveQuizQuestion(): void {
     const payload = { questionText: this.quizQuestionText, answers: this.quizAnswers };
-    this.http.post(`http://localhost:8081/api/admin/management/subjects/${this.selectedSubjectIdForQuiz}/quiz-questions`, payload, { headers: this.getAuthHeaders() })
+    this.http.post(`https://c49w5cwg79ul.share.zrok.io/api/admin/management/subjects/${this.selectedSubjectIdForQuiz}/quiz-questions`, payload, { headers: this.getAuthHeaders() })
       .subscribe({ next: () => this.showToast('Вопрос добавлен!') });
   }
 
   loadAdvertisements(): void {
-    this.http.get<any[]>('http://localhost:8081/api/admin/advertisements/all', { headers: this.getAuthHeaders() })
+    this.http.get<any[]>('https://c49w5cwg79ul.share.zrok.io/api/admin/advertisements/all', { headers: this.getAuthHeaders() })
       .subscribe({ next: (data) => { this.adsList = data; this.cdr.detectChanges(); this.cdr.detectChanges();} });
   }
 
@@ -145,7 +145,7 @@ export class ProfileComponent implements OnInit {
     if (this.adTitle) formData.append('title', this.adTitle);
     if (this.adLinkUrl) formData.append('linkUrl', this.adLinkUrl);
     if (this.selectedAdImage) formData.append('image', this.selectedAdImage);
-    this.http.post('http://localhost:8081/api/admin/advertisements/create', formData, { headers: this.getAuthHeaders() })
+    this.http.post('https://c49w5cwg79ul.share.zrok.io/api/admin/advertisements/create', formData, { headers: this.getAuthHeaders() })
       .subscribe({ next: () => { this.showToast('Баннер создан!'); this.loadAdvertisements(); } });
   }
 
@@ -161,7 +161,7 @@ export class ProfileComponent implements OnInit {
   onDeleteAd(): void {
     if (!this.adToDelete) return;
 
-    this.http.delete(`http://localhost:8081/api/admin/advertisements/${this.adToDelete.id}`, {
+    this.http.delete(`https://c49w5cwg79ul.share.zrok.io/api/admin/advertisements/${this.adToDelete.id}`, {
       headers: this.getAuthHeaders()
     }).subscribe({
       next: () => {
@@ -177,7 +177,7 @@ export class ProfileComponent implements OnInit {
   // Исправленный метод переключения статуса
   onToggleAd(ad: any): void {
     const newStatus = !ad.active;
-    this.http.put(`http://localhost:8081/api/admin/advertisements/${ad.id}/toggle`, null, {
+    this.http.put(`https://c49w5cwg79ul.share.zrok.io/api/admin/advertisements/${ad.id}/toggle`, null, {
       headers: this.getAuthHeaders(),
       params: { active: newStatus.toString() }
     }).subscribe({
@@ -196,7 +196,7 @@ export class ProfileComponent implements OnInit {
   }
 
   loadAllUsers(): void {
-    this.http.get<PortalUser[]>('http://localhost:8081/api/admin/management/users', {
+    this.http.get<PortalUser[]>('https://c49w5cwg79ul.share.zrok.io/api/admin/management/users', {
       headers: this.getAuthHeaders()
     }).subscribe({
       next: (d) => {
@@ -209,7 +209,7 @@ export class ProfileComponent implements OnInit {
   toggleUserAdminRights(user: PortalUser): void {
     const newRole = user.roles.includes('ROLE_ADMIN') ? 'ROLE_USER' : 'ROLE_ADMIN';
 
-    this.http.put(`http://localhost:8081/api/admin/management/users/${user.id}/role`, null, {
+    this.http.put(`https://c49w5cwg79ul.share.zrok.io/api/admin/management/users/${user.id}/role`, null, {
       headers: this.getAuthHeaders(),
       params: { role: newRole }
     })

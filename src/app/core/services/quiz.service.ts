@@ -13,7 +13,7 @@ export interface Question {
   providedIn: 'root'
 })
 export class QuizService {
-  private apiUrl = 'http://localhost:8081/api/student/quiz';
+  private apiUrl = 'https://c49w5cwg79ul.share.zrok.io/api/student/quiz';
 
   constructor(private http: HttpClient) {}
 

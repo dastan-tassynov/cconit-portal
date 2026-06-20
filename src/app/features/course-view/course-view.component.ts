@@ -55,11 +55,11 @@ export class CourseViewComponent implements OnInit {
             ...l,
             // Формируем URL для вашего контроллера стриминга
             // Добавляем токен в query-параметр, чтобы Spring Security пропустил запрос
-            videoUrl: `http://localhost:8081/api/student/videos/stream/lesson/${l.id}?token=${token}`
+            videoUrl: `https://c49w5cwg79ul.share.zrok.io/api/student/videos/stream/lesson/${l.id}?token=${token}`
           })).sort((a, b) => a.stepOrder - b.stepOrder)
           : [];
 
-        this.http.get<any>(`http://localhost:8081/api/student/progress/${this.courseId}`, { headers: this.getAuthHeaders() })
+        this.http.get<any>(`https://c49w5cwg79ul.share.zrok.io/api/student/progress/${this.courseId}`, { headers: this.getAuthHeaders() })
           .subscribe({
             next: (progress) => {
               this.maxAvailableStep = progress?.currentStepOrder || 1;
@@ -108,7 +108,7 @@ export class CourseViewComponent implements OnInit {
     const hasNextLesson = this.lessons.some(l => l.stepOrder === nextStepNum);
 
     if (hasNextLesson) {
-      this.http.post(`http://localhost:8081/api/student/progress/${this.courseId}/step/${nextStepNum}`, null, { headers: this.getAuthHeaders() })
+      this.http.post(`https://c49w5cwg79ul.share.zrok.io/api/student/progress/${this.courseId}/step/${nextStepNum}`, null, { headers: this.getAuthHeaders() })
         .subscribe({
           next: () => {
             this.maxAvailableStep = Math.max(this.maxAvailableStep, nextStepNum);
