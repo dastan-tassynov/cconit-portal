@@ -1,0 +1,32 @@
+/* footer.component.css */
+.main-footer {
+  background-color: #0b2e45;
+  color: white;
+  padding: 30px 50px;
+  margin-top: 50px;
+}
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.footer-info p { margin: 5px 0; font-size: 13px; }
+.footer-social a { color: white; margin-left: 15px; text-decoration: none; font-weight: bold; }
+
+/* Добавьте это в конец вашего footer.component.css */
+@media (max-width: 480px) {
+  .main-footer {
+    padding: 20px 15px; /* Уменьшаем отступы по бокам */
+  }
+  .footer-info {
+    font-size: 12px; /* Чуть меньше шрифт для узких экранов */
+    line-height: 1.4;
+  }
+  .footer-social {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px; /* Удобное расстояние между иконками соцсетей */
+  }
+}

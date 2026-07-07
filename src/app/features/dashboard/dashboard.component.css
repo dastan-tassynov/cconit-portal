@@ -397,3 +397,33 @@ main {
   border: none;
   background-clip: padding-box; /* Чтобы фон не вылезал за границы */
 }
+
+/* Добавляем отступ для футера, чтобы он не прилипал к кнопкам в курсе */
+.course-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Это заставит футер всегда быть внизу, если страница короткая */
+app-footer {
+  margin-top: auto;
+}
+
+/* Адаптация основного контента курса */
+@media (max-width: 600px) {
+  .course-header {
+    padding: 15px; /* Меньше отступов в заголовке */
+  }
+  .course-main-content {
+    padding: 0 15px; /* Чтобы текст не прилипал к краям экрана */
+    margin: 20px auto;
+  }
+  .text-card {
+    padding: 16px; /* Внутри карточки текста меньше пустого места */
+  }
+  .btn-finish {
+    width: 100%; /* Кнопка завершения на всю ширину экрана */
+    padding: 14px;
+  }
+}

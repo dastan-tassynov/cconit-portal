@@ -549,3 +549,15 @@
   background: #e2e8f0;
   color: #475569;
 }
+
+/* Добавляем отступ для футера, чтобы он не прилипал к кнопкам в курсе */
+.course-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Это заставит футер всегда быть внизу, если страница короткая */
+app-footer {
+  margin-top: auto;
+}
