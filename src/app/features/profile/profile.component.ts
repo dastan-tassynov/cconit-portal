@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../core/services/auth.service';
+import { FooterComponent } from '../footer/footer.component';
 
 interface PortalUser { id: number; username: string; fullName: string; roles: string[]; }
 interface SubjectDTO { id: number; title: string; description: string; attemptsCount: number; lastScore: number | null; hasAccess: boolean; createdBy?: string; }
@@ -11,7 +12,7 @@ interface SubjectDTO { id: number; title: string; description: string; attemptsC
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,FooterComponent],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })

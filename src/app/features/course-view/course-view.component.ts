@@ -4,10 +4,12 @@ import { CourseService } from '../../core/services/course.service';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { FooterComponent } from '../footer/footer.component';
+
 @Component({
   selector: 'app-course-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FooterComponent],
   templateUrl: './course-view.component.html',
   styleUrls: ['./course-view.component.css']
 })
