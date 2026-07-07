@@ -1,105 +1,59 @@
-/* --- Глобальные настройки --- */
+/* Контейнер: фиксируем ширину, чтобы не разваливалось */
 .dashboard-container {
-  min-height: 100vh;
-  background-color: #f8fafc;
-  font-family: 'Inter', system-ui, sans-serif;
-  color: #1e293b;
-  padding-bottom: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: system-ui, sans-serif;
 }
 
-/* --- Хедер --- */
+/* Шапка: аккуратный отступ и выравнивание */
 .main-header {
-  background: #ffffff;
-  padding: 16px 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #e2e8f0;
-}
-
-/* --- Адаптивный макет --- */
-.main-layout {
-  display: flex;
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 0 20px;
-  gap: 30px;
-}
-
-/* Адаптив для смартфонов */
-@media (max-width: 768px) {
-  .main-layout { flex-direction: column; }
-  .sidebar { width: 100% !important; }
-  .courses-grid { grid-template-columns: 1fr !important; }
-  .promo-banner { height: 180px !important; }
-}
-
-/* --- Баннер (стиль BilimLand) --- */
-.promo-banner {
-  position: relative;
-  height: 280px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  padding: 0 40px;
-  overflow: hidden;
-  color: #ffffff;
   margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-/* --- Карточки курсов (чистый стиль) --- */
+/* Баннер: исправляем растяжение карты */
+.promo-banner {
+  height: 300px;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  overflow: hidden;
+  position: relative;
+  background-color: #f1f5f9;
+}
+
+.promo-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Сетка курсов: оставляем как была, она работала */
 .courses-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
 }
 
+/* Карточки: добавляем мягкости */
 .course-card {
   background: white;
-  border-radius: 16px;
   border: 1px solid #e2e8f0;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
   overflow: hidden;
-  cursor: pointer;
+  transition: transform 0.2s;
 }
 
 .course-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .course-preview {
-  height: 150px;
-  background: linear-gradient(135deg, #0ea5e9, #2563eb);
-}
-
-.course-info {
-  padding: 20px;
-}
-
-.course-name {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: #0f172a;
-}
-
-.course-desc {
-  font-size: 14px;
-  color: #64748b;
-  line-height: 1.5;
-}
-
-/* --- Элементы управления (Табы) --- */
-.tab-button {
-  background: #f1f5f9;
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-weight: 600;
-  color: #475569;
-}
-
-.tab-button.active {
-  background: #2563eb;
-  color: white;
+  height: 140px;
+  background: #6366f1;
 }
