@@ -410,47 +410,31 @@ app-footer {
   margin-top: auto;
 }
 
-/* Десктопная версия (базовая) */
-.burger-menu {
-  display: none; /* Скрыто на компьютерах */
-}
-
+/* Адаптация основного контента курса */
 @media (max-width: 768px) {
-  /* Мобильная версия */
-  .burger-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    background: none;
-    border: none;
-    cursor: pointer;
+  /* Шапка дашборда */
+  .main-header {
+    padding: 16px;
   }
 
-  .burger-menu span {
-    width: 25px;
-    height: 3px;
-    background: #333;
+  .search-bar {
+    max-width: 100%; /* Поиск на всю ширину */
   }
 
-  .nav-links-wrapper {
-    display: none; /* Скрываем меню по умолчанию */
-    position: absolute;
-    top: 60px;
-    right: 0;
-    width: 100%;
-    background: #003366; /* Синий фон, как у конкурента */
-    flex-direction: column;
-    padding: 20px;
-    z-index: 1000;
+  /* Основной лейаут */
+  .main-layout {
+    flex-direction: column; /* Сайдбар переходит над контент */
+    padding: 16px;
+    gap: 20px;
   }
 
-  .nav-links-wrapper.show {
-    display: flex; /* Показываем при клике */
+  .sidebar {
+    width: 100%; /* Сайдбар растягивается на ширину экрана */
   }
 
-  .nav-links-wrapper a {
-    color: white;
-    padding: 15px;
-    text-decoration: none;
+  /* Сетка карточек курсов */
+  .courses-grid {
+    grid-template-columns: 1fr !important; /* Ровно одна колонка */
+    gap: 16px;
   }
 }
