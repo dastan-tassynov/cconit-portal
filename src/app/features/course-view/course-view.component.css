@@ -583,20 +583,50 @@ app-footer {
   margin-top: auto;
 }
 
-/* Адаптация основного контента курса */
 @media (max-width: 600px) {
-  .course-header {
-    padding: 15px; /* Меньше отступов в заголовке */
+  /* 1. Общие отступы, чтобы контент не прилипал к краям */
+  .course-main-content,
+  .dashboard-container,
+  .profile-main-content {
+    padding: 10px !important;
   }
-  .course-main-content {
-    padding: 0 15px; /* Чтобы текст не прилипал к краям экрана */
-    margin: 20px auto;
+
+  /* 2. Заголовки */
+  .course-page-title { font-size: 18px; }
+
+  /* 3. Видеоплеер (самое важное) */
+  .video-wrapper {
+    width: 100% !important;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
   }
-  .text-card {
-    padding: 16px; /* Внутри карточки текста меньше пустого места */
+
+  /* 4. Карточки (чтобы они не вылезали за экран) */
+  .text-card, .content-card {
+    padding: 16px !important;
   }
-  .btn-finish {
-    width: 100%; /* Кнопка завершения на всю ширину экрана */
-    padding: 14px;
+
+  /* 5. Кнопки: растягиваем на всю ширину для удобства нажатия пальцем */
+  .btn-finish, .modal-btn-primary, .btn-modal-primary, .btn-modal-secondary {
+    width: 100% !important;
+    padding: 14px !important;
+    font-size: 16px; /* Крупный текст для тач-интерфейса */
+  }
+
+  /* 6. Сетка курсов (в дашборде) */
+  .courses-grid {
+    grid-template-columns: 1fr !important; /* Одна колонка вместо нескольких */
+  }
+
+  /* 7. Исключаем горизонтальный скролл */
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* 8. Модальные окна */
+  .modal-card, .course-modal-card {
+    width: 95% !important;
+    margin: 10px;
   }
 }

@@ -255,20 +255,50 @@
   color: #111827;
 }
 
-/* Адаптация основного контента курса */
+/* Адаптация квиза под смартфоны */
 @media (max-width: 600px) {
-  .course-header {
-    padding: 15px; /* Меньше отступов в заголовке */
+  /* Убираем лишние поля контейнера */
+  .quiz-container {
+    padding: 10px;
+    align-items: flex-start; /* Прижимаем к верху, чтобы не было лишнего пустого пространства */
   }
-  .course-main-content {
-    padding: 0 15px; /* Чтобы текст не прилипал к краям экрана */
-    margin: 20px auto;
+
+  /* Карточка теста на всю ширину */
+  .quiz-card {
+    padding: 20px;
+    border-radius: 20px;
   }
-  .text-card {
-    padding: 16px; /* Внутри карточки текста меньше пустого места */
+
+  /* Уменьшаем отступ снизу в вопросе */
+  .quiz-question {
+    font-size: 18px;
+    margin-bottom: 20px;
   }
-  .btn-finish {
-    width: 100%; /* Кнопка завершения на всю ширину экрана */
-    padding: 14px;
+
+  /* Делаем кнопку ответа более компактной по вертикали, но удобной для нажатия */
+  .option-button {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  /* Кнопка "Далее" на всю ширину */
+  .btn-next {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  /* Экран результатов */
+  .results-card {
+    padding: 30px 20px;
+  }
+
+  .results-score {
+    font-size: 36px;
+  }
+
+  /* Кнопки результатов - одна под другой */
+  .results-actions {
+    gap: 10px;
   }
 }

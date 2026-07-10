@@ -16,17 +16,26 @@
 .footer-social a { color: white; margin-left: 15px; text-decoration: none; font-weight: bold; }
 
 /* Добавьте это в конец вашего footer.component.css */
+/* Адаптация футера для смартфонов */
 @media (max-width: 480px) {
   .main-footer {
-    padding: 20px 15px; /* Уменьшаем отступы по бокам */
+    padding: 20px 15px; /* Уменьшаем внутренние отступы */
   }
-  .footer-info {
-    font-size: 12px; /* Чуть меньше шрифт для узких экранов */
-    line-height: 1.4;
+
+  .footer-content {
+    flex-direction: column; /* Ставим контент футера друг под друга */
+    text-align: center; /* Центрируем текст */
+    gap: 15px; /* Добавляем расстояние между блоками */
   }
+
+  .footer-info p {
+    font-size: 12px; /* Чуть уменьшаем шрифт для лучшей читаемости */
+  }
+
   .footer-social {
-    margin-top: 15px;
     display: flex;
-    gap: 15px; /* Удобное расстояние между иконками соцсетей */
+    justify-content: center; /* Центрируем иконки соцсетей */
+    gap: 15px;
+    margin-top: 5px;
   }
 }

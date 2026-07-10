@@ -411,19 +411,30 @@ app-footer {
 }
 
 /* Адаптация основного контента курса */
-@media (max-width: 600px) {
-  .course-header {
-    padding: 15px; /* Меньше отступов в заголовке */
+@media (max-width: 768px) {
+  /* Шапка дашборда */
+  .main-header {
+    padding: 16px;
   }
-  .course-main-content {
-    padding: 0 15px; /* Чтобы текст не прилипал к краям экрана */
-    margin: 20px auto;
+
+  .search-bar {
+    max-width: 100%; /* Поиск на всю ширину */
   }
-  .text-card {
-    padding: 16px; /* Внутри карточки текста меньше пустого места */
+
+  /* Основной лейаут */
+  .main-layout {
+    flex-direction: column; /* Сайдбар переходит над контент */
+    padding: 16px;
+    gap: 20px;
   }
-  .btn-finish {
-    width: 100%; /* Кнопка завершения на всю ширину экрана */
-    padding: 14px;
+
+  .sidebar {
+    width: 100%; /* Сайдбар растягивается на ширину экрана */
+  }
+
+  /* Сетка карточек курсов */
+  .courses-grid {
+    grid-template-columns: 1fr !important; /* Ровно одна колонка */
+    gap: 16px;
   }
 }

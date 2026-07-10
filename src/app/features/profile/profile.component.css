@@ -561,3 +561,31 @@
 app-footer {
   margin-top: auto;
 }
+
+@media (max-width: 768px) {
+  .profile-layout {
+    flex-direction: column; /* Сайдбар меню уходит вверх */
+  }
+
+  .profile-sidebar {
+    width: 100%; /* Меню на всю ширину */
+    padding: 16px;
+  }
+
+  .profile-main-content {
+    padding: 20px 16px; /* Меньше отступы по бокам */
+  }
+
+  /* Формы внутри профиля */
+  .content-card {
+    padding: 16px;
+  }
+
+  .role-selector-group {
+    flex-direction: column; /* Кнопки выбора ролей в столбик */
+  }
+
+  .btn-primary {
+    width: 100%; /* Кнопка сохранения на всю ширину */
+  }
+}
