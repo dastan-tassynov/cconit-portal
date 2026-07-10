@@ -438,3 +438,28 @@ app-footer {
     gap: 16px;
   }
 }
+
+/* Изолированная адаптация шапки */
+@media (max-width: 768px) {
+  .main-header {
+    flex-wrap: wrap; /* Разрешаем перенос элементов на новую строку */
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .header-left {
+    width: 100%; /* Занимает всю ширину */
+    gap: 15px;
+  }
+
+  .header-right {
+    width: 100%; /* Ссылки уходят на вторую строку */
+    justify-content: center; /* Центрируем их */
+    border-top: 1px solid #e5e7eb;
+    padding-top: 10px;
+  }
+
+  .nav-links {
+    gap: 16px; /* Немного уменьшаем отступы между ссылками */
+  }
+}
