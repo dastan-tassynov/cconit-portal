@@ -2,8 +2,12 @@ html, body {
   width: 1200px !important;
   margin: 0 auto !important;
   padding: 0 !important;
-  overflow-x: auto !important; /* Включает горизонтальную прокрутку, если нужно */
+  overflow-x: auto !important;
   touch-action: manipulation;
+
+  /* БЛОКИРОВКА МАСШТАБИРОВАНИЯ */
+  -webkit-text-size-adjust: 100% !important; /* Запрещает Safari менять размер шрифта */
+  text-size-adjust: 100% !important;
 }
 body {
   margin: 0;
