@@ -10,13 +10,13 @@
       <span>qPortal</span>
     </div>
     <nav class="sidebar-menu">
-      <button class="menu-item" [class.active]="activeTab === 'courses'" (click)="selectTab('courses')">📚 {{ 'NAV_COURSES' | translate }}</button>
-      <button class="menu-item" [class.active]="activeTab === 'certificates'" (click)="selectTab('certificates')">🏅 {{ 'NAV_CERTIFICATES' | translate }}</button>
-      <div class="sidebar-divider" *ngIf="hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])">{{ 'NAV_ADMIN_PANEL' | translate }}</div>
-      <button class="menu-item admin-item" [class.active]="activeTab === 'constructor'" *ngIf="hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])" (click)="selectTab('constructor')">🛠 {{ 'NAV_CONSTRUCTOR' | translate }}</button>
-      <button class="menu-item admin-item" *ngIf="hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])" [class.active]="activeTab === 'ads'" (click)="selectTab('ads')" style="color: #10b981;">📢 {{ 'NAV_ADS' | translate }}</button>
-      <div class="sidebar-divider" *ngIf="hasRole(['ROLE_SUPERADMIN'])">{{ 'NAV_SECURITY' | translate }}</div>
-      <button class="menu-item super-item" *ngIf="hasRole(['ROLE_SUPERADMIN'])" [class.active]="activeTab === 'roles'" (click)="selectTab('roles')">👤 {{ 'NAV_ROLES' | translate }}</button>
+      <button class="menu-item" [class.active]="activeTab === 'courses'" (click)="selectTab('courses')">📚 {{ 'MENU_COURSES' | translate }}</button>
+      <button class="menu-item" [class.active]="activeTab === 'certificates'" (click)="selectTab('certificates')">🏅 {{ 'MENU_CERTIFICATES' | translate }}</button>
+      <div class="sidebar-divider" *ngIf="hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])">{{ 'DIV_ADMIN' | translate }}</div>
+      <button class="menu-item admin-item" [class.active]="activeTab === 'constructor'" *ngIf="hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])" (click)="selectTab('constructor')">🛠 {{ 'MENU_CONSTRUCTOR' | translate }}</button>
+      <button class="menu-item admin-item" *ngIf="hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])" [class.active]="activeTab === 'ads'" (click)="selectTab('ads')" style="color: #10b981;">📢 {{ 'MENU_ADS' | translate }}</button>
+      <div class="sidebar-divider" *ngIf="hasRole(['ROLE_SUPERADMIN'])">{{ 'DIV_SECURITY' | translate }}</div>
+      <button class="menu-item super-item" *ngIf="hasRole(['ROLE_SUPERADMIN'])" [class.active]="activeTab === 'roles'" (click)="selectTab('roles')">👤 {{ 'MENU_ROLES' | translate }}</button>
     </nav>
     <div class="sidebar-footer">
       <button class="btn-sidebar-back" (click)="goBack()">← {{ 'BTN_BACK' | translate }}</button>
@@ -26,36 +26,112 @@
 
   <main class="profile-main-content">
     <header class="main-content-header">
-      <h1 class="page-title">{{ 'PROFILE_TITLE' | translate }}</h1>
-      <div class="user-badge-role">{{ 'CURRENT_ROLE' | translate }}: <span>{{ currentUserRole }}</span></div>
+      <h1 class="page-title">{{ 'TITLE_CABINET' | translate }}</h1>
+      <div class="user-badge-role">{{ 'LABEL_ROLE' | translate }}: <span>{{ currentUserRole }}</span></div>
     </header>
 
     <div class="content-card">
+      <!-- 1. Курсы -->
       <div *ngIf="activeTab === 'courses'" class="tab-window">
-        <h3 class="section-title">{{ 'MY_COURSES' | translate }}</h3>
+        <h3 class="section-title">{{ 'TITLE_MY_COURSES' | translate }}</h3>
         <table class="profile-table" style="width: 100%; border-collapse: collapse;">
-          <thead><tr style="background: #f1f5f9;"><th style="padding: 12px;">{{ 'TH_NAME' | translate }}</th><th style="padding: 12px;">{{ 'TH_ATTEMPTS' | translate }}</th><th style="padding: 12px;">{{ 'TH_SCORE' | translate }}</th><th style="padding: 12px;">{{ 'TH_ACCESS' | translate }}</th><th style="padding: 12px;">{{ 'TH_AUTHOR' | translate }}</th></tr></thead>
+          <thead><tr style="background: #f1f5f9;">
+            <th style="padding: 12px;">{{ 'TH_COURSE' | translate }}</th>
+            <th style="padding: 12px;">{{ 'TH_ATTEMPTS' | translate }}</th>
+            <th style="padding: 12px;">{{ 'TH_RESULT' | translate }}</th>
+            <th style="padding: 12px;">{{ 'TH_ACCESS' | translate }}</th>
+            <th style="padding: 12px;">{{ 'TH_AUTHOR' | translate }}</th>
+          </tr></thead>
           <tbody>
           <tr *ngFor="let course of coursesFromBack" style="border-bottom: 1px solid #e2e8f0;">
             <td style="padding: 12px;">{{ course.title }}</td>
             <td style="padding: 12px; text-align: center;">{{ course.attemptsCount }}</td>
-            <td style="padding: 12px;">{{ course.lastScore !== null ? course.lastScore + '%' : ('NO_TESTS' | translate) }}</td>
-            <td style="padding: 12px;"><span [style.background]="course.hasAccess ? '#dcfce7' : '#fee2e2'" style="padding: 4px 8px; border-radius: 6px;">{{ course.hasAccess ? ('OPEN' | translate) : ('LIMITED' | translate) }}</span></td>
-            <td style="padding: 12px;">{{ course.createdBy || 'qPortal' }}</td>
+            <td style="padding: 12px; text-align: center;">{{ course.lastScore !== null ? course.lastScore + '%' : ('VAL_NO_TEST' | translate) }}</td>
+            <td style="padding: 12px; text-align: right;">{{ course.hasAccess ? ('VAL_OPEN' | translate) : ('VAL_LIMITED' | translate) }}</td>
+            <td style="padding: 12px; text-align: right;">{{ course.createdBy || ('VAL_SYSTEM' | translate) }}</td>
           </tr>
           </tbody>
         </table>
       </div>
 
+      <!-- 2. Сертификаты -->
+      <div *ngIf="activeTab === 'certificates'" class="tab-window">
+        <h3 class="section-title">{{ 'TITLE_MY_CERTS' | translate }}</h3>
+        <table class="profile-table" style="width: 100%; border-collapse: collapse;">
+          <thead><tr style="background: #f1f5f9;">
+            <th>{{ 'TH_DISCIPLINE' | translate }}</th><th>{{ 'TH_TYPE' | translate }}</th><th>{{ 'TH_ACTION' | translate }}</th>
+          </tr></thead>
+          <tbody>
+          <ng-container *ngFor="let course of coursesFromBack">
+            <tr *ngIf="course.lastScore !== null" style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 12px; font-weight: 500;">{{ course.title }}</td>
+              <td style="padding: 12px; color: #059669; font-weight: 600;">{{ 'VAL_PDF_CERT' | translate }}</td>
+              <td style="padding: 12px; text-align: right;">
+                <button (click)="downloadCertificate(course.id, course.title)" style="background: #059669; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                  📥 {{ 'BTN_DOWNLOAD' | translate }}
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3. Конструктор -->
       <div *ngIf="activeTab === 'constructor'" class="tab-window">
-        <!-- (Конструктор сохранен в прежнем виде, заменены все текстовые метки на ключи) -->
         <div class="constructor-box">
-          <h4>{{ 'STEP_1' | translate }}</h4>
-          <label>{{ 'COURSE_NAME_LABEL' | translate }}</label>
-          <input [(ngModel)]="courseTitle" [placeholder]="'PH_COURSE_NAME' | translate">
-          <button (click)="onCreateNewSubject()">{{ 'BTN_REGISTER_COURSE' | translate }}</button>
+          <h4>{{ 'CONS_STEP1' | translate }}</h4>
+          <label>{{ 'LABEL_COURSE_NAME' | translate }}</label>
+          <input [(ngModel)]="courseTitle" [placeholder]="'PH_NAME' | translate">
+          <label>{{ 'LABEL_DESC' | translate }}</label>
+          <textarea [(ngModel)]="courseDescription" [placeholder]="'PH_DESC' | translate"></textarea>
+          <button (click)="onCreateNewSubject()">➕ {{ 'BTN_REGISTER' | translate }}</button>
         </div>
+        <div class="constructor-box">
+          <h4>{{ 'CONS_STEP2' | translate }}</h4>
+          <label>{{ 'LABEL_CHOOSE_COURSE' | translate }}</label>
+          <select [(ngModel)]="selectedSubjectIdForLesson">
+            <option [ngValue]="null" disabled>{{ 'PH_CHOOSE' | translate }}</option>
+          </select>
+          <label>{{ 'LABEL_LESSON_TITLE' | translate }}</label>
+          <input [(ngModel)]="lessonTitle" [placeholder]="'PH_LESSON' | translate">
+          <label>{{ 'LABEL_THEORY' | translate }}</label>
+          <textarea [(ngModel)]="lessonTextMaterial" [placeholder]="'PH_THEORY' | translate"></textarea>
+          <label>{{ 'LABEL_VIDEO' | translate }}</label>
+          <input type="file" (change)="onVideoFileSelected($event)">
+          <button (click)="onAddLessonToSubject()">🚀 {{ 'BTN_SAVE_LESSON' | translate }}</button>
+        </div>
+        <div class="quiz-dynamic-panel">
+          <h4>📋 {{ 'TITLE_QUIZ' | translate }}</h4>
+          <label>{{ 'LABEL_TARGET_COURSE' | translate }}</label>
+          <select [(ngModel)]="selectedSubjectIdForQuiz">
+            <option [ngValue]="null" disabled>{{ 'PH_CHOOSE' | translate }}</option>
+          </select>
+          <label>{{ 'LABEL_QUESTION' | translate }}</label>
+          <textarea [(ngModel)]="quizQuestionText" [placeholder]="'PH_QUESTION' | translate"></textarea>
+          <button (click)="onSaveQuizQuestion()">➕ {{ 'BTN_ADD_QUESTION' | translate }}</button>
+        </div>
+      </div>
+
+      <!-- 4. Реклама и Роли (по аналогии) -->
+      <div *ngIf="activeTab === 'ads'" class="tab-window">
+        <h3 class="section-title">📢 {{ 'TITLE_ADS' | translate }}</h3>
+        <label>{{ 'LABEL_AD_LINK' | translate }}</label>
+        <input [(ngModel)]="adLinkUrl" [placeholder]="'PH_LINK' | translate">
+        <button (click)="onCreateAdvertisement()">➕ {{ 'BTN_CREATE_AD' | translate }}</button>
+      </div>
+
+      <div *ngIf="activeTab === 'roles'" class="tab-window">
+        <h3 class="section-title">{{ 'TITLE_ROLES' | translate }}</h3>
+        <table class="profile-table">
+          <thead><tr><th>{{ 'TH_NAME' | translate }}</th><th>{{ 'TH_ROLE' | translate }}</th><th>{{ 'TH_ACTION' | translate }}</th></tr></thead>
+          <tbody><tr *ngFor="let user of usersList">
+            <td>{{ user.fullName }}</td><td>{{ user.roles }}</td>
+            <td><button (click)="toggleUserAdminRights(user)">{{ 'BTN_TOGGLE_ADMIN' | translate }}</button></td>
+          </tr></tbody>
+        </table>
       </div>
     </div>
   </main>
 </div>
+<app-footer></app-footer>
