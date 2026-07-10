@@ -24,6 +24,13 @@ export class ProfileComponent implements OnInit {
     { label: 'LABEL_COURSE_DESC', placeholder: 'PH_COURSE_DESC', model: 'courseDescription' }
   ];
 
+  getFieldValue(modelName: string): any {
+    return (this as any)[modelName];
+  }
+
+  setFieldValue(modelName: string, value: any): void {
+    (this as any)[modelName] = value;
+  }
   // Массив для вопросов теста
   quizFormFields = [
     { label: 'LABEL_QUIZ_QUESTION', placeholder: 'PH_QUIZ_QUESTION', model: 'quizQuestionText' }
