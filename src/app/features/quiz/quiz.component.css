@@ -256,49 +256,49 @@
 }
 
 /* Адаптация квиза под смартфоны */
-@media (max-width: 600px) {
-  /* Убираем лишние поля контейнера */
-  .quiz-container {
-    padding: 10px;
-    align-items: flex-start; /* Прижимаем к верху, чтобы не было лишнего пустого пространства */
-  }
+/*@media (max-width: 600px) {*/
+/*  !* Убираем лишние поля контейнера *!*/
+/*  .quiz-container {*/
+/*    padding: 10px;*/
+/*    align-items: flex-start; !* Прижимаем к верху, чтобы не было лишнего пустого пространства *!*/
+/*  }*/
 
-  /* Карточка теста на всю ширину */
-  .quiz-card {
-    padding: 20px;
-    border-radius: 20px;
-  }
+/*  !* Карточка теста на всю ширину *!*/
+/*  .quiz-card {*/
+/*    padding: 20px;*/
+/*    border-radius: 20px;*/
+/*  }*/
 
-  /* Уменьшаем отступ снизу в вопросе */
-  .quiz-question {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
+/*  !* Уменьшаем отступ снизу в вопросе *!*/
+/*  .quiz-question {*/
+/*    font-size: 18px;*/
+/*    margin-bottom: 20px;*/
+/*  }*/
 
-  /* Делаем кнопку ответа более компактной по вертикали, но удобной для нажатия */
-  .option-button {
-    padding: 14px 16px;
-    gap: 12px;
-  }
+/*  !* Делаем кнопку ответа более компактной по вертикали, но удобной для нажатия *!*/
+/*  .option-button {*/
+/*    padding: 14px 16px;*/
+/*    gap: 12px;*/
+/*  }*/
 
-  /* Кнопка "Далее" на всю ширину */
-  .btn-next {
-    width: 100%;
-    padding: 16px;
-    font-size: 16px;
-  }
+/*  !* Кнопка "Далее" на всю ширину *!*/
+/*  .btn-next {*/
+/*    width: 100%;*/
+/*    padding: 16px;*/
+/*    font-size: 16px;*/
+/*  }*/
 
-  /* Экран результатов */
-  .results-card {
-    padding: 30px 20px;
-  }
+/*  !* Экран результатов *!*/
+/*  .results-card {*/
+/*    padding: 30px 20px;*/
+/*  }*/
 
-  .results-score {
-    font-size: 36px;
-  }
+/*  .results-score {*/
+/*    font-size: 36px;*/
+/*  }*/
 
-  /* Кнопки результатов - одна под другой */
-  .results-actions {
-    gap: 10px;
-  }
-}
+/*  !* Кнопки результатов - одна под другой *!*/
+/*  .results-actions {*/
+/*    gap: 10px;*/
+/*  }*/
+/*}*/
