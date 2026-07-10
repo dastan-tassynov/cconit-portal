@@ -1,58 +1,42 @@
 <div class="auth-container">
-  <div class="auth-card">
+  <div class="lang-switcher">
+    <button (click)="translate.use('ru')" [class.active]="'ru' === translate.getCurrentLang()">RU</button>
+    <button (click)="translate.use('kk')" [class.active]="'kk' === translate.getCurrentLang()">KZ</button>
+  </div>
 
+  <div class="auth-card">
     <div class="auth-logo">
       <div class="logo-dot"></div>
       <span>qPortal</span>
     </div>
 
-    <h2 class="auth-title">С возвращением</h2>
-    <p class="auth-subtitle">Войдите в свой аккаунт, чтобы продолжить обучение</p>
+    <h2 class="auth-title">{{ 'AUTH_LOGIN_TITLE' | translate }}</h2>
+    <p class="auth-subtitle">{{ 'AUTH_LOGIN_SUBTITLE' | translate }}</p>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
       <div class="form-group">
-        <label class="form-label">E-mail / ИИН</label>
-        <input
-          type="text"
-          formControlName="username"
-          placeholder="name@example.com или ИИН"
-          class="form-input"
-          (keydown.enter)="onSubmit()"
-          [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-        >
+        <label class="form-label">{{ 'LABEL_EMAIL_IIN' | translate }}</label>
+        <input type="text" formControlName="username" placeholder="{{ 'PLACEHOLDER_EMAIL_IIN' | translate }}" class="form-input" (keydown.enter)="onSubmit()">
       </div>
 
       <div class="form-group">
-        <label class="form-label">Пароль</label>
-        <input
-          type="password"
-          formControlName="password"
-          placeholder="••••••••"
-          class="form-input"
-          (keydown.enter)="onSubmit()"
-        >
+        <label class="form-label">{{ 'LABEL_PASSWORD' | translate }}</label>
+        <input type="password" formControlName="password" placeholder="••••••••" class="form-input" (keydown.enter)="onSubmit()">
       </div>
 
       <div class="error-message-block" *ngIf="errorMessage" style="color: #dc3545; margin-bottom: 15px; font-size: 14px;">
         ⚠️ {{ errorMessage }}
       </div>
 
-      <button
-        type="submit"
-        class="btn-submit"
-        [disabled]="loginForm.invalid || isLoading"
-      >
-        {{ isLoading ? 'Вход...' : 'Войти' }}
+      <button type="submit" class="btn-submit" [disabled]="loginForm.invalid || isLoading">
+        {{ (isLoading ? 'BTN_LOGGING_IN' : 'BTN_LOGIN') | translate }}
       </button>
     </form>
 
     <div class="auth-toggle">
-      Нет аккаунта?
-      <a routerLink="/register" class="auth-link">Зарегистрироваться</a>
+      {{ 'AUTH_NO_ACCOUNT' | translate }}
+      <a routerLink="/register" class="auth-link">{{ 'AUTH_REGISTER_LINK' | translate }}</a>
     </div>
-
   </div>
 </div>
-
 <app-footer></app-footer>

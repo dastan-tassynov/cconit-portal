@@ -4,12 +4,14 @@ import { AuthService } from '../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../footer/footer.component';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import {SimpleTranslateService} from '../../core/services/translation.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterLink,FooterComponent],
+  imports: [FormsModule, CommonModule, RouterLink,FooterComponent,TranslatePipe],
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
@@ -24,7 +26,8 @@ export class RegisterComponent {
     confirmPassword: ''
   };
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router,
+              public translate: SimpleTranslateService) {}
 
   onRegister(): void {
     // 1. Базовая проверка заполнения полей

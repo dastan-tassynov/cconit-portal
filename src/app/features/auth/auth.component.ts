@@ -3,14 +3,15 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
-
 import { FooterComponent } from '../footer/footer.component';
+import {SimpleTranslateService} from '../../core/services/translation.service';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink,FooterComponent],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink,FooterComponent, TranslatePipe],
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
@@ -18,7 +19,9 @@ export class AuthComponent implements OnInit {
   errorMessage: string = '';
   isLoading: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService,
+              private router: Router,
+              public translate: SimpleTranslateService) {}
 
   ngOnInit(): void {
     // Инициализация формы с валидацией

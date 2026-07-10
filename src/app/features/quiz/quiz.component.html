@@ -1,12 +1,16 @@
 <div class="quiz-container">
+  <!-- Добавляем переключатель языков -->
+  <div class="lang-switcher">
+    <button (click)="translate.use('ru')" [class.active]="'ru' === translate.getCurrentLang()">RU</button>
+    <button (click)="translate.use('kk')" [class.active]="'kk' === translate.getCurrentLang()">KZ</button>
+  </div>
 
   <div class="quiz-card" *ngIf="!quizCompleted && currentQuestion; else resultsBlock">
-
     <div class="quiz-header">
       <span class="quiz-progress-text">
-        Вопрос {{ currentQuestionIndex + 1 }} из {{ questions.length }}
+          {{ 'QUIZ_QUESTION_PROGRESS' | translate }} {{ currentQuestionIndex + 1 }} / {{ questions.length }}
       </span>
-      <span class="quiz-timer">⏱ Контрольное тестирование</span>
+      <span class="quiz-timer">⏱ {{ 'QUIZ_TEST_TITLE' | translate }}</span>
     </div>
 
     <h2 class="quiz-question">{{ currentQuestion.questionText }}</h2>
@@ -29,40 +33,39 @@
         [disabled]="selectedOptionId === null"
         (click)="nextQuestion()"
       >
-        {{ currentQuestionIndex === questions.length - 1 ? 'Завершить тест' : 'Дальше →' }}
+        {{ (currentQuestionIndex === questions.length - 1 ? 'BTN_FINISH' : 'BTN_NEXT') | translate }}
       </button>
     </div>
-
   </div>
 
   <ng-template #resultsBlock>
     <div class="quiz-card results-card">
-
       @if (quizResult?.completed) {
         <div class="success-icon">🎉</div>
-        <h2 class="results-title">Тестирование успешно сдано!</h2>
-        <p class="results-subtitle">Поздравляем! Вы успешно набрали проходной балл, данные отправлены в систему Орлеу для формирования действительного сертификата.</p>
+        <h2 class="results-title">{{ 'RESULTS_SUCCESS_TITLE' | translate }}</h2>
+        <p class="results-subtitle">{{ 'RESULTS_SUCCESS_SUBTITLE' | translate }}</p>
       } @else {
         <div class="success-icon" style="filter: grayscale(100%);">❌</div>
-        <h2 class="results-title" style="color: #ef4444;">Тест не пройден</h2>
-        <p class="results-subtitle">Для успешной сдачи нужно набрать не менее 70%. Изучите материал и попробуйте снова.</p>
+        <h2 class="results-title" style="color: #ef4444;">{{ 'RESULTS_FAIL_TITLE' | translate }}</h2>
+        <p class="results-subtitle">{{ 'RESULTS_FAIL_SUBTITLE' | translate }}</p>
       }
 
       <div class="results-score-box">
-        <span class="score-label">Ваш результат:</span>
+        <span class="score-label">{{ 'RESULTS_YOUR_SCORE' | translate }}:</span>
         <div class="results-score" [style.color]="quizResult?.completed ? '#10b981' : '#ef4444'">
           {{ quizResult?.lastScore }}<span class="score-total">%</span>
         </div>
         <small style="color: #9ca3af; font-size: 11px; display: block; margin-top: 5px;">
-          Всего попыток: {{ quizResult?.attemptsCount }}
+          {{ 'RESULTS_ATTEMPTS' | translate }}: {{ quizResult?.attemptsCount }}
         </small>
       </div>
 
       <div class="results-actions">
-        <button class="btn-dashboard" (click)="goToDashboard()">Вернуться на главную</button>
-        <button class="btn-restart-quiz" [disabled]="quizResult?.completed" (click)="restartQuiz()">Пройти заново</button>
+        <button class="btn-dashboard" (click)="goToDashboard()">{{ 'BTN_DASHBOARD' | translate }}</button>
+        <button class="btn-restart-quiz" [disabled]="quizResult?.completed"
+                (click)="restartQuiz()">{{ 'BTN_RESTART' | translate }}
+        </button>
       </div>
     </div>
   </ng-template>
-
 </div>

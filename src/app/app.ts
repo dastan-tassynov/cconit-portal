@@ -1,6 +1,6 @@
 import {Component, HostListener, OnInit, signal} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { SimpleTranslateService } from './core/services/translation.service';
 
 @Component({
   selector: 'app-root',
@@ -10,16 +10,10 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrl: './app.css'
 })
 export class App implements OnInit{
-  constructor(private translate: TranslateService) {
-    const service: any = this.translate;
-    service.setDefaultLang('ru');
-    service.use('ru');
-  }
-  changeLanguage(lang: string) {
-    this.translate.use(lang);
-  }
+  constructor(private translate: SimpleTranslateService) {}
   protected readonly title = signal('web-portal2');
   ngOnInit(): void {
+    this.translate.use('ru');
     // Блокировка правой кнопки мыши
     document.addEventListener('contextmenu', (event) => event.preventDefault());
 

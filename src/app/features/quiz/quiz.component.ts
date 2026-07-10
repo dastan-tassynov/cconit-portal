@@ -2,11 +2,13 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import {SimpleTranslateService} from '../../core/services/translation.service';
 
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,TranslatePipe],
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.css'
 })
@@ -25,7 +27,8 @@ export class QuizComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public translate: SimpleTranslateService
   ) {}
 
   private getAuthHeaders(): HttpHeaders {
