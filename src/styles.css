@@ -64,3 +64,17 @@ video, img {
     box-sizing: border-box;
   }
 }
+
+/* В файле стилей */
+:host {
+  display: block;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  * {
+    max-width: 100% !important; /* Запрещает элементам быть шире экрана */
+    box-sizing: border-box !important;
+  }
+}
