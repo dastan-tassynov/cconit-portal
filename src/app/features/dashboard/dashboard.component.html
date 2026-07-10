@@ -6,6 +6,19 @@
         <div class="logo-dot"></div>
         <span class="logo-text">qPortal</span>
       </div>
+      <!-- Кнопка-бургер -->
+      <button class="burger-menu" (click)="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Меню -->
+      <nav class="nav-links-wrapper" [class.show]="isMenuOpen">
+        <a href="/">Главная</a>
+        <a href="/profile">Личный кабинет</a>
+        <a href="/logout">Выйти</a>
+      </nav>
       <div class="search-bar">
         <span>🔍</span>
         <input

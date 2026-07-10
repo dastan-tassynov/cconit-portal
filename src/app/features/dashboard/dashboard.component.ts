@@ -23,6 +23,12 @@ interface PromoSlide {
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+
+  isMenuOpen = false;
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
   searchQuery: string = '';
   allCourses: Course[] = [];
   filteredCourses: Course[] = [];
