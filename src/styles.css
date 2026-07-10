@@ -1,3 +1,10 @@
+html, body {
+  width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  overflow-x: auto !important; /* Включает горизонтальную прокрутку, если нужно */
+  touch-action: manipulation;
+}
 body {
   margin: 0;
   padding: 0;
