@@ -355,35 +355,86 @@ main {
 
 .dashboard-container { max-width: 1200px; margin: 0 auto; padding: 20px; font-family: sans-serif; }
 
+/* Шапка */
+.main-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.header-left { display: flex; align-items: center; gap: 20px; }
+.logo-block { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; }
+.search-input { padding: 8px 15px; border: 1px solid #e2e8f0; border-radius: 8px; width: 300px; }
+
+/* Основной лейаут */
+.main-layout { display: flex; gap: 30px; }
+.sidebar { width: 250px; flex-shrink: 0; }
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Карточки курсов */
+.course-card {
+  background: white; border: 1px solid #e2e8f0; border-radius: 12px;
+  overflow: hidden; cursor: pointer; transition: transform 0.2s;
+}
+.course-card:hover { transform: translateY(-5px); shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+.course-preview { height: 140px; background: #6366f1; }
+.course-info { padding: 15px; }
+.course-name { font-size: 16px; margin-bottom: 8px; }
+.course-desc { font-size: 13px; color: #64748b; line-height: 1.4; }
+
+/* Баннер */
+.promo-banner {
+  position: relative;
+  height: 250px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  overflow: hidden;
+
+  /* УБИРАЕМ ВСЕ, ЧТО МОЖЕТ СОЗДАВАТЬ ОВАЛ/ТЕНЬ */
+  box-shadow: none !important;
+  border: none;
+  background-clip: padding-box; /* Чтобы фон не вылезал за границы */
+}
+
+/* Добавляем отступ для футера, чтобы он не прилипал к кнопкам в курсе */
+.course-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Это заставит футер всегда быть внизу, если страница короткая */
+app-footer {
+  margin-top: auto;
+}
+
+/* Адаптация основного контента курса */
 @media (max-width: 768px) {
-  /* Переключаем на вертикальный стек */
+  /* Шапка дашборда */
+  .main-header {
+    padding: 16px;
+  }
+
+  .search-bar {
+    max-width: 100%; /* Поиск на всю ширину */
+  }
+
+  /* Основной лейаут */
   .main-layout {
-    flex-direction: column;
+    flex-direction: column; /* Сайдбар переходит над контент */
     padding: 16px;
     gap: 20px;
   }
 
-  /* Сайдбар на всю ширину */
   .sidebar {
-    width: 100%;
+    width: 100%; /* Сайдбар растягивается на ширину экрана */
   }
 
-  /* Сетка: 1 колонка, элементы не сжимаются */
+  /* Сетка карточек курсов */
   .courses-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important; /* Ровно одна колонка */
     gap: 16px;
-  }
-
-  /* Хедер: разрешаем перенос элементов */
-  .main-header {
-    flex-wrap: wrap;
-    gap: 16px;
-    padding: 16px;
-  }
-
-  .header-left {
-    width: 100%;
-    flex-direction: column;
-    gap: 10px;
   }
 }
