@@ -15,6 +15,7 @@ import { FooterComponent } from '../footer/footer.component';
 })
 export class CourseViewComponent implements OnInit {
   courseId!: string;
+  courseData: any = null;
   lessons: any[] = [];
   viewMode: 'syllabus' | 'lesson' = 'syllabus';
   currentLesson: any = null;
