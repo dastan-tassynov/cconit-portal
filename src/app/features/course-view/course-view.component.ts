@@ -50,34 +50,35 @@ export class CourseViewComponent implements OnInit {
   }
 
   loadCourseAndProgress(): void {
+    // 1. Добавляем запрос для получения данных курса (название, описание)
+    this.http.get<any>(`https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects/${this.courseId}`, { headers: this.getAuthHeaders() })
+      .subscribe({
+        next: (data) => {
+          this.courseData = data; // Теперь тут будет название и описание
+          this.cdr.detectChanges();
+        }
+      });
+
+    // 2. Ваш текущий запрос лекций
     this.courseService.getCourseContent(this.courseId).subscribe({
       next: (lessonsData: any) => {
         const token = localStorage.getItem('token');
         this.lessons = Array.isArray(lessonsData)
           ? lessonsData.map(l => ({
             ...l,
-            // Формируем URL для вашего контроллера стриминга
-            // Добавляем токен в query-параметр, чтобы Spring Security пропустил запрос
             videoUrl: `https://c49w5cwg79ul.share.zrok.io/api/student/videos/stream/lesson/${l.id}?token=${token}`
           })).sort((a, b) => a.stepOrder - b.stepOrder)
           : [];
 
+        // 3. Ваш текущий запрос прогресса
         this.http.get<any>(`https://c49w5cwg79ul.share.zrok.io/api/student/progress/${this.courseId}`, { headers: this.getAuthHeaders() })
           .subscribe({
             next: (progress) => {
               this.maxAvailableStep = progress?.currentStepOrder || 1;
               this.isCourseFinished = progress?.isCompleted || false;
               this.cdr.detectChanges();
-            },
-            error: () => {
-              this.maxAvailableStep = 1;
-              this.cdr.detectChanges();
             }
           });
-      },
-      error: (err) => {
-        console.error('Ошибка загрузки данных курса:', err);
-        this.cdr.detectChanges();
       }
     });
   }
