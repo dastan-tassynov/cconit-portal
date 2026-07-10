@@ -39,19 +39,13 @@ export class SimpleTranslateService {
       'RESULTS_ATTEMPTS': 'Всего попыток',
       'BTN_DASHBOARD': 'Вернуться на главную',
       'BTN_RESTART': 'Пройти заново',
-      'NAV_COURSES': 'Пройденные курсы',
-      'NAV_CERTIFICATES': 'Сертификаты',
-      'NAV_CONSTRUCTOR': 'Конструктор курсов и тестов',
-      'NAV_ADS': 'Рекламные баннеры',
-      'NAV_ROLES': 'Пользователи и Роли',
-      'PROFILE_TITLE': 'Личный кабинет',
-      'BTN_BACK': '← На главную',
-      'BTN_LOGOUT': 'Выйти',
-      'TH_COURSE_NAME': 'Название курса',
-      'TH_ATTEMPTS': 'Использовано попыток',
-      'TH_SCORE': 'Последний результат',
-      'TH_ACCESS': 'Доступ к курсу',
-      'TH_AUTHOR': 'Автор курса'
+      'NAV_COURSES': 'Пройденные курсы', 'NAV_CERTIFICATES': 'Сертификаты', 'NAV_ADMIN_PANEL': 'Панель управления',
+      'NAV_CONSTRUCTOR': 'Конструктор курсов', 'NAV_ADS': 'Рекламные баннеры', 'NAV_SECURITY': 'Безопасность',
+      'NAV_ROLES': 'Пользователи и Роли', 'BTN_BACK': 'На главную', 'BTN_LOGOUT': 'Выйти',
+      'PROFILE_TITLE': 'Личный кабинет', 'CURRENT_ROLE': 'Текущая роль', 'MY_COURSES': 'Мои предметы',
+      'TH_NAME': 'Название', 'TH_ATTEMPTS': 'Попытки', 'TH_SCORE': 'Результат', 'TH_ACCESS': 'Доступ', 'TH_AUTHOR': 'Автор',
+      'NO_TESTS': 'Не сдавался', 'OPEN': 'Открыт', 'LIMITED': 'Ограничен', 'STEP_1': 'Шаг 1: Создание дисциплины',
+      'COURSE_NAME_LABEL': 'НАЗВАНИЕ ПРЕДМЕТА', 'PH_COURSE_NAME': 'Введите название...', 'BTN_REGISTER_COURSE': 'Зарегистрировать'
     },
     kk: {
       'AUTH_LOGIN_TITLE': 'Қош келдіңіз',
@@ -87,19 +81,13 @@ export class SimpleTranslateService {
       'RESULTS_ATTEMPTS': 'Барлық талпыныстар саны',
       'BTN_DASHBOARD': 'Басты бетке оралу',
       'BTN_RESTART': 'Қайта тапсыру',
-      'NAV_COURSES': 'Өтілген курстар',
-      'NAV_CERTIFICATES': 'Сертификаттар',
-      'NAV_CONSTRUCTOR': 'Курстар мен тесттер конструкторы',
-      'NAV_ADS': 'Жарнамалық баннерлер',
-      'NAV_ROLES': 'Пайдаланушылар мен Рөлдер',
-      'PROFILE_TITLE': 'Жеке кабинет',
-      'BTN_BACK': '← Басты бетке',
-      'BTN_LOGOUT': 'Шығу',
-      'TH_COURSE_NAME': 'Курс атауы',
-      'TH_ATTEMPTS': 'Пайдаланылған талпыныстар',
-      'TH_SCORE': 'Соңғы нәтиже',
-      'TH_ACCESS': 'Курсқа қолжетімділік',
-      'TH_AUTHOR': 'Курс авторы'
+      'NAV_COURSES': 'Өтілген курстар', 'NAV_CERTIFICATES': 'Сертификаттар', 'NAV_ADMIN_PANEL': 'Басқару панелі',
+      'NAV_CONSTRUCTOR': 'Курс конструкторы', 'NAV_ADS': 'Жарнамалық баннерлер', 'NAV_SECURITY': 'Қауіпсіздік',
+      'NAV_ROLES': 'Пайдаланушылар мен Рөлдер', 'BTN_BACK': 'Басты бет', 'BTN_LOGOUT': 'Шығу',
+      'PROFILE_TITLE': 'Жеке кабинет', 'CURRENT_ROLE': 'Ағымдағы рөл', 'MY_COURSES': 'Менің пәндерім',
+      'TH_NAME': 'Атауы', 'TH_ATTEMPTS': 'Талпыныстар', 'TH_SCORE': 'Нәтиже', 'TH_ACCESS': 'Қолжетімділік', 'TH_AUTHOR': 'Авторы',
+      'NO_TESTS': 'Тапсырылмады', 'OPEN': 'Ашық', 'LIMITED': 'Шектеулі', 'STEP_1': '1-қадам: Пән құру',
+      'COURSE_NAME_LABEL': 'ПӘН АТАУЫ', 'PH_COURSE_NAME': 'Атауын енгізіңіз...', 'BTN_REGISTER_COURSE': 'Тіркеу'
     }
   };
 

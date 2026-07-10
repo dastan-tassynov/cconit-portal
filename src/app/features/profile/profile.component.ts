@@ -19,6 +19,15 @@ interface SubjectDTO { id: number; title: string; description: string; attemptsC
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  courseFormFields = [
+    { label: 'LABEL_COURSE_TITLE', placeholder: 'PH_COURSE_TITLE', model: 'courseTitle' },
+    { label: 'LABEL_COURSE_DESC', placeholder: 'PH_COURSE_DESC', model: 'courseDescription' }
+  ];
+
+  // Массив для вопросов теста
+  quizFormFields = [
+    { label: 'LABEL_QUIZ_QUESTION', placeholder: 'PH_QUIZ_QUESTION', model: 'quizQuestionText' }
+  ];
   activeTab: string = 'courses';
   userRole: string = 'ROLE_USER';
 
