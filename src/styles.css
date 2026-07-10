@@ -29,3 +29,38 @@ video, img {
   flex: 1;
 }
 
+@media (max-width: 600px) {
+  /* 1. Делаем контейнер шапки вертикальным */
+  .navbar-container { /* Замените на ваш класс шапки */
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  /* 2. Поиск на всю ширину */
+  .search-input-wrapper { /* Замените на класс строки поиска */
+    width: 100% !important;
+    margin: 0;
+  }
+
+  /* 3. Ссылки меню (Личный кабинет, Выйти) */
+  .nav-links-wrapper { /* Замените на ваш класс меню */
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 14px; /* Чуть меньше шрифт, чтобы всё влезло */
+  }
+
+  /* 4. Заголовок "Все курсы" */
+  .section-title {
+    font-size: 20px;
+    margin-top: 20px;
+  }
+
+  /* 5. Карта - чтобы не разрывала верстку */
+  .map-card {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+}
