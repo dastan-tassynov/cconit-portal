@@ -1,13 +1,4 @@
-html, body {
-  margin: 0 auto !important;
-  padding: 0 !important;
-  overflow-x: auto !important;
-  touch-action: manipulation;
-
-  /* БЛОКИРОВКА МАСШТАБИРОВАНИЯ */
-  -webkit-text-size-adjust: 100% !important; /* Запрещает Safari менять размер шрифта */
-  text-size-adjust: 100% !important;
-}
+/* Базовые настройки */
 body {
   margin: 0;
   padding: 0;
@@ -15,27 +6,24 @@ body {
   background-color: #f9fafb;
   font-family: system-ui, -apple-system, sans-serif;
 
-  /* ЗАПРЕТ ВЫДЕЛЕНИЯ ТЕКСТА НА ВСЕМ САЙТЕ */
-  -webkit-user-select: none;  /* Safari */
-  -moz-user-select: none;     /* Firefox */
-  -ms-user-select: none;      /* IE10+ */
-  user-select: none;          /* Общепринятый стандарт */
+  /* ЗАЩИТА ОТ КОПИРОВАНИЯ (ОСТАВЛЯЕМ) */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-/* Запретим вызов контекстного меню (правой кнопки мыши) на картинках и видео */
+/* ЗАЩИТА КОНТЕНТА (ОСТАВЛЯЕМ) */
 video, img {
-  pointer-events: none; /* Отключает клики мышкой по самому видео-плееру, чтобы нельзя было скачать по правой кнопке */
+  pointer-events: none;
 }
 
-/* Делаем родительский контейнер гибким */
 .page-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Контент занимает всё свободное пространство, толкая футер вниз */
 .main-content {
   flex: 1;
 }
-
