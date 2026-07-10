@@ -6,6 +6,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { FooterComponent } from '../footer/footer.component';
 
+export interface Lesson {
+  id: number;
+  title: string;
+  stepOrder: number;
+  textMaterial: string;
+  videoUrl?: string; // Поле добавляется динамически
+}
+
 @Component({
   selector: 'app-course-view',
   standalone: true,
@@ -50,37 +58,45 @@ export class CourseViewComponent implements OnInit {
   }
 
   loadCourseAndProgress(): void {
-    // 1. Добавляем запрос для получения данных курса (название, описание)
-    this.http.get<any>(`https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects/${this.courseId}`, { headers: this.getAuthHeaders() })
+    const token = localStorage.getItem('token');
+
+    // Делаем один запрос, который возвращает и описание, и список уроков
+    this.http.get<any>(`https://c49w5cwg79ul.share.zrok.io/api/student/courses/subjects/${this.courseId}/lessons`, { headers: this.getAuthHeaders() })
       .subscribe({
         next: (data) => {
-          this.courseData = data; // Теперь тут будет название и описание
+          // 1. Сохраняем описание и название курса
+          this.courseData = {
+            title: data.subjectTitle,
+            description: data.subjectDescription
+          };
+
+          // 2. Обрабатываем список уроков с явной типизацией
+          this.lessons = Array.isArray(data.lessons)
+            ? data.lessons.map((l: Lesson) => ({
+              ...l,
+              videoUrl: `https://c49w5cwg79ul.share.zrok.io/api/student/videos/stream/lesson/${l.id}?token=${token}`
+            })).sort((a: Lesson, b: Lesson) => a.stepOrder - b.stepOrder)
+            : [];
+
+          // 3. Загружаем прогресс
+          this.loadProgress();
+
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => console.error('Ошибка загрузки данных курса:', err)
+      });
+  }
+
+// Вынесли загрузку прогресса в отдельный метод для чистоты кода
+  loadProgress(): void {
+    this.http.get<any>(`https://c49w5cwg79ul.share.zrok.io/api/student/progress/${this.courseId}`, { headers: this.getAuthHeaders() })
+      .subscribe({
+        next: (progress) => {
+          this.maxAvailableStep = progress?.currentStepOrder || 1;
+          this.isCourseFinished = progress?.isCompleted || false;
           this.cdr.detectChanges();
         }
       });
-
-    // 2. Ваш текущий запрос лекций
-    this.courseService.getCourseContent(this.courseId).subscribe({
-      next: (lessonsData: any) => {
-        const token = localStorage.getItem('token');
-        this.lessons = Array.isArray(lessonsData)
-          ? lessonsData.map(l => ({
-            ...l,
-            videoUrl: `https://c49w5cwg79ul.share.zrok.io/api/student/videos/stream/lesson/${l.id}?token=${token}`
-          })).sort((a, b) => a.stepOrder - b.stepOrder)
-          : [];
-
-        // 3. Ваш текущий запрос прогресса
-        this.http.get<any>(`https://c49w5cwg79ul.share.zrok.io/api/student/progress/${this.courseId}`, { headers: this.getAuthHeaders() })
-          .subscribe({
-            next: (progress) => {
-              this.maxAvailableStep = progress?.currentStepOrder || 1;
-              this.isCourseFinished = progress?.isCompleted || false;
-              this.cdr.detectChanges();
-            }
-          });
-      }
-    });
   }
 
   openLesson(lesson: any): void {
