@@ -113,8 +113,28 @@ export class ProfileComponent implements OnInit {
   onVideoFileSelected(event: any): void { if (event.target.files.length > 0) this.selectedVideoFile = event.target.files[0]; }
 
   onCreateNewSubject(): void {
-    this.http.post('https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects', { title: this.courseTitle, description: this.courseDescription }, { headers: this.getAuthHeaders() })
-      .subscribe({ next: () => { this.showToast('Курс создан!'); this.loadStudentCourses(); this.cdr.detectChanges();} });
+    this.http.post('https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects',
+      { title: this.courseTitle, description: this.courseDescription },
+      { headers: this.getAuthHeaders() }
+    ).subscribe({
+      next: () => {
+        // 1. Показываем уведомление
+        this.showToast('Курс успешно создан!');
+
+        // 2. ОЧИЩАЕМ поля, привязанные к [(ngModel)]
+        this.courseTitle = '';
+        this.courseDescription = '';
+
+        // 3. Обновляем список, чтобы новый курс сразу появился в таблице
+        this.loadStudentCourses();
+
+        // 4. Принудительно обновляем UI
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.showToast('Ошибка при создании курса', 'error');
+      }
+    });
   }
 
   onAddLessonToSubject(): void {
@@ -122,16 +142,41 @@ export class ProfileComponent implements OnInit {
     formData.append('title', this.lessonTitle);
     formData.append('textMaterial', this.lessonTextMaterial);
     if (this.selectedVideoFile) formData.append('videoFile', this.selectedVideoFile);
+
     this.http.post(`https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects/${this.selectedSubjectIdForLesson}/lessons-multi`, formData, { headers: this.getAuthHeaders() })
-      .subscribe({ next: () => { this.showToast('Урок добавлен!'); this.lessonTitle = ''; this.lessonTextMaterial = ''; } });
+      .subscribe({
+        next: () => {
+          this.showToast('Урок успешно добавлен!'); // Уведомление
+          // Очистка полей
+          this.lessonTitle = '';
+          this.lessonTextMaterial = '';
+          this.selectedVideoFile = null;
+          this.cdr.detectChanges(); // Обновление UI
+        },
+        error: () => this.showToast('Ошибка при добавлении урока', 'error')
+      });
   }
 
   setQuizCorrectAnswer(index: number): void { this.quizAnswers.forEach((ans, i) => ans.isCorrect = (i === index)); }
 
   onSaveQuizQuestion(): void {
     const payload = { questionText: this.quizQuestionText, answers: this.quizAnswers };
+
     this.http.post(`https://c49w5cwg79ul.share.zrok.io/api/admin/management/subjects/${this.selectedSubjectIdForQuiz}/quiz-questions`, payload, { headers: this.getAuthHeaders() })
-      .subscribe({ next: () => this.showToast('Вопрос добавлен!') });
+      .subscribe({
+        next: () => {
+          this.showToast('Вопрос успешно добавлен!'); // Уведомление
+          // Очистка полей
+          this.quizQuestionText = '';
+          // Сброс ответов к начальному состоянию
+          this.quizAnswers = [
+            { answerText: '', isCorrect: true }, { answerText: '', isCorrect: false },
+            { answerText: '', isCorrect: false }, { answerText: '', isCorrect: false }
+          ];
+          this.cdr.detectChanges(); // Обновление UI
+        },
+        error: () => this.showToast('Ошибка при сохранении вопроса', 'error')
+      });
   }
 
   loadAdvertisements(): void {
