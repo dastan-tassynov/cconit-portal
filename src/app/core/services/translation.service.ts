@@ -148,6 +148,14 @@ export class SimpleTranslateService {
       CONSTRUCTOR_TESTS_DESC: 'Создавайте контрольные вопросы для проверки знаний студентов.',
       CONSTRUCTOR_QUESTION: 'Вопрос',
       CONSTRUCTOR_ANSWERS: 'Варианты ответов',
+      "CONSTRUCTOR_TRANSLATIONS": "Локализация курсов",
+      "CONSTRUCTOR_ADD_TRANSLATION": "Добавление перевода",
+      "CONSTRUCTOR_ADD_TRANSLATION_DESC": "Добавьте перевод названия и описания курса.",
+      "BTN_ADD_TRANSLATION": "Добавить перевод",
+      "BTN_SAVE_TRANSLATION": "Сохранить перевод",
+      "CONSTRUCTOR_LANGUAGE": "Язык",
+      "LANGUAGE_RU": "Русский",
+      "LANGUAGE_KZ": "Қазақша"
     },
     kk: {
       'AUTH_LOGIN_TITLE': 'Қош келдіңіз',
@@ -289,6 +297,14 @@ export class SimpleTranslateService {
       CONSTRUCTOR_QUESTION: 'Сұрақ',
       CONSTRUCTOR_ANSWERS: 'Жауап нұсқалары',
       PH_ANSWER: 'Жауап нұсқасын енгізіңіз',
+      "CONSTRUCTOR_TRANSLATIONS": "Курстарды локализациялау",
+      "CONSTRUCTOR_ADD_TRANSLATION": "Аударма қосу",
+      "CONSTRUCTOR_ADD_TRANSLATION_DESC": "Курс атауы мен сипаттамасының аудармасын енгізіңіз.",
+      "BTN_ADD_TRANSLATION": "Аударма қосу",
+      "BTN_SAVE_TRANSLATION": "Аударманы сақтау",
+      "CONSTRUCTOR_LANGUAGE": "Тіл",
+      "LANGUAGE_RU": "Орысша",
+      "LANGUAGE_KZ": "Қазақша"
     }
   };
 

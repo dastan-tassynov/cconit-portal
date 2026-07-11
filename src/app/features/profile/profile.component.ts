@@ -10,7 +10,20 @@ import {SimpleTranslateService} from '../../core/services/translation.service';
 import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
 
 interface PortalUser { id: number; username: string; fullName: string; roles: string[]; }
-interface SubjectDTO { id: number; title: string; description: string; attemptsCount: number; lastScore: number | null; hasAccess: boolean; createdBy?: string; }
+interface SubjectDTO { id: number;
+  title: string;
+  description: string;
+  attemptsCount: number; lastScore: number | null; hasAccess: boolean; createdBy?: string; }
+
+interface SubjectConstructorDTO {
+  id: number;
+  programCode: string;
+  language: string;
+  title: string;
+  description: string;
+  hasRu: boolean;
+  hasKz: boolean;
+}
 
 @Component({
   selector: 'app-profile',
@@ -37,6 +50,7 @@ export class ProfileComponent implements OnInit {
   private toastTimeout: any;
 
   coursesFromBack: SubjectDTO[] = [];
+  constructorSubjects: SubjectConstructorDTO[] = [];
   usersList: PortalUser[] = [];
   adsList: any[] = [];
   courseTextMaterial: string = '';
@@ -56,6 +70,13 @@ export class ProfileComponent implements OnInit {
   ];
   selectedLessonId: number | null = null;
   selectedVideoFile: File | null = null;
+  translationSubjectId: number | null = null;
+  translationSubject: SubjectConstructorDTO | null = null;
+  translationLanguage = '';
+
+  translationTitle = '';
+
+  translationDescription = '';
 
   adTitle: string = '';
   adDescription: string = '';
@@ -80,6 +101,9 @@ export class ProfileComponent implements OnInit {
 
     // Принудительная загрузка данных при входе
     this.loadStudentCourses();
+    if (this.hasRole(['ROLE_ADMIN','ROLE_SUPERADMIN'])) {
+      this.loadConstructorSubjects();
+    }
 
     // Добавляем проверку ролей перед загрузкой административных данных
     if (this.hasRole(['ROLE_SUPERADMIN'])) {
@@ -153,6 +177,7 @@ export class ProfileComponent implements OnInit {
 
         // 3. Обновляем список, чтобы новый курс сразу появился в таблице
         this.loadStudentCourses();
+        this.loadConstructorSubjects();
 
         // 4. Принудительно обновляем UI
         this.cdr.detectChanges();
@@ -301,6 +326,54 @@ export class ProfileComponent implements OnInit {
           this.showToast("Не удалось изменить роль", "error");
         }
       });
+  }
+  loadConstructorSubjects(): void {
+    this.http.get<SubjectConstructorDTO[]>(
+      'https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects',
+      {
+        headers: this.getAuthHeaders()
+      }
+    ).subscribe({
+      next: data => {
+        this.constructorSubjects = data;
+        this.cdr.detectChanges();
+        },
+      error: err => console.error(err)
+    });
+  }
+  saveTranslation(): void {
+    this.http.post(
+      `https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects/${this.translationSubjectId}/translation`,
+      {
+        language: this.translationLanguage,
+        title: this.translationTitle,
+        description: this.translationDescription
+      }, {
+        headers: this.getAuthHeaders()}
+    ).subscribe({
+      next: () => {
+        this.showToast("Перевод сохранен");
+        this.translationSubjectId = null;
+        this.translationTitle = '';
+        this.translationDescription = '';
+        this.loadConstructorSubjects();},
+      error: () => {
+        this.showToast("Ошибка", "error");
+      }
+    });
+  }
+  openTranslation(course: SubjectConstructorDTO): void {
+    this.translationSubject = course;
+    if (!course.hasRu) {
+      this.translationLanguage = 'RU';
+    } else if (!course.hasKz) {
+      this.translationLanguage = 'KZ';
+    } else {
+      this.showToast('Все переводы уже добавлены');
+      return;
+    }
+    this.translationTitle = '';
+    this.translationDescription = '';
   }
 
   goBack(): void { this.router.navigate(['/dashboard']); }
