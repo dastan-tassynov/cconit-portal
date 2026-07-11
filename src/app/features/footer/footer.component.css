@@ -12,6 +12,30 @@
   max-width: 1200px;
   margin: 0 auto;
 }
+
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  transition: all .25s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px) scale(1.1);
+  opacity: .85;
+}
+
+.social-icon svg {
+  width: 30px;
+  height: 30px;
+}
 .footer-info p { margin: 5px 0; font-size: 13px; }
 .footer-social a { color: white; margin-left: 15px; text-decoration: none; font-weight: bold; }
 

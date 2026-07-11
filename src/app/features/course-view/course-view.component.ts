@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { FooterComponent } from '../footer/footer.component';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import {SimpleTranslateService} from '../../core/services/translation.service';
 
 export interface Lesson {
   id: number;
@@ -17,7 +19,7 @@ export interface Lesson {
 @Component({
   selector: 'app-course-view',
   standalone: true,
-  imports: [CommonModule, FooterComponent],
+  imports: [CommonModule, FooterComponent,TranslatePipe],
   templateUrl: './course-view.component.html',
   styleUrls: ['./course-view.component.css']
 })
@@ -43,7 +45,8 @@ export class CourseViewComponent implements OnInit {
     private router: Router,
     private courseService: CourseService,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public translate: SimpleTranslateService
   ) {}
 
   ngOnInit(): void {

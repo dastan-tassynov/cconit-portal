@@ -5,6 +5,8 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { CourseService, Course } from '../../core/services/course.service';
 import { FooterComponent } from '../footer/footer.component';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import {SimpleTranslateService} from '../../core/services/translation.service';
 
 interface PromoSlide {
   title: string;
@@ -18,7 +20,7 @@ interface PromoSlide {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, FooterComponent],
+  imports: [CommonModule, FormsModule, RouterLink, FooterComponent,TranslatePipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -57,7 +59,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private courseService: CourseService, // Внедряем наш сервис
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public translate: SimpleTranslateService
   ) {}
 
   ngOnInit(): void {

@@ -1,27 +1,43 @@
 <div class="course-page-container">
 
+  <!-- Переключатель языков -->
+  <div class="lang-switcher">
+    <button
+      (click)="translate.use('ru')"
+      [class.active]="translate.getCurrentLang() === 'ru'">
+      RU
+    </button>
+
+    <button
+      (click)="translate.use('kk')"
+      [class.active]="translate.getCurrentLang() === 'kk'">
+      KZ
+    </button>
+  </div>
+
   <!-- ШАБЛОН 1: СТАТУС-ЭКРАН КУРСА (СОДЕРЖАНИЕ И МОДУЛИ) -->
   @if (viewMode === 'syllabus') {
     <header class="course-header">
-      <button class="btn-back" (click)="goBack()">← Вернуться на панель</button>
-      <h1 class="course-page-title">План обучения по курсу</h1>
+      <button class="btn-back" (click)="goBack()">← {{ 'COURSE_BACK_PANEL' | translate }}</button>
+      <h1 class="course-page-title">{{ 'COURSE_PLAN_TITLE' | translate }}</h1>
     </header>
 
     <div class="syllabus-container">
       <div class="syllabus-card-info">
         <p class="syllabus-desc">
-          Для получения допуска к итоговому тестированию и генерации сертификата, вам необходимо последовательно изучить все лекционные материалы и видеоуроки.
+          {{ 'COURSE_PLAN_DESC' | translate }}
         </p>
       </div>
 
       <div class="course-description-box" style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #4f46e5;">
-        <h4 style="margin-top: 0; color: #1e293b;">О курсе:</h4>
+        <h4 style="margin-top: 0; color: #1e293b;">{{ 'COURSE_ABOUT' | translate }}</h4>
         <p style="color: #475569; font-size: 15px; line-height: 1.6;">
           {{ courseData?.description }}
         </p>
       </div>
 
-      <h3 class="modules-title">📚 Список учебных модулей:</h3>
+      <h3 class="modules-title">📚 {{ 'COURSE_MODULES' | translate }}</h3>
+
       <div class="lessons-steps-list">
         @for (lesson of lessons; track lesson.id; let idx = $index) {
           <div class="step-item"
@@ -35,11 +51,18 @@
             </div>
 
             <div class="step-details">
-              <h4 class="step-title">{{ lesson.title || 'Модуль без названия' }}</h4>
+              <h4 class="step-title">{{ lesson.title || ('COURSE_EMPTY_MODULE' | translate) }}</h4>
+
               <p class="step-status-text">
-                @if (lesson.stepOrder < maxAvailableStep) { Материал усвоен }
-                @else if (lesson.stepOrder === maxAvailableStep) { Доступно к изучению (Текущий шаг) }
-                @else { Блок закрыт (Пройдите предыдущие темы) }
+                @if (lesson.stepOrder < maxAvailableStep) {
+                  {{ 'COURSE_STATUS_DONE' | translate }}
+                }
+                @else if (lesson.stepOrder === maxAvailableStep) {
+                  {{ 'COURSE_STATUS_AVAILABLE' | translate }}
+                }
+                @else {
+                  {{ 'COURSE_STATUS_LOCKED' | translate }}
+                }
               </p>
             </div>
 
@@ -50,7 +73,6 @@
         }
       </div>
 
-      <!-- Кнопка быстрого перехода к тесту, если все шаги уже пройдены -->
       @if (lessons.length > 0 && maxAvailableStep > lessons[lessons.length - 1].stepOrder) {
         <div class="final-action-zone">
           <button
@@ -60,9 +82,9 @@
             (click)="nextStep()"
           >
             @if (isCourseFinished) {
-              🔒 Курс успешно завершен и сдан!
+              🔒 {{ 'COURSE_FINISHED' | translate }}
             } @else {
-              🎯 Все модули изучены! Начать тестирование →
+              🎯 {{ 'COURSE_START_TEST' | translate }}
             }
           </button>
         </div>
@@ -73,8 +95,10 @@
   <!-- ШАБЛОН 2: ЭКРАН ИЗУЧЕНИЯ КОНКРЕТНОГО УРОКА -->
   @if (viewMode === 'lesson' && currentLesson) {
     <header class="course-header">
-      <button class="btn-back" (click)="showSyllabus()">← К списку модулей</button>
-      <span class="step-counter-top">Шаг {{ currentLesson.stepOrder }} из {{ lessons.length }}</span>
+      <button class="btn-back" (click)="showSyllabus()">← {{ 'COURSE_BACK_MODULES' | translate }}</button>
+      <span class="step-counter-top">
+        {{ 'COURSE_STEP' | translate }} {{ currentLesson.stepOrder }} {{ 'COURSE_OF' | translate }} {{ lessons.length }}
+      </span>
     </header>
 
     <h1 class="lesson-active-title" style="margin: 15px 0; font-size: 22px; color: #1e293b; font-weight: 700;">
@@ -85,7 +109,8 @@
 
       @if (currentLesson.videoUrl) {
         <div class="video-section">
-          <h3 class="section-subtitle">📺 Видеолекция к материалу</h3>
+          <h3 class="section-subtitle">📺 {{ 'COURSE_VIDEO' | translate }}</h3>
+
           <div class="video-wrapper">
             <video
               controls
@@ -93,27 +118,32 @@
               class="lesson-video"
               preload="metadata"
               (error)="onVideoError($event)">
-              Ваш браузер не поддерживает видео.
+              {{ 'COURSE_VIDEO_NOT_SUPPORTED' | translate }}
             </video>
           </div>
         </div>
       }
 
       <div class="text-section">
-        <h3 class="section-subtitle">📖 Теоретический материал шага</h3>
+        <h3 class="section-subtitle">📖 {{ 'COURSE_THEORY' | translate }}</h3>
+
         <div class="text-card">
-          <p class="lesson-text" style="white-space: pre-wrap;">{{ currentLesson.textMaterial || 'Текст лекции отсутствует.' }}</p>
+          <p class="lesson-text" style="white-space: pre-wrap;">
+            {{ currentLesson.textMaterial || ('COURSE_NO_TEXT' | translate) }}
+          </p>
         </div>
       </div>
 
       <footer class="course-action-footer">
-        <p class="action-hint">Внимательно изучили информацию? Подтвердите прочтение для перехода.</p>
+        <p class="action-hint">
+          {{ 'COURSE_CONFIRM_READ' | translate }}
+        </p>
 
         <button class="btn-finish" (click)="nextStep()" style="background: #10b981;">
           @if (currentStepOrder < lessons[lessons.length - 1].stepOrder) {
-            Завершить модуль и перейти к следующему Шагу →
+            {{ 'COURSE_NEXT_MODULE' | translate }}
           } @else {
-            Финализировать курс и открыть тест →
+            {{ 'COURSE_FINISH_AND_TEST' | translate }}
           }
         </button>
       </footer>
@@ -126,14 +156,18 @@
       <div class="modal-card">
         <div class="modal-header">
           <div class="modal-icon">🔒</div>
-          <h2>Доступ ограничен</h2>
+          <h2>{{ 'COURSE_BLOCKED_TITLE' | translate }}</h2>
         </div>
+
         <div class="modal-body">
-          <p>Вы уже успешно сдали итоговое тестирование по этому курсу!</p>
-          <p class="sub-text">Официальный сертификат сформирован и отправлен в систему реестра. Повторное прохождение контрольного теста заблокировано.</p>
+          <p>{{ 'COURSE_BLOCKED_TEXT1' | translate }}</p>
+          <p class="sub-text">{{ 'COURSE_BLOCKED_TEXT2' | translate }}</p>
         </div>
+
         <div class="modal-footer">
-          <button class="modal-btn-primary" (click)="closeBlockedModal()">Понятно</button>
+          <button class="modal-btn-primary" (click)="closeBlockedModal()">
+            {{ 'BTN_OK' | translate }}
+          </button>
         </div>
       </div>
     </div>
@@ -144,17 +178,21 @@
     <div class="course-modal-card">
       <div class="course-modal-icon">🎉</div>
 
-      <h2 class="course-modal-title">Поздравляем!</h2>
+      <h2 class="course-modal-title">
+        {{ 'COURSE_CONGRATS' | translate }}
+      </h2>
+
       <p class="course-modal-text">
-        Все учебные модули успешно пройдены. Вы полностью завершили курс! Хотите пройти итоговое тестирование прямо сейчас или вернуться на главную?
+        {{ 'COURSE_COMPLETE_TEXT' | translate }}
       </p>
 
       <div class="course-modal-actions">
         <button class="btn-modal-secondary" (click)="goToDashboard()">
-          🏠 В дашборд
+          🏠 {{ 'BTN_DASHBOARD' | translate }}
         </button>
+
         <button class="btn-modal-primary" (click)="goToQuiz()">
-          📝 Пройти итоговый тест →
+          📝 {{ 'COURSE_GO_TEST' | translate }}
         </button>
       </div>
     </div>
