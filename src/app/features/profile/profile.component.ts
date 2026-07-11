@@ -48,6 +48,7 @@ export class ProfileComponent implements OnInit {
   lessonTextMaterial: string = '';
   selectedSubjectIdForQuiz: number | null = null;
   quizQuestionText: string = '';
+  courseCode: string = '';
   quizAnswers: any[] = [
     { answerText: '', isCorrect: true }, { answerText: '', isCorrect: false },
     { answerText: '', isCorrect: false }, { answerText: '', isCorrect: false }
@@ -132,7 +133,7 @@ export class ProfileComponent implements OnInit {
 
   onCreateNewSubject(): void {
     this.http.post('https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects',
-      { title: this.courseTitle, description: this.courseDescription },
+      { code:this.courseCode,title: this.courseTitle, description: this.courseDescription },
       { headers: this.getAuthHeaders() }
     ).subscribe({
       next: () => {
@@ -140,6 +141,7 @@ export class ProfileComponent implements OnInit {
         this.showToast('Курс успешно создан!');
 
         // 2. ОЧИЩАЕМ поля, привязанные к [(ngModel)]
+        this.courseCode = '';
         this.courseTitle = '';
         this.courseDescription = '';
 

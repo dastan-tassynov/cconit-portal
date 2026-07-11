@@ -5,6 +5,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import {SimpleTranslateService} from '../../core/services/translation.service';
 import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
+import { Subscription } from 'rxjs';
+import { OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-quiz',
@@ -13,13 +15,15 @@ import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.css'
 })
-export class QuizComponent implements OnInit {
+export class QuizComponent implements OnInit, OnDestroy  {
   questions: any[] = [];
   currentQuestionIndex: number = 0;
   selectedOptionId: number | null = null;
   studentAnswers: { [key: number]: number } = {};
   quizCompleted: boolean = false;
   courseId!: number;
+  language: string = 'ru';
+  private langSubscription!: Subscription;
   quizResult: any = null;
 
   private baseUrl = 'https://c49w5cwg79ul.share.zrok.io/api/student/quiz';
@@ -40,9 +44,24 @@ export class QuizComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.langSubscription =
+      this.translate.languageChanged.subscribe(lang => {
+        this.language = lang;
+        if(this.courseId){
+          this.loadQuizQuestions();
+        }
+      });
     this.route.queryParams.subscribe(params => {
-      this.courseId = params['courseId'] ? Number(params['courseId']) : 1;
+      this.courseId = params['courseId']
+        ? Number(params['courseId'])
+        : 1;
+
+      this.language = params['lang']
+        ? params['lang']
+        : this.translate.getCurrentLang();
+
       this.checkCourseStatusAndLoad();
+
     });
   }
 
@@ -63,7 +82,10 @@ export class QuizComponent implements OnInit {
   }
 
   loadQuizQuestions(): void {
-    this.http.get<any[]>(`${this.baseUrl}/generate/${this.courseId}`, { headers: this.getAuthHeaders() }).subscribe({
+    this.http.get<any[]>(
+      `${this.baseUrl}/generate/${this.courseId}?language=${this.language}`,
+      { headers: this.getAuthHeaders() }
+    ).subscribe({
       next: (data) => {
         this.questions = data;
         this.restartQuiz();
@@ -148,5 +170,13 @@ export class QuizComponent implements OnInit {
 
   goToDashboard(): void {
     this.router.navigate(['/dashboard']);
+  }
+
+  ngOnDestroy(): void {
+
+    if(this.langSubscription){
+      this.langSubscription.unsubscribe();
+    }
+
   }
 }

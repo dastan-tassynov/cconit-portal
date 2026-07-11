@@ -2,11 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface QuizAnswer {
+  id: number;
+  answerText: string;
+}
+
+
 export interface Question {
   id: number;
-  text: string;
-  options: string[];
-  correctAnswerIndex: number;
+  questionText: string;
+  subjectId: number;
+  answers: QuizAnswer[];
 }
 
 @Injectable({
@@ -18,7 +24,14 @@ export class QuizService {
   constructor(private http: HttpClient) {}
 
   // Получить вопросы по ID курса
-  getQuestionsByCourse(courseId: number): Observable<Question[]> {
-    return this.http.get<Question[]>(`${this.apiUrl}/${courseId}`);
+  getQuestionsByCourse(
+    courseId: number,
+    language: string = 'ru'
+  ): Observable<Question[]> {
+
+    return this.http.get<Question[]>(
+      `${this.apiUrl}/generate/${courseId}?language=${language}`
+    );
+
   }
 }

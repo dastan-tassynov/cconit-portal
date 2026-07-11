@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SimpleTranslateService {
   private currentLang = 'ru';
+  private languageSubject = new BehaviorSubject<string>('ru');
+  languageChanged = this.languageSubject.asObservable();
   private translations: any = {
     // Внутри объекта translations в вашем сервисе
     ru: {
@@ -80,22 +83,18 @@ export class SimpleTranslateService {
       'FOOTER_COMPANY': 'Товарищество с ограниченной ответственностью "Центр образования и новых инновационных технологий"',
       'FOOTER_BIN': 'БИН 110440021267',
       'FOOTER_ADDRESS': '050064, Республика Казахстан, город Алматы, улица Карашаш, 52',
-      'FOOTER_CONTACTS': 'Контакты: +7 (707) 7 131 131',
+      'FOOTER_CONTACTS': 'Контакты: +7 (707) 389 28 33',
       'FOOTER_AWARDS': '[Логотипы наград]',
       'SEARCH_PLACEHOLDER':'Поиск по названию...',
       'NAV_HOME':'Главная',
       'NAV_PROFILE':'Личный кабинет',
-
       'SIDEBAR_ALL_COURSES':'Все курсы',
-
       'FILTER_DURATION':'Длительность',
       'FILTER_LANGUAGE':'Язык обучения',
       'FILTER_ANY':'Любая',
       'FILTER_ALL':'Все разделы',
-
       'TAB_ALL':'Все курсы',
       'TAB_MY':'Мои курсы',
-
       'MSG_NO_MY_COURSES':'У вас пока нет купленных или начатых курсов.',
       'MSG_NOT_FOUND':'Ничего не найдено по вашему запросу',
       'COURSE_BACK_PANEL':'Вернуться на панель',
@@ -104,39 +103,51 @@ export class SimpleTranslateService {
       'COURSE_ABOUT':'О курсе:',
       'COURSE_MODULES':'Список учебных модулей:',
       'COURSE_EMPTY_MODULE':'Модуль без названия',
-
       'COURSE_STATUS_DONE':'Материал усвоен',
       'COURSE_STATUS_AVAILABLE':'Доступно к изучению (Текущий шаг)',
       'COURSE_STATUS_LOCKED':'Блок закрыт (Пройдите предыдущие темы)',
-
       'COURSE_FINISHED':'Курс успешно завершен и сдан!',
       'COURSE_START_TEST':'Все модули изучены! Начать тестирование →',
-
       'COURSE_BACK_MODULES':'К списку модулей',
-
       'COURSE_STEP':'Шаг',
       'COURSE_OF':'из',
-
       'COURSE_VIDEO':'Видеолекция к материалу',
       'COURSE_VIDEO_NOT_SUPPORTED':'Ваш браузер не поддерживает видео.',
-
       'COURSE_THEORY':'Теоретический материал шага',
       'COURSE_NO_TEXT':'Текст лекции отсутствует.',
-
       'COURSE_CONFIRM_READ':'Внимательно изучили информацию? Подтвердите прочтение для перехода.',
-
       'COURSE_NEXT_MODULE':'Завершить модуль и перейти к следующему шагу →',
       'COURSE_FINISH_AND_TEST':'Финализировать курс и открыть тест →',
-
       'COURSE_BLOCKED_TITLE':'Доступ ограничен',
       'COURSE_BLOCKED_TEXT1':'Вы уже успешно сдали итоговое тестирование по этому курсу!',
       'COURSE_BLOCKED_TEXT2':'Официальный сертификат сформирован и отправлен в систему реестра. Повторное прохождение контрольного теста заблокировано.',
-
       'BTN_OK':'Понятно',
-
       'COURSE_CONGRATS':'Поздравляем!',
       'COURSE_COMPLETE_TEXT':'Все учебные модули успешно пройдены. Вы полностью завершили курс! Хотите пройти итоговое тестирование прямо сейчас или вернуться на главную?',
       'COURSE_GO_TEST':'Пройти итоговый тест →',
+      CONSTRUCTOR_CREATE_COURSE: 'Создание курса',
+      CONSTRUCTOR_CREATE_COURSE_DESC: 'Создайте новый курс, указав код, название и описание.',
+      CONSTRUCTOR_COURSE_CODE: 'Код курса',
+      CONSTRUCTOR_COURSE_TITLE: 'Название курса',
+      CONSTRUCTOR_COURSE_DESCRIPTION: 'Описание курса',
+      PH_COURSE_CODE: 'Введите код курса',
+      PH_COURSE_TITLE: 'Введите название курса',
+      PH_COURSE_DESCRIPTION: 'Введите описание курса',
+      BTN_CREATE_COURSE: 'Создать курс',
+      CONSTRUCTOR_MODULES: 'Конструктор модулей',
+      CONSTRUCTOR_MODULES_DESC: 'Добавьте учебные модули, материалы и видео к выбранному курсу.',
+      CONSTRUCTOR_SELECT_COURSE: 'Выберите курс',
+      PH_SELECT_COURSE: 'Выберите курс из списка',
+      CONSTRUCTOR_MODULE_TITLE: 'Название модуля',
+      PH_MODULE_TITLE: 'Введите название модуля',
+      CONSTRUCTOR_MODULE_CONTENT: 'Учебный материал',
+      PH_MODULE_CONTENT: 'Введите текстовый материал урока',
+      CONSTRUCTOR_VIDEO: 'Видео материал',
+      BTN_ADD_MODULE: 'Добавить модуль',
+      CONSTRUCTOR_TESTS: 'Конструктор тестов',
+      CONSTRUCTOR_TESTS_DESC: 'Создавайте контрольные вопросы для проверки знаний студентов.',
+      CONSTRUCTOR_QUESTION: 'Вопрос',
+      CONSTRUCTOR_ANSWERS: 'Варианты ответов',
     },
     kk: {
       'AUTH_LOGIN_TITLE': 'Қош келдіңіз',
@@ -191,7 +202,6 @@ export class SimpleTranslateService {
       'TITLE_ROLES': 'Пайдаланушылар тізімі', 'TH_NAME': 'Аты-жөні', 'TH_ROLE': 'Рөлі', 'BTN_TOGGLE_ADMIN': 'Құқықтарды өзгерту',
       'QUIZ_PANEL_DESC': 'Төмендегі тізімнен пәнді таңдап, бақылау сұрақтарын енгізіңіз.',
       'LABEL_ANSWERS': 'Жауап нұсқалары (дұрысын белгілеңіз)',
-      'PH_ANSWER': 'Жауап нұсқасының мәтінін енгізіңіз...',
       'TITLE_ADS_PANEL':'Жарнаманы басқару панелі',
       'LABEL_BANNER_IMAGE':'Баннер суреті',
       'TITLE_REGISTERED_ADS':'Тіркелген баннерлер',
@@ -216,20 +226,15 @@ export class SimpleTranslateService {
       'FOOTER_CONTACTS': 'Байланыс: +7 (707) 389 28 33',
       'FOOTER_AWARDS': '[Марапат логотиптері]',
       'SEARCH_PLACEHOLDER':'Атауы бойынша іздеу...',
-
       'NAV_HOME':'Басты бет',
       'NAV_PROFILE':'Жеке кабинет',
-
       'SIDEBAR_ALL_COURSES':'Барлық курстар',
-
       'FILTER_DURATION':'Ұзақтығы',
       'FILTER_LANGUAGE':'Оқу тілі',
       'FILTER_ANY':'Кез келген',
       'FILTER_ALL':'Барлық бөлімдер',
-
       'TAB_ALL':'Барлық курстар',
       'TAB_MY':'Менің курстарым',
-
       'MSG_NO_MY_COURSES':'Сізде әзірге сатып алынған немесе басталған курстар жоқ.',
       'MSG_NOT_FOUND':'Сұранысыңыз бойынша ештеңе табылмады',
       'COURSE_BACK_PANEL':'Панельге оралу',
@@ -238,45 +243,64 @@ export class SimpleTranslateService {
       'COURSE_ABOUT':'Курс туралы:',
       'COURSE_MODULES':'Оқу модульдерінің тізімі:',
       'COURSE_EMPTY_MODULE':'Атауы жоқ модуль',
-
       'COURSE_STATUS_DONE':'Материал меңгерілді',
       'COURSE_STATUS_AVAILABLE':'Оқуға қолжетімді (Ағымдағы қадам)',
       'COURSE_STATUS_LOCKED':'Блок жабық (Алдыңғы тақырыптарды аяқтаңыз)',
-
       'COURSE_FINISHED':'Курс сәтті аяқталды!',
       'COURSE_START_TEST':'Барлық модульдер аяқталды! Тестілеуді бастау →',
-
       'COURSE_BACK_MODULES':'Модульдер тізіміне оралу',
-
       'COURSE_STEP':'Қадам',
       'COURSE_OF':'/',
-
       'COURSE_VIDEO':'Материал бойынша бейнедәріс',
       'COURSE_VIDEO_NOT_SUPPORTED':'Сіздің браузеріңіз бейнені қолдамайды.',
-
       'COURSE_THEORY':'Теориялық материал',
       'COURSE_NO_TEXT':'Дәріс мәтіні жоқ.',
-
       'COURSE_CONFIRM_READ':'Материалды мұқият оқыдыңыз ба? Жалғастыру үшін растаңыз.',
-
       'COURSE_NEXT_MODULE':'Модульді аяқтап, келесі қадамға өту →',
       'COURSE_FINISH_AND_TEST':'Курсты аяқтап, тестті ашу →',
-
       'COURSE_BLOCKED_TITLE':'Қолжетімділік шектелген',
       'COURSE_BLOCKED_TEXT1':'Сіз осы курс бойынша қорытынды тестті сәтті тапсырдыңыз!',
       'COURSE_BLOCKED_TEXT2':'Ресми сертификат жасалып, тіркеу жүйесіне жіберілді. Тестті қайта тапсыруға болмайды.',
-
       'BTN_OK':'Түсінікті',
-
       'COURSE_CONGRATS':'Құттықтаймыз!',
       'COURSE_COMPLETE_TEXT':'Барлық оқу модульдері сәтті аяқталды. Курс толық аяқталды! Қорытынды тестті дәл қазір тапсырасыз ба, әлде басты бетке ораласыз ба?',
       'COURSE_GO_TEST':'Қорытынды тестті тапсыру →',
+      CONSTRUCTOR_CREATE_COURSE: 'Курс құру',
+      CONSTRUCTOR_CREATE_COURSE_DESC: 'Курс кодын, атауын және сипаттамасын енгізіп жаңа курс жасаңыз.',
+      CONSTRUCTOR_COURSE_CODE: 'Курс коды',
+      CONSTRUCTOR_COURSE_TITLE: 'Курс атауы',
+      CONSTRUCTOR_COURSE_DESCRIPTION: 'Курс сипаттамасы',
+      PH_COURSE_CODE: 'Курс кодын енгізіңіз',
+      PH_COURSE_TITLE: 'Курс атауын енгізіңіз',
+      PH_COURSE_DESCRIPTION: 'Курс сипаттамасын енгізіңіз',
+      BTN_CREATE_COURSE: 'Курс құру',
+      CONSTRUCTOR_MODULES: 'Модульдер конструкторы',
+      CONSTRUCTOR_MODULES_DESC: 'Таңдалған курсқа оқу модульдерін, материалдарды және бейнелерді қосыңыз.',
+      CONSTRUCTOR_SELECT_COURSE: 'Курсты таңдаңыз',
+      PH_SELECT_COURSE: 'Тізімнен курсты таңдаңыз',
+      CONSTRUCTOR_MODULE_TITLE: 'Модуль атауы',
+      PH_MODULE_TITLE: 'Модуль атауын енгізіңіз',
+      CONSTRUCTOR_MODULE_CONTENT: 'Оқу материалы',
+      PH_MODULE_CONTENT: 'Сабақ материалын енгізіңіз',
+      CONSTRUCTOR_VIDEO: 'Бейне материал',
+      BTN_ADD_MODULE: 'Модуль қосу',
+      CONSTRUCTOR_TESTS: 'Тест конструкторы',
+      CONSTRUCTOR_TESTS_DESC: 'Студенттердің білімін тексеру үшін бақылау сұрақтарын жасаңыз.',
+      CONSTRUCTOR_QUESTION: 'Сұрақ',
+      CONSTRUCTOR_ANSWERS: 'Жауап нұсқалары',
+      PH_ANSWER: 'Жауап нұсқасын енгізіңіз',
     }
   };
 
   public getCurrentLang(): string {
     return this.currentLang; // или как у вас называется переменная языка
   }
-  use(lang: string) { this.currentLang = lang; }
+  use(lang: string) {
+
+    this.currentLang = lang;
+
+    this.languageSubject.next(lang);
+
+  }
   instant(key: string): string { return this.translations[this.currentLang][key] || key; }
 }

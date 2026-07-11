@@ -61,34 +61,82 @@ export class CourseViewComponent implements OnInit {
     return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
   }
 
+  // loadCourseAndProgress(): void {
+  //   const token = localStorage.getItem('token');
+  //
+  //   // Делаем один запрос, который возвращает и описание, и список уроков
+  //   this.http.get<any>(`https://c49w5cwg79ul.share.zrok.io/api/student/courses/subjects/${this.courseId}/lessons`, { headers: this.getAuthHeaders() })
+  //     .subscribe({
+  //       next: (data) => {
+  //         // 1. Сохраняем описание и название курса
+  //         this.courseData = {
+  //           title: data.subjectTitle,
+  //           description: data.subjectDescription
+  //         };
+  //
+  //         // 2. Обрабатываем список уроков с явной типизацией
+  //         this.lessons = Array.isArray(data.lessons)
+  //           ? data.lessons.map((l: Lesson) => ({
+  //             ...l,
+  //             videoUrl: `https://c49w5cwg79ul.share.zrok.io/api/student/videos/stream/lesson/${l.id}?token=${token}`
+  //           })).sort((a: Lesson, b: Lesson) => a.stepOrder - b.stepOrder)
+  //           : [];
+  //
+  //         // 3. Загружаем прогресс
+  //         this.loadProgress();
+  //
+  //         this.cdr.detectChanges();
+  //       },
+  //       error: (err: any) => console.error('Ошибка загрузки данных курса:', err)
+  //     });
+  // }
+
   loadCourseAndProgress(): void {
+
     const token = localStorage.getItem('token');
 
-    // Делаем один запрос, который возвращает и описание, и список уроков
-    this.http.get<any>(`https://c49w5cwg79ul.share.zrok.io/api/student/courses/subjects/${this.courseId}/lessons`, { headers: this.getAuthHeaders() })
+    const lang = this.translate.getCurrentLang();
+
+
+    this.http.get<any>(
+      `https://c49w5cwg79ul.share.zrok.io/api/student/courses/subjects/${this.courseId}/lessons?lang=${lang}`,
+      { headers: this.getAuthHeaders() }
+    )
       .subscribe({
+
         next: (data) => {
-          // 1. Сохраняем описание и название курса
+
           this.courseData = {
             title: data.subjectTitle,
             description: data.subjectDescription
           };
 
-          // 2. Обрабатываем список уроков с явной типизацией
+
           this.lessons = Array.isArray(data.lessons)
             ? data.lessons.map((l: Lesson) => ({
               ...l,
-              videoUrl: `https://c49w5cwg79ul.share.zrok.io/api/student/videos/stream/lesson/${l.id}?token=${token}`
-            })).sort((a: Lesson, b: Lesson) => a.stepOrder - b.stepOrder)
+              videoUrl:
+                `https://c49w5cwg79ul.share.zrok.io/api/student/videos/stream/lesson/${l.id}?token=${token}`
+            }))
+              .sort((a: Lesson,b: Lesson)=>a.stepOrder-b.stepOrder)
             : [];
 
-          // 3. Загружаем прогресс
+
           this.loadProgress();
 
           this.cdr.detectChanges();
+
         },
-        error: (err: any) => console.error('Ошибка загрузки данных курса:', err)
+
+        error:(err)=>{
+          console.error(
+            'Ошибка загрузки данных курса:',
+            err
+          );
+        }
+
       });
+
   }
 
 // Вынесли загрузку прогресса в отдельный метод для чистоты кода
@@ -170,7 +218,12 @@ export class CourseViewComponent implements OnInit {
   goToQuiz(): void {
     this.isCompletionModalOpen = false;
     // Используем правильный роут и query-параметры, как в вашей изначальной логике
-    this.router.navigate(['/quiz'], { queryParams: { courseId: this.courseId } });
+    this.router.navigate(['/quiz'], {
+      queryParams: {
+        courseId: this.courseId,
+        lang: this.translate.getCurrentLang()
+      }
+    });
   }
 
   onVideoError(event: any): void {

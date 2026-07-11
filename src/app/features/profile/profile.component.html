@@ -225,201 +225,212 @@
         </div>
       </div>
 
-      <div *ngIf="activeTab === 'constructor' && hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])" class="tab-window">
-
-        <div class="constructor-box" style="margin-bottom: 25px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px dashed #cbd5e1;">
-          <h4 style="margin-top:0; font-size:15px; color:#1e293b; font-weight:600;">
-            {{ 'CONS_STEP1' | translate }}
-          </h4>
-
-          <div class="form-group" style="margin-bottom: 10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">
-              {{ 'LABEL_COURSE_NAME' | translate }}
+      <!-- ====================== COURSE CONSTRUCTOR ===================== -->
+      <div *ngIf="activeTab === 'constructor' && hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])"
+           class="tab-window">
+        <h3 class="section-title">
+          🛠 {{ 'MENU_CONSTRUCTOR' | translate }}
+        </h3>
+        <!-- ================= CREATE COURSE ================= -->
+        <div class="constructor-section">
+          <div class="constructor-section-header">
+            <h4>
+              1️⃣ {{ 'CONSTRUCTOR_CREATE_COURSE' | translate }}
+            </h4>
+            <p>
+              {{ 'CONSTRUCTOR_CREATE_COURSE_DESC' | translate }}
+            </p>
+          </div>
+          <div class="form-group">
+            <label>
+              {{ 'CONSTRUCTOR_COURSE_CODE' | translate }}
+            </label>
+            <input
+              type="text"
+              [(ngModel)]="courseCode"
+              [placeholder]="'PH_COURSE_CODE' | translate">
+          </div>
+          <div class="form-group">
+            <label>
+              {{ 'CONSTRUCTOR_COURSE_TITLE' | translate }}
             </label>
             <input
               type="text"
               [(ngModel)]="courseTitle"
-              [placeholder]="'PH_NAME' | translate">
+              [placeholder]="'PH_COURSE_TITLE' | translate">
           </div>
-
-          <div class="form-group" style="margin-bottom: 10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">
-              {{ 'LABEL_DESC' | translate }}
-            </label>
-            <textarea
-              [(ngModel)]="courseDescription"
-              [placeholder]="'PH_DESC' | translate"
-              class="form-textarea"
-              style="height:45px; resize:vertical;"></textarea>
-          </div>
-
-          <button
-            (click)="onCreateNewSubject()"
-            class="btn-primary"
-            style="background:#4f46e5; padding: 8px 16px; font-size:12px;">
-            ➕ {{ 'BTN_REGISTER_COURSE' | translate }}
-          </button>
-        </div>
-
-        <div class="constructor-box" style="margin-bottom: 30px; background: white; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
-
-          <h4 style="margin-top:0; font-size:15px; color:#1e293b; font-weight:600;">
-            {{ 'CONS_STEP2' | translate }}
-          </h4>
-
-          <div class="form-group" style="margin-bottom: 10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">
-              {{ 'LABEL_CHOOSE_COURSE' | translate }}
-            </label>
-
-            <select
-              [(ngModel)]="selectedSubjectIdForLesson"
-              style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; font-size: 13px;">
-
-              <option [ngValue]="null" disabled selected>
-                {{ 'PH_CHOOSE' | translate }}
-              </option>
-
-              <option *ngFor="let s of coursesFromBack" [ngValue]="s.id">
-                ID: {{ s.id }} | {{ s.title }}
-              </option>
-
-            </select>
-          </div>
-
-          <div class="form-group" style="margin-bottom: 10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">
-              {{ 'LABEL_LESSON_TITLE' | translate }}
-            </label>
-
-            <input
-              type="text"
-              [(ngModel)]="lessonTitle"
-              [placeholder]="'PH_LESSON' | translate">
-          </div>
-
-          <div class="form-group" style="margin-bottom: 10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">
-              📖 {{ 'LABEL_THEORY' | translate }}
-            </label>
-
-            <textarea
-              [(ngModel)]="lessonTextMaterial"
-              [placeholder]="'PH_THEORY' | translate"
-              class="form-textarea large"
-              style="height:120px;"></textarea>
-          </div>
-
-          <div class="file-upload-dashed" style="padding:10px; margin-bottom:10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">
-              🎬 {{ 'LABEL_VIDEO' | translate }}
-            </label>
-
-            <input
-              id="profileVideoInput"
-              type="file"
-              (change)="onVideoFileSelected($event)"
-              accept="video/mp4"
-              style="width:100%; font-size:12px;">
-          </div>
-
-          <button
-            (click)="onAddLessonToSubject()"
-            class="btn-primary"
-            style="background:#10b981; padding:10px 20px; font-size:13px;">
-
-            🚀 {{ 'BTN_SAVE_LESSON' | translate }}
-
-          </button>
-
-        </div>
-
-        <hr style="border:0; border-top:2px dashed #cbd5e1; margin:30px 0;">
-
-        <div class="quiz-dynamic-panel"
-             style="background:#f8fafc; padding:20px; border-radius:8px; border:1px solid #e2e8f0;">
-
-          <h4 class="quiz-panel-title"
-              style="color:#1e293b; margin-top:0; font-size:16px; font-weight:600;">
-
-            📋 {{ 'TITLE_QUIZ' | translate }}
-
-          </h4>
-
-          <p class="quiz-panel-desc"
-             style="color:#64748b; font-size:13px; margin-bottom:20px;">
-
-            {{ 'QUIZ_PANEL_DESC' | translate }}
-
-          </p>
-
-          <div class="form-group" style="margin-bottom:15px;">
-
-            <label style="display:block; font-weight:600; margin-bottom:6px; color:#475569; font-size:12px;">
-              {{ 'LABEL_TARGET_COURSE' | translate }}
-            </label>
-
-            <select
-              [(ngModel)]="selectedSubjectIdForQuiz"
-              style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; background:white; font-size:14px; font-weight:500; color:#1e293b;">
-
-              <option [ngValue]="null" disabled selected>
-
-                {{ 'PH_CHOOSE' | translate }}
-
-              </option>
-
-              <option *ngFor="let s of coursesFromBack" [ngValue]="s.id">
-                ID: {{ s.id }} | {{ s.title }}
-              </option>
-
-            </select>
-
-          </div>
-
-          <div class="form-group" style="margin-bottom:15px;">
-
-            <label style="display:block; font-weight:600; margin-bottom:6px; color:#475569; font-size:12px;">
-              {{ 'LABEL_QUESTION' | translate }}
-            </label>
-
-            <textarea
-              [(ngModel)]="quizQuestionText"
-              [placeholder]="'PH_QUESTION' | translate"
-              style="height:70px; resize:vertical; width:100%; border:1px solid #cbd5e1; border-radius:6px; padding:8px; font-size:14px;"></textarea>
-
-          </div>
-
           <div class="form-group">
-            <label style="display:block; font-weight:600; margin-bottom:8px; color:#475569; font-size:12px;">
-
-              {{ 'LABEL_ANSWERS' | translate }}
+            <label>
+              {{ 'CONSTRUCTOR_COURSE_DESCRIPTION' | translate }}
             </label>
-            <div class="quiz-answers-stack">
-              <div *ngFor="let ans of quizAnswers; let idx=index"
-                   style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
-                <input
-                  type="radio"
-                  name="correctAnswerRadioGroup"
-                  [checked]="ans.isCorrect"
-                  (change)="setQuizCorrectAnswer(idx)"
-                  style="transform:scale(1.2); cursor:pointer;">
-                <span
-                  style="font-weight:bold; color:#64748b; width:15px; text-align:center;">
+            <textarea
 
-                  {{ ['A','B','C','D'][idx] }}
-                </span>
-                <input
-                  type="text"
-                  [(ngModel)]="ans.answerText"
-                  [placeholder]="'PH_ANSWER' | translate"
-                  style="flex-grow:1; padding:8px; border:1px solid #cbd5e1; border-radius:6px; font-size:13px;">
-              </div>
-            </div>
+              [(ngModel)]="courseDescription"
+              [placeholder]="'PH_COURSE_DESCRIPTION' | translate"
+
+              class="form-textarea">
+            </textarea>
           </div>
           <button
-            (click)="onSaveQuizQuestion()"
-            style="background:#0284c7; color:white; border:none; padding:12px 24px; border-radius:6px; cursor:pointer; font-weight:600; font-size:13px; margin-top:12px; box-shadow:0 1px 2px rgba(0,0,0,.05);">
+            class="btn-primary"
+            (click)="onCreateNewSubject()">
+            ➕ {{ 'BTN_CREATE_COURSE' | translate }}
+          </button>
+        </div>
+        <!-- ================= MODULE CONSTRUCTOR ================= -->
+        <div class="constructor-section">
+          <div class="constructor-section-header">
+            <h4>
+              2️⃣ {{ 'CONSTRUCTOR_MODULES' | translate }}
+            </h4>
+            <p>
+              {{ 'CONSTRUCTOR_MODULES_DESC' | translate }}
+            </p>
+          </div>
+          <div class="form-group">
+            <label>
+              {{ 'CONSTRUCTOR_SELECT_COURSE' | translate }}
+            </label>
+            <select
+              [(ngModel)]="selectedSubjectIdForLesson">
+              <option
+                [ngValue]="null"
+                disabled>
+
+                {{ 'PH_SELECT_COURSE' | translate }}
+              </option>
+              <option
+                *ngFor="let course of coursesFromBack"
+                [ngValue]="course.id">
+                {{course.title}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>
+              {{ 'CONSTRUCTOR_MODULE_TITLE' | translate }}
+            </label>
+            <input
+
+              type="text"
+
+              [(ngModel)]="lessonTitle"
+
+              [placeholder]="'PH_MODULE_TITLE' | translate">
+          </div>
+          <div class="form-group">
+            <label>
+              {{ 'CONSTRUCTOR_MODULE_CONTENT' | translate }}
+            </label>
+            <textarea
+
+              [(ngModel)]="lessonTextMaterial"
+
+              [placeholder]="'PH_MODULE_CONTENT' | translate"
+
+              class="form-textarea large">
+            </textarea>
+          </div>
+          <div class="file-upload-dashed">
+            <label>
+              🎬 {{ 'CONSTRUCTOR_VIDEO' | translate }}
+            </label>
+            <input
+
+              type="file"
+
+              accept="video/mp4"
+
+              (change)="onVideoFileSelected($event)">
+          </div>
+          <button
+
+            class="btn-module"
+
+            (click)="onAddLessonToSubject()">
+
+
+            🚀 {{ 'BTN_ADD_MODULE' | translate }}
+          </button>
+        </div>
+        <!-- ================= QUIZ CONSTRUCTOR ================= -->
+        <div class="constructor-section">
+          <div class="constructor-section-header">
+            <h4>
+              3️⃣ {{ 'CONSTRUCTOR_TESTS' | translate }}
+            </h4>
+            <p>
+              {{ 'CONSTRUCTOR_TESTS_DESC' | translate }}
+            </p>
+          </div>
+          <div class="form-group">
+            <label>
+              {{ 'CONSTRUCTOR_SELECT_COURSE' | translate }}
+            </label>
+            <select
+              [(ngModel)]="selectedSubjectIdForQuiz">
+              <option
+                [ngValue]="null"
+                disabled>
+                {{ 'PH_SELECT_COURSE' | translate }}
+              </option>
+              <option
+                *ngFor="let course of coursesFromBack"
+                [ngValue]="course.id">
+                {{course.title}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>
+
+              {{ 'CONSTRUCTOR_QUESTION' | translate }}
+            </label>
+            <textarea
+
+              [(ngModel)]="quizQuestionText"
+
+              [placeholder]="'PH_QUESTION' | translate"
+
+              class="form-textarea">
+            </textarea>
+          </div>
+          <label>
+
+            {{ 'CONSTRUCTOR_ANSWERS' | translate }}
+
+          </label>
+          <div class="quiz-answer-row"
+
+               *ngFor="let ans of quizAnswers; let i=index">
+            <input
+
+              type="radio"
+
+              name="correctAnswer"
+
+              [checked]="ans.isCorrect"
+
+              (change)="setQuizCorrectAnswer(i)">
+            <span>
+
+        {{ ['A','B','C','D'][i] }}
+            </span>
+            <input
+
+              type="text"
+
+              [(ngModel)]="ans.answerText"
+
+              [placeholder]="'PH_ANSWER' | translate">
+          </div>
+          <button
+
+            class="btn-quiz-save"
+
+            (click)="onSaveQuizQuestion()">
+
+
             ➕ {{ 'BTN_ADD_QUESTION' | translate }}
           </button>
         </div>

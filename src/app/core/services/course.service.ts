@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 export interface Course {
   id: number;
   title: string;
-  description: string;
+  description?: string;
   isCompleted: boolean;
   lastScore: number | null;
   attemptsCount: number;
@@ -39,24 +39,35 @@ export class CourseService {
   ) {}
 
   // Получить курсы (Все / Только мои)
-  getCourses(purchasedOnly: boolean = false): Observable<Course[]> {
-    // ИСПРАВЛЕНО: Безопасно передаем HttpHeaders в объект опций
+  getCourses(
+    purchasedOnly: boolean = false,
+    lang: string = 'ru'
+  ): Observable<Course[]> {
+
     const options = {
       headers: this.authService.getAuthHeaders()
     };
 
     return this.http.get<Course[]>(
-      `${this.apiUrl}/student/courses/subjects?purchasedOnly=${purchasedOnly}`,
+      `${this.apiUrl}/student/courses/subjects?purchasedOnly=${purchasedOnly}&lang=${lang}`,
       options
     );
   }
 
   // ВОЗВРАЩАЕМ МЕТОД ДЛЯ ПРОСМОТРА КУРСА ПО ID
-  getCourseContent(courseId: number | string): Observable<CourseContent> {
+  getCourseContent(
+    courseId: number | string,
+    lang: string = 'ru'
+  ): Observable<CourseContent> {
+
     const options = {
       headers: this.authService.getAuthHeaders()
     };
-    return this.http.get<CourseContent>(`${this.apiUrl}/student/courses/subjects/${courseId}/lessons`, options);
+
+    return this.http.get<CourseContent>(
+      `${this.apiUrl}/student/courses/subjects/${courseId}/lessons?lang=${lang}`,
+      options
+    );
   }
 
   // Получить активные баннеры

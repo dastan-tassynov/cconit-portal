@@ -122,14 +122,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Удалите метод switchTab, используйте только loadCoursesByTab
   loadCoursesByTab(tab: 'all' | 'my'): void {
     this.currentTab = tab;
-    this.activeTab = tab; // Синхронизируем для подсветки кнопок
+    this.activeTab = tab;
 
     const purchasedOnly = tab === 'my';
-    this.courseService.getCourses(purchasedOnly).subscribe({
+
+    const lang = this.translate.getCurrentLang();
+
+    this.courseService.getCourses(purchasedOnly, lang).subscribe({
       next: (data) => {
         this.allCourses = data;
         this.filteredCourses = [...this.allCourses];
         this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Ошибка загрузки курсов:', err);
       }
     });
   }
@@ -161,7 +167,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     } else {
       this.filteredCourses = this.allCourses.filter(course =>
         course.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        course.description.toLowerCase().includes(this.searchQuery.toLowerCase())
+        course.description?.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     }
   }
