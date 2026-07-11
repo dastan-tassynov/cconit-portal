@@ -81,6 +81,7 @@
   @if (viewMode === 'lesson' && currentLesson) {
     <header class="course-header">
       <button class="btn-back" (click)="showSyllabus()">← {{ 'COURSE_BACK_MODULES' | translate }}</button>
+      <app-language-switcher mode="inline"></app-language-switcher>
       <span class="step-counter-top">
         {{ 'COURSE_STEP' | translate }} {{ currentLesson.stepOrder }} {{ 'COURSE_OF' | translate }} {{ lessons.length }}
       </span>
