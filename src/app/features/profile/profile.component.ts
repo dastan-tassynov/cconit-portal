@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit {
   selectedSubjectIdForQuiz: number | null = null;
   quizQuestionText: string = '';
   courseCode: string = '';
-  languageId:number| null = null;
+  language:number| null = null;
   quizAnswers: any[] = [
     { answerText: '', isCorrect: true }, { answerText: '', isCorrect: false },
     { answerText: '', isCorrect: false }, { answerText: '', isCorrect: false }
@@ -134,7 +134,11 @@ export class ProfileComponent implements OnInit {
 
   onCreateNewSubject(): void {
     this.http.post('https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects',
-      { code:this.courseCode,languageId:this.languageId,title: this.courseTitle, description: this.courseDescription },
+      { programCode: this.courseCode,
+        language: this.language === 1 ? 'RU' : 'KZ',
+        title: this.courseTitle,
+        description: this.courseDescription,
+        hours: 0 },
       { headers: this.getAuthHeaders() }
     ).subscribe({
       next: () => {
@@ -144,7 +148,7 @@ export class ProfileComponent implements OnInit {
         // 2. ОЧИЩАЕМ поля, привязанные к [(ngModel)]
         this.courseCode = '';
         this.courseTitle = '';
-        this.languageId = null;
+        this.language = null;
         this.courseDescription = '';
 
         // 3. Обновляем список, чтобы новый курс сразу появился в таблице
