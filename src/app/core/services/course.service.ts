@@ -12,6 +12,7 @@ export interface Course {
   attemptsCount: number;
   hasAccess: boolean;
   createdBy?: string;
+  languageId:number;
 }
 
 // ВОЗВРАЩАЕМ ИНТЕРФЕЙС, КОТОРЫЙ ТРЕБУЕТ КОМПОНЕНТ COURSE-VIEW
