@@ -7,6 +7,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { FooterComponent } from '../footer/footer.component';
 import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import {SimpleTranslateService} from '../../core/services/translation.service';
+import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
 
 interface PortalUser { id: number; username: string; fullName: string; roles: string[]; }
 interface SubjectDTO { id: number; title: string; description: string; attemptsCount: number; lastScore: number | null; hasAccess: boolean; createdBy?: string; }
@@ -14,7 +15,7 @@ interface SubjectDTO { id: number; title: string; description: string; attemptsC
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule,FooterComponent, TranslatePipe],
+  imports: [CommonModule, FormsModule,FooterComponent, TranslatePipe,LanguageSwitcherComponent],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })

@@ -4,11 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import {SimpleTranslateService} from '../../core/services/translation.service';
+import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule,TranslatePipe],
+  imports: [CommonModule,TranslatePipe,LanguageSwitcherComponent],
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.css'
 })

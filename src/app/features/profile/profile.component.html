@@ -4,20 +4,7 @@
     <div class="sidebar-brand">
       <div class="logo-dot"></div>
       <span>qPortal</span>
-
-      <div class="lang-switcher" style="margin-top:15px;margin-bottom:15px;">
-        <button
-          (click)="translate.use('ru')"
-          [class.active]="translate.getCurrentLang() === 'ru'">
-          RU
-        </button>
-
-        <button
-          (click)="translate.use('kk')"
-          [class.active]="translate.getCurrentLang() === 'kk'">
-          KZ
-        </button>
-      </div>
+      <app-language-switcher></app-language-switcher>
     </div>
 
     <nav class="sidebar-menu">

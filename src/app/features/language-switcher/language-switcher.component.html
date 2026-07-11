@@ -1,0 +1,31 @@
+<div class="language-switcher" (click)="stop($event)">
+
+  <button class="lang-button" (click)="toggleMenu()">
+    🌐
+  </button>
+
+  <div class="lang-menu" *ngIf="opened">
+
+    <button
+      (click)="changeLanguage('ru')"
+      [class.active]="translate.getCurrentLang() === 'ru'">
+
+      🇷🇺 Русский
+
+      <span *ngIf="translate.getCurrentLang() === 'ru'">✓</span>
+
+    </button>
+
+    <button
+      (click)="changeLanguage('kk')"
+      [class.active]="translate.getCurrentLang() === 'kk'">
+
+      🇰🇿 Қазақша
+
+      <span *ngIf="translate.getCurrentLang() === 'kk'">✓</span>
+
+    </button>
+
+  </div>
+
+</div>

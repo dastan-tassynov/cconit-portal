@@ -1,9 +1,5 @@
 <div class="auth-container">
-  <div class="lang-switcher">
-    <button (click)="translate.use('ru')" [class.active]="'ru' === translate.getCurrentLang()">RU</button>
-    <button (click)="translate.use('kk')" [class.active]="'kk' === translate.getCurrentLang()">KZ</button>
-  </div>
-
+  <app-language-switcher></app-language-switcher>
   <div class="auth-card">
     <div class="auth-logo">
       <div class="logo-dot"></div>

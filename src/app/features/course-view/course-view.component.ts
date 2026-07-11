@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FooterComponent } from '../footer/footer.component';
 import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import {SimpleTranslateService} from '../../core/services/translation.service';
+import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
 
 export interface Lesson {
   id: number;
@@ -19,7 +20,7 @@ export interface Lesson {
 @Component({
   selector: 'app-course-view',
   standalone: true,
-  imports: [CommonModule, FooterComponent,TranslatePipe],
+  imports: [CommonModule, FooterComponent,TranslatePipe,LanguageSwitcherComponent],
   templateUrl: './course-view.component.html',
   styleUrls: ['./course-view.component.css']
 })

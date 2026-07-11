@@ -6,12 +6,13 @@ import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../footer/footer.component';
 import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import {SimpleTranslateService} from '../../core/services/translation.service';
+import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterLink,FooterComponent,TranslatePipe],
+  imports: [FormsModule, CommonModule, RouterLink,FooterComponent,TranslatePipe,LanguageSwitcherComponent],
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {

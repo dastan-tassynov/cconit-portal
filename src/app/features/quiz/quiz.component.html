@@ -1,10 +1,6 @@
 <div class="quiz-container">
   <!-- Добавляем переключатель языков -->
-  <div class="lang-switcher">
-    <button (click)="translate.use('ru')" [class.active]="'ru' === translate.getCurrentLang()">RU</button>
-    <button (click)="translate.use('kk')" [class.active]="'kk' === translate.getCurrentLang()">KZ</button>
-  </div>
-
+  <app-language-switcher></app-language-switcher>
   <div class="quiz-card" *ngIf="!quizCompleted && currentQuestion; else resultsBlock">
     <div class="quiz-header">
       <span class="quiz-progress-text">

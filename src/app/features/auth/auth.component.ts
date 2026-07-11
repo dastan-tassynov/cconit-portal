@@ -6,12 +6,13 @@ import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../footer/footer.component';
 import {SimpleTranslateService} from '../../core/services/translation.service';
 import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink,FooterComponent, TranslatePipe],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink,FooterComponent, TranslatePipe,LanguageSwitcherComponent],
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {

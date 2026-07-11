@@ -1,20 +1,5 @@
 <div class="course-page-container">
-
-  <!-- Переключатель языков -->
-  <div class="lang-switcher">
-    <button
-      (click)="translate.use('ru')"
-      [class.active]="translate.getCurrentLang() === 'ru'">
-      RU
-    </button>
-
-    <button
-      (click)="translate.use('kk')"
-      [class.active]="translate.getCurrentLang() === 'kk'">
-      KZ
-    </button>
-  </div>
-
+  <app-language-switcher></app-language-switcher>
   <!-- ШАБЛОН 1: СТАТУС-ЭКРАН КУРСА (СОДЕРЖАНИЕ И МОДУЛИ) -->
   @if (viewMode === 'syllabus') {
     <header class="course-header">

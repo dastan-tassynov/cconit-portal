@@ -7,6 +7,7 @@ import { CourseService, Course } from '../../core/services/course.service';
 import { FooterComponent } from '../footer/footer.component';
 import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import {SimpleTranslateService} from '../../core/services/translation.service';
+import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
 
 interface PromoSlide {
   title: string;
@@ -20,7 +21,7 @@ interface PromoSlide {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, FooterComponent,TranslatePipe],
+  imports: [CommonModule, FormsModule, RouterLink, FooterComponent,TranslatePipe, LanguageSwitcherComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
