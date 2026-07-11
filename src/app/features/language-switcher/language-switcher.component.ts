@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import {Component, HostListener, Input} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SimpleTranslateService } from '../../core/services/translation.service';
 
@@ -10,7 +10,8 @@ import { SimpleTranslateService } from '../../core/services/translation.service'
   styleUrls: ['./language-switcher.component.css']
 })
 export class LanguageSwitcherComponent {
-
+  @Input()
+  mode: 'header' | 'floating' | 'inline' = 'header';
   opened = false;
 
   constructor(public translate: SimpleTranslateService) {}

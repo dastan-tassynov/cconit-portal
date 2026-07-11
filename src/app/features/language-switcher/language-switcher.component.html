@@ -1,7 +1,8 @@
 <div class="language-switcher" (click)="stop($event)">
 
   <button class="lang-button" (click)="toggleMenu()">
-    🌐
+    🌐 {{ translate.getCurrentLang().toUpperCase() }}
+    <span class="arrow" [class.open]="opened">▾</span>
   </button>
 
   <div class="lang-menu" *ngIf="opened">

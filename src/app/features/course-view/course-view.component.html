@@ -1,9 +1,9 @@
 <div class="course-page-container">
-  <app-language-switcher></app-language-switcher>
   <!-- ШАБЛОН 1: СТАТУС-ЭКРАН КУРСА (СОДЕРЖАНИЕ И МОДУЛИ) -->
   @if (viewMode === 'syllabus') {
     <header class="course-header">
       <button class="btn-back" (click)="goBack()">← {{ 'COURSE_BACK_PANEL' | translate }}</button>
+      <app-language-switcher mode="inline"></app-language-switcher>
       <h1 class="course-page-title">{{ 'COURSE_PLAN_TITLE' | translate }}</h1>
     </header>
 

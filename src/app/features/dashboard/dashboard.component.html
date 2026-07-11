@@ -5,7 +5,6 @@
       <div class="logo-block">
         <div class="logo-dot"></div>
         <span class="logo-text">qPortal</span>
-        <app-language-switcher></app-language-switcher>
       </div>
 
       <div class="search-bar">
@@ -38,7 +37,7 @@
           {{ 'NAV_PROFILE' | translate }}
 
         </a>
-
+        <app-language-switcher mode="header"></app-language-switcher>
         <button
           class="nav-link"
           (click)="logout()"

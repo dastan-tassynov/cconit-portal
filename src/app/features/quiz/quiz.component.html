@@ -1,8 +1,8 @@
 <div class="quiz-container">
   <!-- Добавляем переключатель языков -->
-  <app-language-switcher></app-language-switcher>
   <div class="quiz-card" *ngIf="!quizCompleted && currentQuestion; else resultsBlock">
     <div class="quiz-header">
+      <app-language-switcher mode="inline"></app-language-switcher>
       <span class="quiz-progress-text">
           {{ 'QUIZ_QUESTION_PROGRESS' | translate }} {{ currentQuestionIndex + 1 }} / {{ questions.length }}
       </span>

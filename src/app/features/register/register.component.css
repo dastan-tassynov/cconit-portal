@@ -8,6 +8,12 @@
   padding: 20px;
   box-sizing: border-box;
 }
+.auth-language{
+  position: fixed;
+  top:24px;
+  right:24px;
+  z-index:5000;
+}
 
 .auth-card {
   background: #ffffff;

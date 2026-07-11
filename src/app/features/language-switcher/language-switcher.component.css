@@ -6,24 +6,36 @@
 
 }
 
-.lang-button{
+.lang-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 
-  width:42px;
+  padding: 8px 14px;
 
-  height:42px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
 
-  border:none;
+  background: white;
 
-  border-radius:10px;
+  cursor: pointer;
 
-  background:#f8fafc;
+  font-size: 14px;
+  font-weight: 600;
 
-  cursor:pointer;
+  transition: .2s;
+}
 
-  font-size:20px;
+.lang-button:hover {
+  background: #f8fafc;
+}
 
-  transition:.2s;
+.arrow {
+  transition: .25s;
+}
 
+.arrow.open {
+  transform: rotate(180deg);
 }
 
 .lang-button:hover{
