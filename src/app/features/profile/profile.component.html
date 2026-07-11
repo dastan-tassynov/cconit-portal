@@ -4,93 +4,179 @@
     <div class="sidebar-brand">
       <div class="logo-dot"></div>
       <span>qPortal</span>
-      <div *ngFor="let field of courseFormFields" class="form-group">
-        <label>{{ field.label | translate }}</label>
-        <input type="text"
-               [ngModel]="getFieldValue(field.model)"
-               (ngModelChange)="setFieldValue(field.model, $event)"
-               [placeholder]="field.placeholder | translate">
+
+      <div class="lang-switcher" style="margin-top:15px;margin-bottom:15px;">
+        <button
+          (click)="translate.use('ru')"
+          [class.active]="translate.getCurrentLang() === 'ru'">
+          RU
+        </button>
+
+        <button
+          (click)="translate.use('kk')"
+          [class.active]="translate.getCurrentLang() === 'kk'">
+          KZ
+        </button>
       </div>
     </div>
 
     <nav class="sidebar-menu">
-      <button class="menu-item" [class.active]="activeTab === 'courses'" (click)="selectTab('courses')">
+
+      <button class="menu-item"
+              [class.active]="activeTab === 'courses'"
+              (click)="selectTab('courses')">
         📚 {{ 'MENU_COURSES' | translate }}
       </button>
-      <button class="menu-item" [class.active]="activeTab === 'certificates'" (click)="selectTab('certificates')">
+
+      <button class="menu-item"
+              [class.active]="activeTab === 'certificates'"
+              (click)="selectTab('certificates')">
         🏅 {{ 'MENU_CERTIFICATES' | translate }}
       </button>
 
-      <div class="sidebar-divider" *ngIf="hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])">{{ 'DIV_ADMIN' | translate }}</div>
+      <div class="sidebar-divider"
+           *ngIf="hasRole(['ROLE_ADMIN','ROLE_SUPERADMIN'])">
+        {{ 'DIV_ADMIN' | translate }}
+      </div>
 
-      <button class="menu-item admin-item"
-              [class.active]="activeTab === 'constructor'"
-              *ngIf="hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])"
-              (click)="selectTab('constructor')">
+      <button
+        class="menu-item admin-item"
+        [class.active]="activeTab === 'constructor'"
+        *ngIf="hasRole(['ROLE_ADMIN','ROLE_SUPERADMIN'])"
+        (click)="selectTab('constructor')">
         🛠 {{ 'MENU_CONSTRUCTOR' | translate }}
       </button>
 
-      <button class="menu-item admin-item"
-              *ngIf="hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])"
-              [class.active]="activeTab === 'ads'"
-              (click)="selectTab('ads')"
-              style="color: #10b981;">
+      <button
+        class="menu-item admin-item"
+        *ngIf="hasRole(['ROLE_ADMIN','ROLE_SUPERADMIN'])"
+        [class.active]="activeTab === 'ads'"
+        (click)="selectTab('ads')"
+        style="color:#10b981;">
         📢 {{ 'MENU_ADS' | translate }}
       </button>
 
-      <div class="sidebar-divider" *ngIf="hasRole(['ROLE_SUPERADMIN'])">{{ 'DIV_SECURITY' | translate }}</div>
+      <div class="sidebar-divider"
+           *ngIf="hasRole(['ROLE_SUPERADMIN'])">
+        {{ 'DIV_SECURITY' | translate }}
+      </div>
 
-      <button class="menu-item super-item"
-              *ngIf="hasRole(['ROLE_SUPERADMIN'])"
-              [class.active]="activeTab === 'roles'"
-              (click)="selectTab('roles')">
+      <button
+        class="menu-item super-item"
+        *ngIf="hasRole(['ROLE_SUPERADMIN'])"
+        [class.active]="activeTab === 'roles'"
+        (click)="selectTab('roles')">
         👤 {{ 'MENU_ROLES' | translate }}
       </button>
+
     </nav>
 
     <div class="sidebar-footer">
-      <button class="btn-sidebar-back" (click)="goBack()">← {{ 'BTN_BACK' | translate }}</button>
-      <button class="btn-sidebar-logout" (click)="logout()">{{ 'BTN_LOGOUT' | translate }}</button>
+      <button class="btn-sidebar-back"
+              (click)="goBack()">
+        ← {{ 'BTN_BACK' | translate }}
+      </button>
+
+      <button class="btn-sidebar-logout"
+              (click)="logout()">
+        {{ 'BTN_LOGOUT' | translate }}
+      </button>
     </div>
+
   </aside>
 
   <main class="profile-main-content">
+
     <header class="main-content-header">
-      <h1 class="page-title">{{ 'TITLE_PROFILE' | translate }}</h1>
-      <div class="user-badge-role">{{ 'LABEL_ROLE_SESSION' | translate }}: <span>{{ currentUserRole }}</span></div>
+      <h1 class="page-title">
+        {{ 'TITLE_CABINET' | translate }}
+      </h1>
+
+      <div class="user-badge-role">
+        {{ 'LABEL_ROLE' | translate }}:
+        <span>{{ currentUserRole }}</span>
+      </div>
     </header>
 
     <div class="content-card">
 
+      <!-- ====================== COURSES ===================== -->
+
       <div *ngIf="activeTab === 'courses'" class="tab-window">
-        <h3 class="section-title">{{ 'TITLE_COURSES_LIST' | translate }}</h3>
+
+        <h3 class="section-title">
+          {{ 'TITLE_MY_COURSES' | translate }}
+        </h3>
+
         <div class="table-container">
-          <table class="profile-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+
+          <table class="profile-table"
+                 style="width:100%;border-collapse:collapse;text-align:left;">
+
             <thead>
-            <tr style="background: #f1f5f9;">
-              <th style="padding: 12px;">{{ 'TH_COURSE_NAME' | translate }}</th>
-              <th style="padding: 12px; text-align: center;">{{ 'TH_ATTEMPTS_COUNT' | translate }}</th>
-              <th style="padding: 12px; text-align: center;">{{ 'TH_LAST_SCORE' | translate }}</th>
-              <th style="padding: 12px; text-align: right;">{{ 'TH_ACCESS_STATUS' | translate }}</th>
-              <th style="padding: 12px; text-align: right;">{{ 'TH_AUTHOR' | translate }}</th>
+
+            <tr style="background:#f1f5f9;">
+
+              <th style="padding:12px;">
+                {{ 'TH_COURSE' | translate }}
+              </th>
+
+              <th style="padding:12px;text-align:center;">
+                {{ 'TH_ATTEMPTS' | translate }}
+              </th>
+
+              <th style="padding:12px;text-align:center;">
+                {{ 'TH_RESULT' | translate }}
+              </th>
+
+              <th style="padding:12px;text-align:right;">
+                {{ 'TH_ACCESS' | translate }}
+              </th>
+
+              <th style="padding:12px;text-align:right;">
+                {{ 'TH_AUTHOR' | translate }}
+              </th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let course of coursesFromBack" style="border-bottom: 1px solid #e2e8f0;">
-              <td style="padding: 12px; font-weight: 500;">{{ course.title }}</td>
-              <td style="padding: 12px; text-align: center;">{{ course.attemptsCount }}</td>
-              <td style="padding: 12px; text-align: center; font-weight: 600;">
-                {{ course.lastScore !== null ? course.lastScore + '%' : ('VAL_NO_TEST' | translate) }}
+            <tr
+              *ngFor="let course of coursesFromBack"
+              style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:12px;font-weight:500;">
+                {{ course.title }}
               </td>
-              <td style="padding: 12px; text-align: right;">
-              <span [style.background]="course.hasAccess ? '#dcfce7' : '#fee2e2'"
-                    [style.color]="course.hasAccess ? '#15803d' : '#b91c1c'"
-                    style="padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">
-                {{ course.hasAccess ? ('VAL_OPEN' | translate) : ('VAL_LIMITED' | translate) }}
-              </span>
+              <td style="padding:12px;text-align:center;">
+                {{ course.attemptsCount }}
               </td>
-              <td style="padding: 12px; text-align: right; color: #64748b; font-size: 14px;">
-                {{ course.createdBy || ('VAL_SYSTEM' | translate) }}
+              <td style="padding:12px;text-align:center;font-weight:600;">
+
+                {{
+                  course.lastScore !== null
+                    ? course.lastScore + '%'
+                    : ('VAL_NO_TEST' | translate)
+                }}
+
+              </td>
+              <td style="padding:12px;text-align:right;">
+                <span
+                  [style.background]="course.hasAccess ? '#dcfce7':'#fee2e2'"
+                  [style.color]="course.hasAccess ? '#15803d':'#b91c1c'"
+                  style="padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600;">
+
+                  {{
+                    course.hasAccess
+                      ? ('VAL_OPEN' | translate)
+                      : ('VAL_LIMITED' | translate)
+                  }}
+                </span>
+              </td>
+              <td
+                style="padding:12px;text-align:right;color:#64748b;font-size:14px;">
+
+                {{
+                  course.createdBy || ('VAL_SYSTEM' | translate)
+                }}
+
               </td>
             </tr>
             </tbody>
@@ -98,25 +184,50 @@
         </div>
       </div>
 
-      <div *ngIf="activeTab === 'certificates'" class="tab-window">
-        <h3 class="section-title">{{ 'TITLE_CERTS' | translate }}</h3>
+      <!-- ====================== CERTIFICATES ===================== -->
+
+      <div
+        *ngIf="activeTab === 'certificates'"
+        class="tab-window">
+
+        <h3 class="section-title">
+          {{ 'TITLE_MY_CERTS' | translate }}
+        </h3>
         <div class="table-container">
-          <table class="profile-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+          <table class="profile-table"
+                 style="width:100%;border-collapse:collapse;text-align:left;">
             <thead>
-            <tr style="background: #f1f5f9;">
-              <th style="padding: 12px;">{{ 'TH_DISCIPLINE' | translate }}</th>
-              <th style="padding: 12px;">{{ 'TH_DOC_TYPE' | translate }}</th>
-              <th style="padding: 12px; text-align: right;">{{ 'TH_ACTION' | translate }}</th>
+            <tr style="background:#f1f5f9;">
+
+              <th style="padding:12px;">
+                {{ 'TH_DISCIPLINE' | translate }}
+              </th>
+
+              <th style="padding:12px;">
+                {{ 'TH_TYPE' | translate }}
+              </th>
+
+              <th style="padding:12px;text-align:right;">
+                {{ 'TH_ACTION' | translate }}
+              </th>
             </tr>
             </thead>
             <tbody>
             <ng-container *ngFor="let course of coursesFromBack">
-              <tr *ngIf="course.lastScore !== null" style="border-bottom: 1px solid #e2e8f0;">
-                <td style="padding: 12px; font-weight: 500;">{{ course.title }}</td>
-                <td style="padding: 12px; color: #059669; font-weight: 600;">{{ 'VAL_PDF_CERT' | translate }}</td>
-                <td style="padding: 12px; text-align: right;">
-                  <button (click)="downloadCertificate(course.id, course.title)"
-                          style="background: #059669; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">
+              <tr
+                *ngIf="course.lastScore !== null"
+                style="border-bottom:1px solid #e2e8f0;">
+                <td style="padding:12px;font-weight:500;">
+                  {{ course.title }}
+                </td>
+                <td style="padding:12px;color:#059669;font-weight:600;">
+                  {{ 'VAL_PDF' | translate }}
+                </td>
+                <td style="padding:12px;text-align:right;">
+                  <button
+                    (click)="downloadCertificate(course.id,course.title)"
+                    style="background:#059669;color:white;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;">
+
                     📥 {{ 'BTN_DOWNLOAD' | translate }}
                   </button>
                 </td>
@@ -130,202 +241,431 @@
       <div *ngIf="activeTab === 'constructor' && hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])" class="tab-window">
 
         <div class="constructor-box" style="margin-bottom: 25px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px dashed #cbd5e1;">
-          <h4 style="margin-top:0; font-size:15px; color:#1e293b; font-weight:600;">{{ 'CONS_STEP1_TITLE' | translate }}</h4>
+          <h4 style="margin-top:0; font-size:15px; color:#1e293b; font-weight:600;">
+            {{ 'CONS_STEP1' | translate }}
+          </h4>
 
           <div class="form-group" style="margin-bottom: 10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">{{ 'LABEL_SUBJECT_NAME' | translate }}</label>
-            <input type="text" [(ngModel)]="courseTitle" [placeholder]="'PH_SUBJECT_NAME' | translate">
+            <label style="font-size:11px; font-weight:600; color:#475569;">
+              {{ 'LABEL_COURSE_NAME' | translate }}
+            </label>
+            <input
+              type="text"
+              [(ngModel)]="courseTitle"
+              [placeholder]="'PH_NAME' | translate">
           </div>
 
           <div class="form-group" style="margin-bottom: 10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">{{ 'LABEL_DESCRIPTION' | translate }}</label>
-            <textarea [(ngModel)]="courseDescription" [placeholder]="'PH_DESCRIPTION' | translate" class="form-textarea" style="height:45px; resize:vertical;"></textarea>
+            <label style="font-size:11px; font-weight:600; color:#475569;">
+              {{ 'LABEL_DESC' | translate }}
+            </label>
+            <textarea
+              [(ngModel)]="courseDescription"
+              [placeholder]="'PH_DESC' | translate"
+              class="form-textarea"
+              style="height:45px; resize:vertical;"></textarea>
           </div>
 
-          <button (click)="onCreateNewSubject()" class="btn-primary" style="background:#4f46e5; padding: 8px 16px; font-size:12px;">
+          <button
+            (click)="onCreateNewSubject()"
+            class="btn-primary"
+            style="background:#4f46e5; padding: 8px 16px; font-size:12px;">
             ➕ {{ 'BTN_REGISTER_COURSE' | translate }}
           </button>
         </div>
 
         <div class="constructor-box" style="margin-bottom: 30px; background: white; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
-          <h4 style="margin-top:0; font-size:15px; color:#1e293b; font-weight:600;">{{ 'CONS_STEP2_TITLE' | translate }}</h4>
+
+          <h4 style="margin-top:0; font-size:15px; color:#1e293b; font-weight:600;">
+            {{ 'CONS_STEP2' | translate }}
+          </h4>
 
           <div class="form-group" style="margin-bottom: 10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">{{ 'LABEL_SELECT_COURSE' | translate }}</label>
-            <select [(ngModel)]="selectedSubjectIdForLesson" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; font-size: 13px;">
-              <option [ngValue]="null" disabled selected>{{ 'OPT_SELECT_DEFAULT' | translate }}</option>
-              <option *ngFor="let s of coursesFromBack" [ngValue]="s.id">ID: {{ s.id }} | {{ s.title }}</option>
-            </select>
-          </div>
+            <label style="font-size:11px; font-weight:600; color:#475569;">
+              {{ 'LABEL_CHOOSE_COURSE' | translate }}
+            </label>
 
-          <div class="form-group" style="margin-bottom: 10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">{{ 'LABEL_LESSON_TITLE' | translate }}</label>
-            <input type="text" [(ngModel)]="lessonTitle" [placeholder]="'PH_LESSON_TITLE' | translate">
-          </div>
+            <select
+              [(ngModel)]="selectedSubjectIdForLesson"
+              style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; font-size: 13px;">
 
-          <div class="form-group" style="margin-bottom: 10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">📖 {{ 'LABEL_THEORY' | translate }}</label>
-            <textarea [(ngModel)]="lessonTextMaterial" [placeholder]="'PH_THEORY' | translate" class="form-textarea large" style="height:120px;"></textarea>
-          </div>
+              <option [ngValue]="null" disabled selected>
+                {{ 'PH_CHOOSE' | translate }}
+              </option>
 
-          <div class="file-upload-dashed" style="padding:10px; margin-bottom:10px;">
-            <label style="font-size:11px; font-weight:600; color:#475569;">🎬 {{ 'LABEL_ATTACH_VIDEO' | translate }}</label>
-            <input id="profileVideoInput" type="file" (change)="onVideoFileSelected($event)" accept="video/mp4" style="width:100%; font-size:12px;">
-          </div>
-
-          <button (click)="onAddLessonToSubject()" class="btn-primary" style="background:#10b981; padding: 10px 20px; font-size:13px;">
-            🚀 {{ 'BTN_SAVE_STEP' | translate }}
-          </button>
-        </div>
-
-        <hr style="border: 0; border-top: 2px dashed #cbd5e1; margin: 30px 0;">
-
-        <div class="quiz-dynamic-panel" style="background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
-          <h4 class="quiz-panel-title" style="color: #1e293b; margin-top: 0; font-size: 16px; font-weight: 600;">📋 {{ 'TITLE_QUIZ_CONSTRUCTOR' | translate }}</h4>
-          <p class="quiz-panel-desc" style="color: #64748b; font-size: 13px; margin-bottom: 20px;">
-            {{ 'DESC_QUIZ_CONSTRUCTOR' | translate }}
-          </p>
-
-          <div class="form-group" style="margin-bottom: 15px;">
-            <label style="display: block; font-weight: 600; margin-bottom: 6px; color: #475569; font-size: 12px;">{{ 'LABEL_SELECT_COURSE_QUIZ' | translate }}</label>
-            <select [(ngModel)]="selectedSubjectIdForQuiz" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; font-size: 14px; font-weight: 500; color: #1e293b;">
-              <option [ngValue]="null" disabled selected>{{ 'OPT_SELECT_DEFAULT' | translate }}</option>
               <option *ngFor="let s of coursesFromBack" [ngValue]="s.id">
                 ID: {{ s.id }} | {{ s.title }}
               </option>
+
             </select>
           </div>
 
-          <div class="form-group" style="margin-bottom: 15px;">
-            <label style="display: block; font-weight: 600; margin-bottom: 6px; color: #475569; font-size: 12px;">{{ 'LABEL_QUESTION_TEXT' | translate }}</label>
-            <textarea [(ngModel)]="quizQuestionText" [placeholder]="'PH_QUESTION' | translate" style="height: 70px; resize: vertical; width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; font-size: 14px;"></textarea>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label style="font-size:11px; font-weight:600; color:#475569;">
+              {{ 'LABEL_LESSON_TITLE' | translate }}
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="lessonTitle"
+              [placeholder]="'PH_LESSON' | translate">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label style="font-size:11px; font-weight:600; color:#475569;">
+              📖 {{ 'LABEL_THEORY' | translate }}
+            </label>
+
+            <textarea
+              [(ngModel)]="lessonTextMaterial"
+              [placeholder]="'PH_THEORY' | translate"
+              class="form-textarea large"
+              style="height:120px;"></textarea>
+          </div>
+
+          <div class="file-upload-dashed" style="padding:10px; margin-bottom:10px;">
+            <label style="font-size:11px; font-weight:600; color:#475569;">
+              🎬 {{ 'LABEL_VIDEO' | translate }}
+            </label>
+
+            <input
+              id="profileVideoInput"
+              type="file"
+              (change)="onVideoFileSelected($event)"
+              accept="video/mp4"
+              style="width:100%; font-size:12px;">
+          </div>
+
+          <button
+            (click)="onAddLessonToSubject()"
+            class="btn-primary"
+            style="background:#10b981; padding:10px 20px; font-size:13px;">
+
+            🚀 {{ 'BTN_SAVE_LESSON' | translate }}
+
+          </button>
+
+        </div>
+
+        <hr style="border:0; border-top:2px dashed #cbd5e1; margin:30px 0;">
+
+        <div class="quiz-dynamic-panel"
+             style="background:#f8fafc; padding:20px; border-radius:8px; border:1px solid #e2e8f0;">
+
+          <h4 class="quiz-panel-title"
+              style="color:#1e293b; margin-top:0; font-size:16px; font-weight:600;">
+
+            📋 {{ 'TITLE_QUIZ' | translate }}
+
+          </h4>
+
+          <p class="quiz-panel-desc"
+             style="color:#64748b; font-size:13px; margin-bottom:20px;">
+
+            {{ 'QUIZ_PANEL_DESC' | translate }}
+
+          </p>
+
+          <div class="form-group" style="margin-bottom:15px;">
+
+            <label style="display:block; font-weight:600; margin-bottom:6px; color:#475569; font-size:12px;">
+              {{ 'LABEL_TARGET_COURSE' | translate }}
+            </label>
+
+            <select
+              [(ngModel)]="selectedSubjectIdForQuiz"
+              style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; background:white; font-size:14px; font-weight:500; color:#1e293b;">
+
+              <option [ngValue]="null" disabled selected>
+
+                {{ 'PH_CHOOSE' | translate }}
+
+              </option>
+
+              <option *ngFor="let s of coursesFromBack" [ngValue]="s.id">
+                ID: {{ s.id }} | {{ s.title }}
+              </option>
+
+            </select>
+
+          </div>
+
+          <div class="form-group" style="margin-bottom:15px;">
+
+            <label style="display:block; font-weight:600; margin-bottom:6px; color:#475569; font-size:12px;">
+              {{ 'LABEL_QUESTION' | translate }}
+            </label>
+
+            <textarea
+              [(ngModel)]="quizQuestionText"
+              [placeholder]="'PH_QUESTION' | translate"
+              style="height:70px; resize:vertical; width:100%; border:1px solid #cbd5e1; border-radius:6px; padding:8px; font-size:14px;"></textarea>
+
           </div>
 
           <div class="form-group">
-            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 12px;">{{ 'LABEL_ANSWERS' | translate }}</label>
+            <label style="display:block; font-weight:600; margin-bottom:8px; color:#475569; font-size:12px;">
+
+              {{ 'LABEL_ANSWERS' | translate }}
+            </label>
             <div class="quiz-answers-stack">
-              <div *ngFor="let ans of quizAnswers; let idx = index" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+              <div *ngFor="let ans of quizAnswers; let idx=index"
+                   style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
                 <input
                   type="radio"
                   name="correctAnswerRadioGroup"
                   [checked]="ans.isCorrect"
                   (change)="setQuizCorrectAnswer(idx)"
-                  style="transform: scale(1.2); cursor: pointer;"
-                >
-                <span style="font-weight: bold; color: #64748b; width: 15px; text-align: center;">{{ ['A', 'B', 'C', 'D'][idx] }}</span>
+                  style="transform:scale(1.2); cursor:pointer;">
+                <span
+                  style="font-weight:bold; color:#64748b; width:15px; text-align:center;">
+
+                  {{ ['A','B','C','D'][idx] }}
+                </span>
                 <input
                   type="text"
                   [(ngModel)]="ans.answerText"
-                  [placeholder]="'PH_ANSWER_TEXT' | translate"
-                  style="flex-grow: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px;"
-                >
+                  [placeholder]="'PH_ANSWER' | translate"
+                  style="flex-grow:1; padding:8px; border:1px solid #cbd5e1; border-radius:6px; font-size:13px;">
               </div>
             </div>
           </div>
-
-          <button (click)="onSaveQuizQuestion()" style="background: #0284c7; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; margin-top: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+          <button
+            (click)="onSaveQuizQuestion()"
+            style="background:#0284c7; color:white; border:none; padding:12px 24px; border-radius:6px; cursor:pointer; font-weight:600; font-size:13px; margin-top:12px; box-shadow:0 1px 2px rgba(0,0,0,.05);">
             ➕ {{ 'BTN_ADD_QUESTION' | translate }}
           </button>
         </div>
-
       </div>
 
       <div *ngIf="activeTab === 'ads' && hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])" class="tab-window">
         <div style="background: #f0fdf4; padding: 20px; border-radius: 8px; border: 1px solid #bbf7d0;">
-          <h3 style="margin-top: 0; color: #166534; font-size: 18px; font-weight: 600;">📢 {{ 'TITLE_ADS_PANEL' | translate }}</h3>
+
+          <h3 style="margin-top: 0; color: #166534; font-size: 18px; font-weight: 600;">
+            📢 {{ 'TITLE_ADS_PANEL' | translate }}
+          </h3>
 
           <div style="margin-bottom: 12px;">
-            <label style="display:block; font-size:11px; font-weight:600; margin-bottom:4px; color:#14532d;">{{ 'LABEL_LINK_URL' | translate }}</label>
-            <input type="text" [(ngModel)]="adLinkUrl" placeholder="https://..." style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;">
-          </div>
-          <div style="margin-bottom: 20px;">
-            <label style="display:block; font-size:11px; font-weight:600; margin-bottom:4px; color:#14532d;">{{ 'LABEL_BANNER_IMAGE' | translate }}</label>
-            <input type="file" (change)="onAdImageSelected($event)" accept="image/*" style="width:100%; padding:5px; font-size:12px;">
-          </div>
-          <button (click)="onCreateAdvertisement()" style="background:#10b981; color:white; border:none; padding:10px 22px; border-radius:6px; cursor:pointer; font-weight:600; font-size:13px;">➕ {{ 'BTN_CREATE_BANNER' | translate }}</button>
+            <label style="display:block; font-size:11px; font-weight:600; margin-bottom:4px; color:#14532d;">
+              {{ 'LABEL_AD_LINK' | translate }}
+            </label>
 
-          <h4 style="margin-top: 30px; margin-bottom: 10px; color:#1e293b; font-size: 14px; font-weight: 600;">{{ 'TITLE_EXISTING_BANNERS' | translate }}</h4>
-          <table style="width: 100%; border-collapse: collapse; font-size: 13px; background: white; border-radius: 6px;">
+            <input
+              type="text"
+              [(ngModel)]="adLinkUrl"
+              [placeholder]="'PH_LINK' | translate"
+              style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;">
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <label style="display:block; font-size:11px; font-weight:600; margin-bottom:4px; color:#14532d;">
+              {{ 'LABEL_BANNER_IMAGE' | translate }}
+            </label>
+
+            <input
+              type="file"
+              (change)="onAdImageSelected($event)"
+              accept="image/*"
+              style="width:100%; padding:5px; font-size:12px;">
+          </div>
+
+          <button
+            (click)="onCreateAdvertisement()"
+            style="background:#10b981; color:white; border:none; padding:10px 22px; border-radius:6px; cursor:pointer; font-weight:600; font-size:13px;">
+
+            ➕ {{ 'BTN_CREATE_AD' | translate }}
+
+          </button>
+
+          <h4 style="margin-top:30px; margin-bottom:10px; color:#1e293b; font-size:14px; font-weight:600;">
+            {{ 'TITLE_REGISTERED_ADS' | translate }}
+          </h4>
+
+          <table style="width:100%; border-collapse:collapse; font-size:13px; background:white; border-radius:6px;">
+
             <thead>
-            <tr style="background: #e2e8f0; text-align: left;">
-              <th style="padding: 10px;">{{ 'TH_LINK' | translate }}</th>
-              <th style="padding: 10px; text-align: center;">{{ 'TH_STATUS' | translate }}</th>
-              <th style="padding: 10px; text-align: right;">{{ 'TH_MANAGEMENT' | translate }}</th>
+            <tr style="background:#e2e8f0; text-align:left;">
+              <th style="padding:10px;">{{ 'TH_LINK' | translate }}</th>
+              <th style="padding:10px; text-align:center;">{{ 'TH_STATUS' | translate }}</th>
+              <th style="padding:10px; text-align:right;">{{ 'TH_ACTION' | translate }}</th>
             </tr>
             </thead>
+
             <tbody>
-            <tr *ngFor="let ad of adsList" style="border-bottom: 1px solid #f1f5f9;">
-              <td style="padding: 10px;">{{ ad.linkUrl || ('VAL_NO_LINK' | translate) }}</td>
-              <td style="padding: 10px; text-align: center;">
-                <span [style.color]="ad.active ? '#16a34a' : '#dc2626'" style="font-weight: 600;">
-                  {{ ad.active ? ('VAL_ACTIVE' | translate) : ('VAL_HIDDEN' | translate) }}
-                </span>
+
+            <tr *ngFor="let ad of adsList" style="border-bottom:1px solid #f1f5f9;">
+
+              <td style="padding:10px;">
+                {{ ad.linkUrl || ('VAL_NO_LINK' | translate) }}
               </td>
-              <td style="padding: 10px; text-align: right; white-space: nowrap;">
-                <button (click)="onToggleAd(ad)"
-                        [style.background]="ad.active ? '#f59e0b' : '#10b981'"
-                        style="color: white; border: none; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-right: 6px;">
-                  {{ ad.active ? ('BTN_OFF' | translate) : ('BTN_ON' | translate) }}
+
+              <td style="padding:10px; text-align:center;">
+          <span
+            [style.color]="ad.active ? '#16a34a' : '#dc2626'"
+            style="font-weight:600;">
+
+            {{ ad.active ? ('VAL_ACTIVE' | translate) : ('VAL_HIDDEN' | translate) }}
+
+          </span>
+              </td>
+
+              <td style="padding:10px; text-align:right; white-space:nowrap;">
+
+                <button
+                  (click)="onToggleAd(ad)"
+                  [style.background]="ad.active ? '#f59e0b' : '#10b981'"
+                  style="color:white; border:none; padding:4px 10px; border-radius:6px; cursor:pointer; font-size:12px; margin-right:6px;">
+
+                  {{ ad.active ? ('BTN_DISABLE' | translate) : ('BTN_ENABLE' | translate) }}
+
                 </button>
-                <button (click)="confirmDelete(ad)"
-                        style="background: #ef4444; color:white; border:none; padding:4px 10px; border-radius:6px; cursor:pointer; font-size: 12px;">
+
+                <button
+                  (click)="confirmDelete(ad)"
+                  style="background:#ef4444; color:white; border:none; padding:4px 10px; border-radius:6px; cursor:pointer; font-size:12px;">
+
                   {{ 'BTN_DELETE' | translate }}
+
                 </button>
+
               </td>
+
             </tr>
+
             </tbody>
+
           </table>
+
         </div>
       </div>
 
       <div *ngIf="activeTab === 'roles' && hasRole(['ROLE_SUPERADMIN'])" class="tab-window">
-        <h3 class="section-title">{{ 'TITLE_USERS_ROLES' | translate }}</h3>
+
+        <h3 class="section-title">
+          {{ 'TITLE_ROLES' | translate }}
+        </h3>
+
         <div class="table-container">
-          <table class="profile-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+
+          <table class="profile-table" style="width:100%; border-collapse:collapse; text-align:left;">
+
             <thead>
-            <tr style="background: #f1f5f9;">
-              <th style="padding: 12px;">{{ 'TH_FULL_NAME' | translate }}</th>
-              <th style="padding: 12px;">{{ 'TH_USERNAME' | translate }}</th>
-              <th style="padding: 12px;">{{ 'TH_ROLES' | translate }}</th>
-              <th style="padding: 12px; text-align: right;">{{ 'TH_ACTIONS' | translate }}</th>
+
+            <tr style="background:#f1f5f9;">
+
+              <th style="padding:12px;">
+                {{ 'TH_NAME' | translate }}
+              </th>
+
+              <th style="padding:12px;">
+                {{ 'TH_IIN' | translate }}
+              </th>
+
+              <th style="padding:12px;">
+                {{ 'TH_ROLE' | translate }}
+              </th>
+
+              <th style="padding:12px; text-align:right;">
+                {{ 'TH_ACTION' | translate }}
+              </th>
+
             </tr>
+
             </thead>
+
             <tbody>
-            <tr *ngFor="let user of usersList" style="border-bottom: 1px solid #e2e8f0;">
-              <td style="padding: 12px; font-weight: 500;">{{ user.fullName }}</td>
-              <td style="padding: 12px; color: #475569;">{{ user.username }}</td>
-              <td style="padding: 12px;">
-                  <span *ngFor="let r of user.roles" style="padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; margin-right: 4px; background: #e0f2fe; color: #0369a1;">
-                    {{ r }}
-                  </span>
+
+            <tr *ngFor="let user of usersList" style="border-bottom:1px solid #e2e8f0;">
+
+              <td style="padding:12px; font-weight:500;">
+                {{ user.fullName }}
               </td>
-              <td style="padding: 12px; text-align: right;">
-                <button *ngIf="!user.roles.includes('ROLE_SUPERADMIN')"
-                        (click)="toggleUserAdminRights(user)"
-                        [style.background]="user.roles.includes('ROLE_ADMIN') ? '#f59e0b' : '#10b981'"
-                        style="color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">
-                  {{ user.roles.includes('ROLE_ADMIN') ? ('BTN_REMOVE_ADMIN' | translate) : ('BTN_GRANT_ADMIN' | translate) }}
+
+              <td style="padding:12px; color:#475569;">
+                {{ user.username }}
+              </td>
+
+              <td style="padding:12px;">
+
+          <span
+            *ngFor="let r of user.roles"
+            style="padding:4px 8px; border-radius:6px; font-size:11px; font-weight:600; margin-right:4px; background:#e0f2fe; color:#0369a1;">
+
+            {{ r }}
+
+          </span>
+
+              </td>
+
+              <td style="padding:12px; text-align:right;">
+
+                <button
+                  *ngIf="!user.roles.includes('ROLE_SUPERADMIN')"
+                  (click)="toggleUserAdminRights(user)"
+                  [style.background]="user.roles.includes('ROLE_ADMIN') ? '#f59e0b' : '#10b981'"
+                  style="color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:600;">
+
+                  {{
+                    user.roles.includes('ROLE_ADMIN')
+                      ? ('BTN_REMOVE_ADMIN' | translate)
+                      : ('BTN_GIVE_ADMIN' | translate)
+                  }}
+
                 </button>
+
               </td>
+
             </tr>
+
             </tbody>
+
           </table>
+
         </div>
+
       </div>
 
       <div class="course-modal-overlay" *ngIf="isDeleteModalOpen">
+
         <div class="course-modal-card">
-          <div class="course-modal-icon" style="color: #ef4444;">⚠️</div>
-          <h2 class="course-modal-title">{{ 'MODAL_DELETE_TITLE' | translate }}</h2>
-          <p class="course-modal-text">
-            {{ 'MODAL_DELETE_CONFIRM' | translate }}
-          </p>
-          <div class="course-modal-actions">
-            <button class="btn-modal-secondary" (click)="isDeleteModalOpen = false">{{ 'BTN_CANCEL' | translate }}</button>
-            <button class="btn-modal-primary" (click)="onDeleteAd()" style="background: #ef4444;">{{ 'BTN_DELETE_CONFIRM' | translate }}</button>
+
+          <div class="course-modal-icon" style="color:#ef4444;">
+            ⚠️
           </div>
+
+          <h2 class="course-modal-title">
+            {{ 'DELETE_TITLE' | translate }}
+          </h2>
+
+          <p class="course-modal-text">
+            {{ 'DELETE_TEXT' | translate }}
+          </p>
+
+          <div class="course-modal-actions">
+
+            <button
+              class="btn-modal-secondary"
+              (click)="isDeleteModalOpen = false">
+
+              {{ 'BTN_CANCEL' | translate }}
+
+            </button>
+
+            <button
+              class="btn-modal-primary"
+              (click)="onDeleteAd()"
+              style="background:#ef4444;">
+
+              {{ 'BTN_DELETE_CONFIRM' | translate }}
+
+            </button>
+
+          </div>
+
         </div>
+
       </div>
+
     </div>
   </main>
 </div>

@@ -19,17 +19,11 @@ interface SubjectDTO { id: number; title: string; description: string; attemptsC
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  courseFormFields = [
-    { label: 'LABEL_COURSE_TITLE', placeholder: 'PH_COURSE_TITLE', model: 'courseTitle' },
-    { label: 'LABEL_COURSE_DESC', placeholder: 'PH_COURSE_DESC', model: 'courseDescription' }
-  ];
-
-  getFieldValue(modelName: string): any {
-    return (this as any)[modelName];
-  }
-
-  setFieldValue(modelName: string, value: any): void {
-    (this as any)[modelName] = value;
+  // Добавьте этот метод в класс ProfileComponent
+  changeLanguage(lang: string): void {
+    this.translate.use(lang);
+    // Принудительно обновляем интерфейс, чтобы тексты сменились
+    this.cdr.detectChanges();
   }
   // Массив для вопросов теста
   quizFormFields = [
