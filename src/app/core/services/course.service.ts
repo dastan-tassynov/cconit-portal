@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import {DashboardGroup} from '../../features/dashboard/dashboard.component';
 
 export interface Course {
   id: number;
@@ -77,5 +78,15 @@ export class CourseService {
       headers: this.authService.getAuthHeaders()
     };
     return this.http.get<any[]>(`${this.apiUrl}/public/advertisements/active`, options);
+  }
+
+  getDashboardGroups(
+    purchasedOnly: boolean = false,
+    lang: string = 'RU'
+  ) {
+    return this.http.get<DashboardGroup[]>(
+      `${this.apiUrl}/student/courses/dashboard-groups`, { headers: this.authService.getAuthHeaders(), params: {purchasedOnly,lang}
+      }
+    );
   }
 }

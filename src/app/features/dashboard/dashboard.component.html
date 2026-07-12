@@ -152,65 +152,42 @@
             {{ promoSlides[currentSlideIndex].description }}
           </p>
         </div>
-
         <div class="badge-discount" style="position:relative;z-index:1;">
           <span>
             {{ promoSlides[currentSlideIndex].badge }}
           </span>
         </div>
-
         <button
           class="banner-arrow arrow-right"
           (click)="nextSlide()">
-
-          ›
-
-        </button>
-
+          ›</button>
       </div>
-
-      <div class="courses-grid">
-
-        <div
-          *ngIf="filteredCourses.length === 0"
-          style="grid-column:1/-1;text-align:center;color:#9ca3af;padding:40px;">
-
-          {{ 'MSG_NOT_FOUND' | translate }}
-
-        </div>
-
-        <div
-          *ngFor="let course of filteredCourses"
-          class="course-card"
-          (click)="viewCourse(course.id)">
-
-          <div class="course-preview">
-            <div
-              style="color:#ffffff;display:flex;align-items:center;justify-content:center;height:100%;font-size:36px;">
-              📚
+      <div *ngFor="let group of filteredGroups" class="course-group">
+        <h2 class="course-group-title">
+          {{ group.groupTitle }}
+        </h2>
+        <div class="courses-grid">
+          <div
+            *ngFor="let course of group.courses"
+            class="course-card"
+            (click)="viewCourse(course.id)">
+            <div class="course-preview">
+              <div style="color:#fff;display:flex;align-items:center;justify-content:center;height:100%;font-size:36px;">
+                📚
+              </div>
+            </div>
+            <div class="course-info">
+              <h3 class="course-name">
+                {{course.title}}
+              </h3>
+              <p class="course-desc">
+                {{course.description}}
+              </p>
             </div>
           </div>
-
-          <div class="course-info">
-
-            <h3 class="course-name">
-              {{ course.title }}
-            </h3>
-
-            <p class="course-desc">
-              {{ course.description }}
-            </p>
-
-          </div>
-
         </div>
-
       </div>
-
     </main>
-
   </div>
-
 </div>
-
 <app-footer></app-footer>

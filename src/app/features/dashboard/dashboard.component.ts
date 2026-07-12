@@ -18,6 +18,22 @@ interface PromoSlide {
   textColor?: string;
 }
 
+export interface DashboardCourse {
+  id: number;
+  title: string;
+  description: string;
+  hasAccess: boolean;
+  isCompleted: boolean;
+  attemptsCount: number;
+  lastScore: number | null;
+}
+
+export interface DashboardGroup {
+  programCode: string;
+  groupTitle: string;
+  courses: DashboardCourse[];
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -29,6 +45,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   searchQuery: string = '';
   allCourses: Course[] = [];
   filteredCourses: Course[] = [];
+  groupedCourses: DashboardGroup[] = [];
+  filteredGroups: DashboardGroup[] = [];
   currentSlideIndex: number = 0;
   slideInterval: any;
 
@@ -128,16 +146,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     const lang = this.translate.getCurrentLang();
 
-    this.courseService.getCourses(purchasedOnly, lang).subscribe({
-      next: (data) => {
-        this.allCourses = data;
-        this.filteredCourses = [...this.allCourses];
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Ошибка загрузки курсов:', err);
-      }
-    });
+    this.courseService.getDashboardGroups(purchasedOnly, lang)
+      .subscribe({
+        next: (data) => {
+          this.groupedCourses = data;
+          this.filteredGroups = [...data];
+          this.cdr.detectChanges();
+        }
+      });
   }
   // ЗАПРОС К БЭКЕНДУ: получаем реальный список курсов
   loadRealCourses(): void {
