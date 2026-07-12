@@ -164,6 +164,7 @@ export class SimpleTranslateService {
       "TRANSLATION_ANSWER": "Перевод ответов",
       "TRANSLATION_COURSE_DESC": "Добавление локализации для существующего курса",
       "LABEL_TRANSLATION_LANGUAGE": "Язык перевода",
+      "TRANSLATION_SELECT_MODULE" : "Выберите модуль"
     },
     kk: {
       'AUTH_LOGIN_TITLE': 'Қош келдіңіз',
@@ -321,6 +322,7 @@ export class SimpleTranslateService {
       "TRANSLATION_ANSWER": "Жауап аудармасы",
       "TRANSLATION_COURSE_DESC": "Бар курсқа аударма қосу",
       "LABEL_TRANSLATION_LANGUAGE": "Аударма тілі",
+      "TRANSLATION_SELECT_MODULE" : "Модульды таңдаңыз"
     }
   };
 
