@@ -79,6 +79,12 @@ export class ProfileComponent implements OnInit {
   adDescription: string = '';
   adLinkUrl: string = '';
   selectedAdImage: File | null = null;
+  lessonTranslationSubjectId: number | null = null;
+  lessonTranslationLessonId: number | null = null;
+  lessonTranslationLanguage = 'KZ';
+  lessonTranslationTitle = '';
+  lessonTranslationTextMaterial = '';
+  constructorLessons: any[] = [];
 
   constructor(private authService: AuthService,
               private router: Router,
@@ -380,6 +386,52 @@ export class ProfileComponent implements OnInit {
     }
     this.translationTitle = '';
     this.translationDescription = '';
+  }
+
+  loadConstructorLessons(): void {
+    if (!this.lessonTranslationSubjectId) {
+      this.constructorLessons = [];
+      return;}
+    this.http.get<any[]>(
+      `https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects/${this.lessonTranslationSubjectId}/lessons`,
+      {
+        headers: this.getAuthHeaders()
+      }
+      ).subscribe({
+      next: data => {
+        this.constructorLessons = data;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  saveLessonTranslation(): void {
+    if (!this.lessonTranslationLessonId) {
+      this.showToast('Выберите модуль', 'error');
+      return;
+    }
+    this.http.post(
+      `https://c49w5cwg79ul.share.zrok.io/api/admin/courses/lessons/${this.lessonTranslationLessonId}/translation`,
+      {
+        language: this.lessonTranslationLanguage,
+        title: this.lessonTranslationTitle,
+        textMaterial: this.lessonTranslationTextMaterial
+      },
+      {
+        headers: this.getAuthHeaders()
+      }
+      ).subscribe({
+      next: () => {
+        this.showToast('Перевод сохранён');
+        this.lessonTranslationLessonId = null;
+        this.lessonTranslationTitle = '';
+        this.lessonTranslationTextMaterial = '';
+        this.cdr.detectChanges();
+        },
+      error: () => {
+        this.showToast('Ошибка', 'error');
+      }
+    });
   }
 
   goBack(): void { this.router.navigate(['/dashboard']); }

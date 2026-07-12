@@ -535,11 +535,93 @@
               </button>
             </div>
           </div>
-
-        <!-- Перевод модулей -->
-
         <div class="constructor-section">
-
+          <div class="constructor-section-header">
+            <h4>
+              📚 {{ 'TRANSLATION_MODULE' | translate }}
+            </h4>
+            <p>
+              {{ 'TRANSLATION_MODULE_DESC' | translate }}
+            </p>
+          </div>
+          <!-- Курс -->
+          <div class="form-group">
+            <label>
+              {{ 'CONSTRUCTOR_SELECT_COURSE' | translate }}
+            </label>
+            <select
+              [(ngModel)]="lessonTranslationSubjectId"
+              (change)="loadConstructorLessons()">
+              <option
+                [ngValue]="null"
+                disabled>
+                {{ 'PH_SELECT_COURSE' | translate }}
+              </option>
+              <option
+                *ngFor="let course of constructorSubjects"
+                [ngValue]="course.id">
+                {{course.title}}
+              </option>
+            </select>
+          </div>
+          <!-- Модуль -->
+          <div class="form-group">
+            <label>
+              {{ 'TRANSLATION_SELECT_MODULE' | translate }}
+            </label>
+            <select
+              [(ngModel)]="lessonTranslationLessonId">
+              <option
+                [ngValue]="null"
+                disabled>
+                {{ 'TRANSLATION_SELECT_MODULE' | translate }}
+              </option>
+              <option
+                *ngFor="let lesson of constructorLessons"
+                [ngValue]="lesson.id">
+                {{lesson.title}}
+              </option>
+            </select>
+          </div>
+          <!-- Язык -->
+          <div class="form-group">
+            <label>
+              {{ 'LABEL_TRANSLATION_LANGUAGE' | translate }}
+            </label>
+            <select
+              [(ngModel)]="lessonTranslationLanguage">
+              <option value="RU">
+                Русский
+              </option>
+              <option value="KZ">
+                Қазақша
+              </option>
+            </select>
+          </div>
+          <!-- Название -->
+          <div class="form-group">
+            <label>
+              {{ 'CONSTRUCTOR_MODULE_TITLE' | translate }}
+            </label>
+            <input
+              type="text"
+              [(ngModel)]="lessonTranslationTitle">
+          </div>
+          <!-- Материал -->
+          <div class="form-group">
+            <label>
+              {{ 'CONSTRUCTOR_MODULE_CONTENT' | translate }}
+            </label>
+            <textarea
+              class="form-textarea large"
+              [(ngModel)]="lessonTranslationTextMaterial">
+            </textarea>
+          </div>
+          <button
+            class="btn-module"
+            (click)="saveLessonTranslation()">
+            🌐 {{ 'BTN_SAVE_TRANSLATION' | translate }}
+          </button>
         </div>
 
         <!-- Перевод тестов -->
