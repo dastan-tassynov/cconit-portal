@@ -197,6 +197,7 @@ export class ProfileComponent implements OnInit {
     const formData = new FormData();
     formData.append('title', this.lessonTitle);
     formData.append('textMaterial', this.lessonTextMaterial);
+    formData.append('language', 'KZ');
     if (this.selectedVideoFile) formData.append('videoFile', this.selectedVideoFile);
 
     this.http.post(`https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects/${this.selectedSubjectIdForLesson}/lessons-multi`, formData, { headers: this.getAuthHeaders() })
