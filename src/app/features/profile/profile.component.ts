@@ -50,7 +50,7 @@ export class ProfileComponent implements OnInit {
   private toastTimeout: any;
 
   coursesFromBack: SubjectDTO[] = [];
-  constructorSubjects: SubjectConstructorDTO[] = [];
+  constructorSubjects: any[] = [];
   usersList: PortalUser[] = [];
   adsList: any[] = [];
   courseTextMaterial: string = '';
@@ -73,11 +73,8 @@ export class ProfileComponent implements OnInit {
   translationSubjectId: number | null = null;
   translationSubject: SubjectConstructorDTO | null = null;
   translationLanguage = '';
-
   translationTitle = '';
-
   translationDescription = '';
-
   adTitle: string = '';
   adDescription: string = '';
   adLinkUrl: string = '';
@@ -127,6 +124,8 @@ export class ProfileComponent implements OnInit {
   selectTab(tabName: string): void {
     this.activeTab = tabName;
     if (tabName === 'courses') this.loadStudentCourses();
+    else if (tabName === 'translations')
+      this.loadConstructorSubjects();
     else if (tabName === 'roles' && this.hasRole(['ROLE_SUPERADMIN'])) this.loadAllUsers();
     else if (tabName === 'ads' && this.hasRole(['ROLE_ADMIN', 'ROLE_SUPERADMIN'])) this.loadAdvertisements();
   }
@@ -328,37 +327,44 @@ export class ProfileComponent implements OnInit {
       });
   }
   loadConstructorSubjects(): void {
-    this.http.get<SubjectConstructorDTO[]>(
+    this.http.get<any[]>(
       'https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects',
       {
         headers: this.getAuthHeaders()
       }
-    ).subscribe({
-      next: data => {
+      ).subscribe({
+      next: (data) => {
         this.constructorSubjects = data;
         this.cdr.detectChanges();
-        },
-      error: err => console.error(err)
+      }
     });
   }
   saveTranslation(): void {
+    if (!this.translationSubjectId) {
+      this.showToast('Выберите курс', 'error');
+      return;
+    }
     this.http.post(
       `https://c49w5cwg79ul.share.zrok.io/api/admin/courses/subjects/${this.translationSubjectId}/translation`,
       {
         language: this.translationLanguage,
         title: this.translationTitle,
         description: this.translationDescription
-      }, {
-        headers: this.getAuthHeaders()}
-    ).subscribe({
+      },
+      {
+        headers: this.getAuthHeaders()
+      }
+      ).subscribe({
       next: () => {
-        this.showToast("Перевод сохранен");
+        this.showToast('Перевод сохранен');
         this.translationSubjectId = null;
         this.translationTitle = '';
         this.translationDescription = '';
-        this.loadConstructorSubjects();},
+        this.loadConstructorSubjects();
+        this.cdr.detectChanges();
+        },
       error: () => {
-        this.showToast("Ошибка", "error");
+        this.showToast('Ошибка сохранения', 'error');
       }
     });
   }

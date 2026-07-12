@@ -155,7 +155,15 @@ export class SimpleTranslateService {
       "BTN_SAVE_TRANSLATION": "Сохранить перевод",
       "CONSTRUCTOR_LANGUAGE": "Язык",
       "LANGUAGE_RU": "Русский",
-      "LANGUAGE_KZ": "Қазақша"
+      "LANGUAGE_KZ": "Қазақша",
+      "MENU_TRANSLATIONS": "Конструктор переводов",
+      "TRANSLATION_COURSE": "Перевод курса",
+      "TRANSLATION_MODULE": "Перевод модулей",
+      "TRANSLATION_TEST": "Перевод тестов",
+      "TRANSLATION_QUESTION": "Перевод вопросов",
+      "TRANSLATION_ANSWER": "Перевод ответов",
+      "TRANSLATION_COURSE_DESC": "Добавление локализации для существующего курса",
+      "LABEL_TRANSLATION_LANGUAGE": "Язык перевода",
     },
     kk: {
       'AUTH_LOGIN_TITLE': 'Қош келдіңіз',
@@ -304,7 +312,15 @@ export class SimpleTranslateService {
       "BTN_SAVE_TRANSLATION": "Аударманы сақтау",
       "CONSTRUCTOR_LANGUAGE": "Тіл",
       "LANGUAGE_RU": "Орысша",
-      "LANGUAGE_KZ": "Қазақша"
+      "LANGUAGE_KZ": "Қазақша",
+      "MENU_TRANSLATIONS": "Аударма конструкторы",
+      "TRANSLATION_COURSE": "Курс аудармасы",
+      "TRANSLATION_MODULE": "Модуль аудармасы",
+      "TRANSLATION_TEST": "Тест аудармасы",
+      "TRANSLATION_QUESTION": "Сұрақ аудармасы",
+      "TRANSLATION_ANSWER": "Жауап аудармасы",
+      "TRANSLATION_COURSE_DESC": "Бар курсқа аударма қосу",
+      "LABEL_TRANSLATION_LANGUAGE": "Аударма тілі",
     }
   };
 
