@@ -83,20 +83,22 @@
 }
 
 .pdf-viewer-container {
-  width: 95% !important;
-  height: 90vh !important;
-  /* Важные настройки для Android и iOS */
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch;
-  /* Дополнительные настройки для стабильности */
-  overscroll-behavior: contain;
+  position: relative;
+  width: 90% !important;
+  max-width: 900px; /* Чтобы не растягивалось на весь экран на десктопе */
+  height: 85vh !important;
+  background: white;
+  padding: 50px 10px 10px 10px; /* Больше места сверху для кнопки */
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 pdf-viewer {
-  display: block;
+  flex: 1; /* Заставляет вьюер занять всё свободное место */
   width: 100% !important;
-  height: auto !important; /* Позволяет просмотрщику растягиваться по высоте контента */
-  pointer-events: auto !important;
+  height: 100% !important;
+  overflow: auto !important;
 }
 
 .close-btn {
