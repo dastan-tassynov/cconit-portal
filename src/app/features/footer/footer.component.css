@@ -63,3 +63,24 @@
     margin-top: 5px;
   }
 }
+
+.awards-container {
+  display: flex;
+  gap: 15px; /* Расстояние между картинками */
+  justify-content: center;
+  align-items: center;
+}
+
+.award-icon {
+  width: 60px;       /* Задаем фиксированный размер иконки */
+  height: 60px;
+  object-fit: contain; /* Чтобы изображение не обрезалось */
+  border-radius: 50%;  /* Делает иконки круглыми, если хотите */
+  background: #fff;    /* Фон под иконкой */
+  padding: 5px;
+  transition: transform 0.3s ease;
+}
+
+.award-icon:hover {
+  transform: scale(1.1); /* Легкое увеличение при наведении */
+}
