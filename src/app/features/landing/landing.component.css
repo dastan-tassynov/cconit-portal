@@ -79,11 +79,24 @@
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center;
   z-index: 9999; /* Очень высокий z-index */
+  touch-action: none;
 }
 
 .pdf-viewer-container {
-  position: relative; /* Важно для позиционирования кнопки */
-  width: 80%; height: 90%; background: white; padding: 40px 20px 20px 20px;
+  width: 95% !important;
+  height: 90vh !important;
+  /* Важные настройки для Android и iOS */
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  /* Дополнительные настройки для стабильности */
+  overscroll-behavior: contain;
+}
+
+pdf-viewer {
+  display: block;
+  width: 100% !important;
+  height: auto !important; /* Позволяет просмотрщику растягиваться по высоте контента */
+  pointer-events: auto !important;
 }
 
 .close-btn {
@@ -140,4 +153,23 @@
   height: 14px;
   background-color: #2563eb;
   border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .main-content-header { padding: 10px 15px; }
+
+  .features-grid {
+    grid-template-columns: 1fr; /* Карточки в один столбец */
+  }
+
+  .pdf-slider {
+    flex-wrap: wrap; /* Позволяет карточкам переноситься */
+    justify-content: center;
+  }
+
+  .pdf-card {
+    min-width: 90%; /* Карточки на всю ширину экрана */
+  }
+
+  .hero-icon { width: 60px; height: 60px; }
 }
