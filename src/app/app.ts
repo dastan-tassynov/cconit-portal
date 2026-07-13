@@ -41,7 +41,7 @@ export class App implements OnInit{
 
     if (event.key === 'PrintScreen') {
       navigator.clipboard.writeText('');
-      alert('Скриншоты запрещены политикой безопасности qPortal!');
+      alert('Скриншоты запрещены политикой безопасности ЦОНИТ!');
     }
   }
 
