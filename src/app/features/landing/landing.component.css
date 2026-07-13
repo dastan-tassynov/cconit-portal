@@ -5,7 +5,14 @@
   padding: 15px 40px; border-bottom: 1px solid #e2e8f0; background: white;
 }
 
-.sidebar-brand { font-weight: 800; font-size: 24px; color: #1e293b; }
+.sidebar-brand {
+  font-weight: 800;
+  font-size: 24px;
+  color: #1e293b;
+  display: flex;       /* Включаем Flexbox */
+  align-items: center;  /* Выравниваем элементы по вертикали по центру */
+  gap: 10px;           /* Добавляем расстояние между точкой и текстом */
+}
 
 .header-actions { display: flex; gap: 20px; align-items: center; }
 
@@ -128,3 +135,9 @@
 .feature-icon { font-size: 32px; margin-bottom: 10px; }
 
 .feature-card h4 { margin: 10px 0; color: #1e293b; }
+.logo-dot {
+  width: 14px;
+  height: 14px;
+  background-color: #2563eb;
+  border-radius: 50%;
+}
