@@ -1,0 +1,177 @@
+.landing-layout { min-height: 100vh; display: flex; flex-direction: column; }
+
+.main-content-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 15px 40px; border-bottom: 1px solid #e2e8f0; background: white;
+}
+
+.sidebar-brand {
+  font-weight: 800;
+  font-size: 24px;
+  color: #1e293b;
+  display: flex;       /* Включаем Flexbox */
+  align-items: center;  /* Выравниваем элементы по вертикали по центру */
+  gap: 10px;           /* Добавляем расстояние между точкой и текстом */
+}
+
+.header-actions { display: flex; gap: 20px; align-items: center; }
+
+.auth-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.auth-icon {
+  width: 24px;   /* Подберите размер, который лучше впишется в ваш хедер */
+  height: 24px;
+  object-fit: contain;
+}
+
+/* Если нужно добавить эффект при наведении */
+.auth-btn:hover .auth-icon {
+  opacity: 0.7;
+}
+
+.content-wrapper {
+  max-width: 1200px; /* Фиксированная ширина для центровки */
+  margin: 0 auto;    /* Это делает магию центрирования */
+  padding: 40px 20px;
+}
+
+.pdf-slider {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0;
+  justify-content: flex-start; /* Оставляем элементы слева, если их мало */
+  /* Если хотите, чтобы слайдер был строго по центру, можно использовать:
+     justify-content: center;
+     Но при горизонтальном скролле лучше оставить flex-start */
+}
+
+.pdf-card {
+  min-width: 220px; height: 300px; border: 1px solid #e2e8f0;
+  border-radius: 12px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; background: #f8fafc;
+  transition: transform 0.2s;
+}
+
+.pdf-card:hover { transform: translateY(-5px); border-color: #4f46e5; }
+
+.pdf-icon { font-size: 48px; margin-bottom: 15px; }
+
+.btn-open {
+  margin-top: 20px; padding: 8px 16px; background: #4f46e5;
+  color: white; border: none; border-radius: 6px; cursor: pointer;
+}
+
+.projects-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Убедитесь, что у overlay есть z-index, а у кнопки он выше */
+.pdf-viewer-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center;
+  z-index: 9999; /* Очень высокий z-index */
+  touch-action: none;
+}
+
+.pdf-viewer-container {
+  position: relative;
+  width: 90% !important;
+  max-width: 900px; /* Чтобы не растягивалось на весь экран на десктопе */
+  height: 85vh !important;
+  background: white;
+  padding: 50px 10px 10px 10px; /* Больше места сверху для кнопки */
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+pdf-viewer {
+  flex: 1; /* Заставляет вьюер занять всё свободное место */
+  width: 100% !important;
+  height: 100% !important;
+  overflow: auto !important;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10000; /* Должен быть выше контейнера */
+  cursor: pointer;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.pdf-name {
+  text-align: center;
+  padding: 0 10px;
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Ограничение до 3 строк */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hero { text-align: center; padding: 40px 20px; }
+
+.hero-icon { width: 80px; height: 80px; margin-bottom: 15px; }
+
+.hero-description { max-width: 800px; margin: 0 auto 40px; color: #64748b; }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.feature-card {
+  padding: 25px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: white;
+  transition: 0.3s;
+}
+
+.feature-card:hover { box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+.feature-icon { font-size: 32px; margin-bottom: 10px; }
+
+.feature-card h4 { margin: 10px 0; color: #1e293b; }
+.logo-dot {
+  width: 14px;
+  height: 14px;
+  background-color: #2563eb;
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .main-content-header { padding: 10px 15px; }
+
+  .features-grid {
+    grid-template-columns: 1fr; /* Карточки в один столбец */
+  }
+
+  .pdf-slider {
+    flex-wrap: wrap; /* Позволяет карточкам переноситься */
+    justify-content: center;
+  }
+
+  .pdf-card {
+    min-width: 90%; /* Карточки на всю ширину экрана */
+  }
+
+  .hero-icon { width: 60px; height: 60px; }
+}

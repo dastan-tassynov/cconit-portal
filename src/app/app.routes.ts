@@ -7,10 +7,12 @@ import { RegisterComponent } from './features/register/register.component';
 import { CourseViewComponent } from './features/course-view/course-view.component'; // Импортируем новый компонент
 import { ProfileComponent } from './features/profile/profile.component'; // Импортируем новый компонент
 import { VerifyCertificateComponent } from './features/verify-certificate/verify-certificate.component';
-import {LandingComponent} from './features/landing/landing.component';
+import {LandingPredComponent} from './features/landing/landingPred/landing.pred.component';
+import {LandingPravaComponent} from './features/landing/landingPrava/landing.prava.component';
+import {LandingBioComponent} from './features/landing/landingBio/landing.bio.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'landing', pathMatch: 'full' },
+  { path: '', redirectTo: 'landingPred', pathMatch: 'full' },
 
   // Открытый роут для авторизации
   { path: 'auth', component: AuthComponent },
@@ -22,7 +24,9 @@ export const routes: Routes = [
   { path: 'quiz', component: QuizComponent, canActivate: [authGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   {path: 'verify/certificate/:uuid', component: VerifyCertificateComponent},
-  { path: 'landing', component: LandingComponent },
+  { path: 'landingPred', component: LandingPredComponent },
+  { path: 'landingBio', component: LandingBioComponent },
+  { path: 'landingPrava', component: LandingPravaComponent },
 
   // Любой другой левый адрес кидает на страницу входа
   { path: '**', redirectTo: 'auth' }
