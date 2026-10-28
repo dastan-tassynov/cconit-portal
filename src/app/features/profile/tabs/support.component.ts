@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, input, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -19,19 +19,7 @@ import { saveBlob } from '../../../core/utils/download';
   styleUrl: '../profile.shared.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <h3 class="section-title">🧑‍💼 {{ 'CAB_MENU_SUPPORT' | translate }}</h3>
-
-    <div class="custom-tabs">
-      @for (t of tabs; track t.id) {
-        <button type="button" class="btn-small" [class.btn-small--green]="tab() === t.id" [class.btn-small--muted]="tab() !== t.id"
-                (click)="tab.set(t.id)">
-          {{ t.key | translate }}
-          @if (t.id === 'names' && nameChanges().length) { ({{ nameChanges().length }}) }
-          @if (t.id === 'locked' && quizLocked().length) { ({{ quizLocked().length }}) }
-          @if (t.id === 'orleu' && orleu()?.failedCount) { (⚠ {{ orleu()?.failedCount }}) }
-        </button>
-      }
-    </div>
+    <h3 class="section-title">{{ currentTitle() | translate }}</h3>
 
     @switch (tab()) {
       @case ('students') {
@@ -230,16 +218,20 @@ export class SupportComponent implements OnInit {
   private readonly toast = inject(ToastService);
   private readonly fb = inject(FormBuilder).nonNullable;
 
-  protected readonly tabs = [
-    { id: 'students', key: 'SUPPORT_TAB_STUDENTS' },
-    { id: 'locked', key: 'SUPPORT_TAB_LOCKED' },
-    { id: 'names', key: 'SUPPORT_TAB_NAMES' },
-    { id: 'announce', key: 'SUPPORT_TAB_ANNOUNCE' },
-    { id: 'orleu', key: 'SUPPORT_TAB_ORLEU' },
-    { id: 'reports', key: 'SUPPORT_TAB_REPORTS' },
-  ] as const;
+  /** Раздел кабинета администратора (data маршрута): каждый — отдельная страница в меню. */
+  readonly section = input<'students' | 'quiz-locked' | 'name-changes' | 'announcements' | 'orleu' | 'reports'>('students');
 
-  protected readonly tab = signal<'students' | 'locked' | 'names' | 'announce' | 'orleu' | 'reports'>('students');
+  private static readonly TABS = {
+    students: { tab: 'students', title: 'SUPPORT_TAB_STUDENTS' },
+    'quiz-locked': { tab: 'locked', title: 'SUPPORT_TAB_LOCKED' },
+    'name-changes': { tab: 'names', title: 'SUPPORT_TAB_NAMES' },
+    announcements: { tab: 'announce', title: 'SUPPORT_TAB_ANNOUNCE' },
+    orleu: { tab: 'orleu', title: 'SUPPORT_TAB_ORLEU' },
+    reports: { tab: 'reports', title: 'SUPPORT_TAB_REPORTS' },
+  } as const;
+
+  protected readonly tab = computed(() => SupportComponent.TABS[this.section()].tab);
+  protected readonly currentTitle = computed(() => SupportComponent.TABS[this.section()].title);
   protected readonly query = signal('');
   protected readonly searched = signal(false);
   protected readonly results = signal<StudentAdmin[]>([]);
@@ -267,11 +259,23 @@ export class SupportComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.adminApi.getSubjects().subscribe(subjects => this.subjects.set(subjects));
-    this.loadNameChanges();
-    this.loadQuizLocked();
-    this.loadOrleu();
+    // Каждый раздел — своя страница: грузим только то, что на ней нужно
+    switch (this.tab()) {
+      case 'students':
+        this.adminApi.getSubjects().subscribe(subjects => this.subjects.set(subjects));
+        break;
+      case 'names':
+        this.loadNameChanges();
+        break;
+      case 'locked':
+        this.loadQuizLocked();
+        break;
+      case 'orleu':
+        this.loadOrleu();
+        break;
+    }
   }
+
 
   protected loadOrleu(): void {
     this.adminApi.orleuOverview().subscribe(o => this.orleu.set(o));

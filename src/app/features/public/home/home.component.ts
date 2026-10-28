@@ -5,7 +5,8 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ContentApiService } from '../../../core/api/content-api.service';
 import { CourseApiService } from '../../../core/api/course-api.service';
-import { Direction as CatalogDirection, NewsItem, PublicCourse, PublicStats } from '../../../core/api/models';
+import { NewsItem, PublicCourse, PublicStats } from '../../../core/api/models';
+import { OTHER_GROUP, groupCourses } from '../../../core/utils/course-groups';
 import { errorMessage } from '../../../core/http/error-message';
 import { LanguageService } from '../../../core/i18n/language.service';
 import { ToastService } from '../../../core/ui/toast.service';
@@ -59,30 +60,10 @@ export class HomeComponent {
   // ---------- направления и курсы
   protected readonly coursesLoading = signal(true);
   private readonly courses = signal<PublicCourse[]>([]);
-  private readonly catalogDirections = signal<CatalogDirection[]>([]);
-  /**
-   * Вкладки: направления из админки. Если направления ещё не заведены —
-   * группируем по коду программы, чтобы главная не была пустой.
-   */
-  protected readonly directions = computed<Direction[]>(() => {
-    const courses = this.courses();
-    const dirs = this.catalogDirections();
-    if (dirs.length) {
-      const result: Direction[] = dirs.map(d => ({
-        code: String(d.id), title: d.title, icon: d.icon || '🎓',
-        courses: courses.filter(c => c.directionId === d.id),
-      }));
-      const other = courses.filter(c => !c.directionId);
-      if (other.length) result.push({ code: 'OTHER', title: '', icon: '📚', courses: other });
-      return result.filter(d => d.courses.length);
-    }
-    const groups = new Map<string, PublicCourse[]>();
-    for (const course of courses) {
-      const code = course.programCode || 'OTHER';
-      groups.set(code, [...(groups.get(code) ?? []), course]);
-    }
-    return [...groups.entries()].map(([code, list]) => ({ code, title: code, icon: '🎓', courses: list }));
-  });
+  /** Вкладки — предметы из Өрлеу (как в каталоге), курсы с «ручным» кодом — «Другие курсы». */
+  protected readonly directions = computed<Direction[]>(() =>
+    groupCourses(this.courses()).map(g => ({ code: g.key, title: g.title, icon: g.key === OTHER_GROUP ? '📚' : '🎓', courses: g.courses })),
+  );
   protected readonly activeDirection = signal<string | null>(null);
   protected readonly visibleCourses = computed(() => {
     const dirs = this.directions();
@@ -167,7 +148,6 @@ export class HomeComponent {
       },
       error: () => this.coursesLoading.set(false),
     });
-    this.contentApi.directions().subscribe({ next: d => this.catalogDirections.set(d), error: () => undefined });
     this.contentApi.news(0, NEWS_PREVIEW).subscribe({ next: p => this.news.set(p.items), error: () => undefined });
   }
 }

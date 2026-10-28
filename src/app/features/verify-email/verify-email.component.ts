@@ -36,7 +36,7 @@ const RESEND_SECONDS = 60;
 
         <form class="code" (submit)="$event.preventDefault(); submit()">
           @for (i of slots; track i) {
-            <input #digit class="code__digit" inputmode="numeric" autocomplete="one-time-code" maxlength="1"
+            <input #digit class="code__digit" inputmode="numeric" autocomplete="one-time-code"
                    [attr.aria-label]="('VERIFY_DIGIT' | translate) + ' ' + (i + 1)"
                    [value]="digits()[i]" (input)="onInput(i, $event)" (keydown)="onKey(i, $event)" (paste)="onPaste($event)">
           }
@@ -107,12 +107,26 @@ export class VerifyEmailComponent implements AfterViewInit {
 
   protected onInput(i: number, event: Event): void {
     const el = event.target as HTMLInputElement;
-    const value = el.value.replace(/\D/g, '').slice(-1);
-    el.value = value;
-    this.digits.update(d => d.map((x, j) => (j === i ? value : x)));
+    const typed = el.value.replace(/\D/g, '');
     this.error.set('');
-    if (value && i < 3) this.focus(i + 1);
+    if (typed.length > 1) {
+      // автоподстановка кода из письма (one-time-code) или быстрый ввод — раскладываем по клеткам
+      this.fillFrom(i, typed);
+      return;
+    }
+    el.value = typed;
+    this.digits.update(d => d.map((x, j) => (j === i ? typed : x)));
+    if (typed && i < 3) this.focusNow(i + 1);
     if (this.code().length === 4) this.submit();
+  }
+
+  private fillFrom(start: number, text: string): void {
+    const next = [...this.digits()];
+    for (let k = 0; k < text.length && start + k < 4; k++) next[start + k] = text[k];
+    this.digits.set(next);
+    this.inputs().forEach((ref, j) => (ref.nativeElement.value = next[j]));
+    const empty = next.findIndex(x => !x);
+    if (empty === -1) this.submit(); else this.focusNow(empty);
   }
 
   protected onKey(i: number, event: KeyboardEvent): void {
@@ -123,8 +137,8 @@ export class VerifyEmailComponent implements AfterViewInit {
     const text = (event.clipboardData?.getData('text') ?? '').replace(/\D/g, '').slice(0, 4);
     if (!text) return;
     event.preventDefault();
-    this.digits.set([0, 1, 2, 3].map(j => text[j] ?? ''));
-    if (text.length === 4) this.submit(); else this.focus(text.length);
+    this.digits.set(['', '', '', '']);
+    this.fillFrom(0, text);
   }
 
   protected submit(): void {
@@ -163,7 +177,15 @@ export class VerifyEmailComponent implements AfterViewInit {
     });
   }
 
+  /** После перерисовки (первый показ, сброс после ошибки). */
   private focus(i: number): void {
-    setTimeout(() => this.inputs()[i]?.nativeElement.focus());
+    setTimeout(() => this.focusNow(i));
+  }
+
+  /** Сразу — иначе быстро набранные цифры попадают в старую клетку и теряются. */
+  private focusNow(i: number): void {
+    const el = this.inputs()[i]?.nativeElement;
+    el?.focus();
+    el?.select();
   }
 }

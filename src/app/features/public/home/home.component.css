@@ -119,8 +119,8 @@
   .news-grid, .about__head, .about__grid, .directions, .directions__grid, .contact__card { grid-template-columns: 1fr; }
   .banner-card { flex-direction: column; align-items: stretch; }
   .banner-card__form input { min-width: 0; flex: 1; }
-  .directions__tabs { flex-direction: row; overflow-x: auto; }
-  .tab { white-space: nowrap; }
+  .directions__tabs { flex-direction: row; flex-wrap: wrap; }
+  .tab { white-space: nowrap; padding: 10px 12px; }
   .contact__art { display: none; }
 }
 @media (max-width: 560px) {

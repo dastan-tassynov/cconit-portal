@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@ang
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AdminApiService } from '../../../core/api/admin-api.service';
-import { AdminDirection, ConstructorSubject, OrleuProgram } from '../../../core/api/models';
+import { ConstructorSubject, OrleuProgram } from '../../../core/api/models';
 import { errorMessage } from '../../../core/http/error-message';
 import { ToastService } from '../../../core/ui/toast.service';
 
 type AuthorGroup = FormGroup<{ fullName: FormControl<string>; position: FormControl<string> }>;
 
-/** Каталог: направления и страница курса (направление, часы, задачи, разработчики, PDF-план). */
+/** Каталог: группы-предметы из Өрлеу и страница курса (код программы, часы, задачи, разработчики, PDF-план). */
 @Component({
   selector: 'app-catalog-admin',
   imports: [ReactiveFormsModule, FormsModule, TranslatePipe],
@@ -21,22 +21,14 @@ export class CatalogAdminComponent implements OnInit {
   private readonly toast = inject(ToastService);
   private readonly fb = inject(FormBuilder).nonNullable;
 
-  protected readonly directions = signal<AdminDirection[]>([]);
   protected readonly subjects = signal<ConstructorSubject[]>([]);
   protected readonly selectedSubjectId = signal<number | null>(null);
   protected readonly hasPlan = signal(false);
   protected readonly orleuPrograms = signal<OrleuProgram[]>([]);
   protected readonly saving = signal(false);
 
-  protected readonly directionForm = this.fb.group({
-    id: this.fb.control<number | null>(null),
-    titleRu: ['', Validators.required],
-    titleKz: ['', Validators.required],
-    icon: ['🎓'],
-    sortOrder: [0],
-  });
-
   protected readonly detailsForm = this.fb.group({
+    // направление больше не выбирается (группы каталога = предметы Өрлеу), но сохраняем прежнее значение
     directionId: this.fb.control<number | null>(null),
     programCode: ['', [Validators.required, Validators.maxLength(100)]],
     hours: this.fb.control<number | null>(null),
@@ -48,41 +40,28 @@ export class CatalogAdminComponent implements OnInit {
     return this.detailsForm.controls.authors;
   }
 
+  protected readonly syncing = signal(false);
+
+  /** «Обновить из Өрлеу» — подтянуть программы (/op), не дожидаясь ночной синхронизации. */
+  protected syncPrograms(): void {
+    this.syncing.set(true);
+    this.adminApi.orleuSyncPrograms().subscribe({
+      next: res => {
+        this.syncing.set(false);
+        this.toast.success(res.message);
+        this.adminApi.orleuPrograms().subscribe(p => this.orleuPrograms.set(p));
+      },
+      error: err => {
+        this.syncing.set(false);
+        this.toast.error(errorMessage(err, 'ERR_GENERIC'));
+      },
+    });
+  }
+
   ngOnInit(): void {
-    this.loadDirections();
     // Справочник программ Өрлеу для подсказки кода (если интеграция недоступна — просто без подсказок)
     this.adminApi.orleuPrograms().subscribe({ next: p => this.orleuPrograms.set(p), error: () => this.orleuPrograms.set([]) });
     this.adminApi.getSubjects().subscribe(s => this.subjects.set(s));
-  }
-
-  // ---------------------------------------------------------------- направления
-
-  protected editDirection(d: AdminDirection): void {
-    this.directionForm.setValue({ id: d.id ?? null, titleRu: d.titleRu, titleKz: d.titleKz, icon: d.icon ?? '', sortOrder: d.sortOrder });
-  }
-
-  protected saveDirection(): void {
-    if (this.directionForm.invalid) {
-      this.directionForm.markAllAsTouched();
-      return;
-    }
-    const v = this.directionForm.getRawValue();
-    this.adminApi.saveDirection({ ...v, id: v.id ?? undefined }).subscribe({
-      next: () => {
-        this.toast.success('TOAST_SAVED');
-        this.directionForm.reset({ id: null, titleRu: '', titleKz: '', icon: '🎓', sortOrder: 0 });
-        this.loadDirections();
-      },
-      error: err => this.toast.error(errorMessage(err, 'ERR_GENERIC')),
-    });
-  }
-
-  protected deleteDirection(d: AdminDirection): void {
-    if (!d.id || !confirm(this.confirmText(d.titleRu))) return;
-    this.adminApi.deleteDirection(d.id).subscribe({
-      next: () => this.loadDirections(),
-      error: err => this.toast.error(errorMessage(err, 'ERR_GENERIC')),
-    });
   }
 
   // ---------------------------------------------------------------- детали курса
@@ -123,7 +102,6 @@ export class CatalogAdminComponent implements OnInit {
       next: () => {
         this.saving.set(false);
         this.toast.success('TOAST_SAVED');
-        this.loadDirections();
       },
       error: err => {
         this.saving.set(false);
@@ -154,13 +132,5 @@ export class CatalogAdminComponent implements OnInit {
 
   private authorGroup(fullName: string, position: string): AuthorGroup {
     return this.fb.group({ fullName: [fullName, Validators.required], position: [position] });
-  }
-
-  private loadDirections(): void {
-    this.adminApi.getDirections().subscribe(d => this.directions.set(d));
-  }
-
-  private confirmText(title: string): string {
-    return `${title}?`;
   }
 }

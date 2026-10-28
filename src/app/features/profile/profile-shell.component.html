@@ -25,11 +25,13 @@
         <a routerLink="/profile" class="menu__item menu__item--switch" [attr.title]="'CAB_TO_STUDENT' | translate">
           <span class="menu__icon">🎓</span><span class="menu__text">{{ 'CAB_TO_STUDENT' | translate }}</span>
         </a>
-        <p class="menu__label">{{ 'DIV_ADMIN' | translate }}</p>
-        @for (item of adminMenu; track item.path) {
-          <a [routerLink]="['/admin', item.path]" routerLinkActive="menu__item--active" class="menu__item" [attr.title]="item.key | translate">
-            <span class="menu__icon">{{ item.icon }}</span><span class="menu__text">{{ item.key | translate }}</span>
-          </a>
+        @for (group of adminMenu; track group.key) {
+          <p class="menu__label">{{ group.key | translate }}</p>
+          @for (item of group.items; track item.path) {
+            <a [routerLink]="['/admin', item.path]" routerLinkActive="menu__item--active" class="menu__item" [attr.title]="item.key | translate">
+              <span class="menu__icon">{{ item.icon }}</span><span class="menu__text">{{ item.key | translate }}</span>
+            </a>
+          }
         }
         @if (session.isSuperAdmin()) {
           <a routerLink="/admin/users" routerLinkActive="menu__item--active" class="menu__item" [attr.title]="'MENU_ROLES' | translate">

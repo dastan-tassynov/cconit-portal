@@ -56,16 +56,37 @@ export class ProfileShellComponent implements OnInit {
     { path: 'account', key: 'CAB_MENU_ACCOUNT', icon: '👤' },
   ];
 
-  protected readonly adminMenu: MenuItem[] = [
-    { path: 'constructor', key: 'MENU_CONSTRUCTOR', icon: '🛠' },
-    { path: 'catalog', key: 'CAB_MENU_CATALOG', icon: '🗂' },
-    { path: 'translations', key: 'MENU_TRANSLATIONS', icon: '🌐' },
-    { path: 'content', key: 'CAB_MENU_CONTENT', icon: '📰' },
-    { path: 'applications', key: 'CAB_MENU_APPLICATIONS', icon: '📋' },
-    { path: 'support', key: 'CAB_MENU_SUPPORT', icon: '🧑‍💼' },
-    { path: 'contests-admin', key: 'CAB_MENU_CONTESTS_ADMIN', icon: '🏆' },
-    { path: 'requests', key: 'MENU_CONTACT_REQUESTS', icon: '📨' },
-    { path: 'ads', key: 'MENU_ADS', icon: '📢' },
+  /** Кабинет администратора: каждый раздел — отдельная страница, сгруппированы по смыслу. */
+  protected readonly adminMenu: { key: string; items: MenuItem[] }[] = [
+    {
+      key: 'ADM_GROUP_STUDENTS',
+      items: [
+        { path: 'students', key: 'SUPPORT_TAB_STUDENTS', icon: '🧑‍🎓' },
+        { path: 'quiz-locked', key: 'SUPPORT_TAB_LOCKED', icon: '🔒' },
+        { path: 'name-changes', key: 'SUPPORT_TAB_NAMES', icon: '🪪' },
+        { path: 'orleu', key: 'SUPPORT_TAB_ORLEU', icon: '🏛' },
+        { path: 'reports', key: 'SUPPORT_TAB_REPORTS', icon: '📊' },
+      ],
+    },
+    {
+      key: 'ADM_GROUP_LEARNING',
+      items: [
+        { path: 'constructor', key: 'MENU_CONSTRUCTOR', icon: '🛠' },
+        { path: 'catalog', key: 'CAB_MENU_CATALOG', icon: '🗂' },
+        { path: 'translations', key: 'MENU_TRANSLATIONS', icon: '🌐' },
+      ],
+    },
+    {
+      key: 'ADM_GROUP_SITE',
+      items: [
+        { path: 'content', key: 'CAB_MENU_CONTENT', icon: '📰' },
+        { path: 'contests-admin', key: 'CAB_MENU_CONTESTS_ADMIN', icon: '🏆' },
+        { path: 'applications', key: 'CAB_MENU_APPLICATIONS', icon: '📋' },
+        { path: 'requests', key: 'MENU_CONTACT_REQUESTS', icon: '📨' },
+        { path: 'announcements', key: 'SUPPORT_TAB_ANNOUNCE', icon: '📣' },
+        { path: 'ads', key: 'MENU_ADS', icon: '🖼' },
+      ],
+    },
   ];
 
   ngOnInit(): void {

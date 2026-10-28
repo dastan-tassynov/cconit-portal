@@ -72,6 +72,9 @@ export interface PublicCourse {
   programCode?: string;
   directionId?: number;
   directionTitle?: string;
+  /** Группа каталога: предмет из Өрлеу («S42») или OTHER — код курса не из справочника Өрлеу. */
+  groupKey?: string;
+  groupTitle?: string;
   hours?: number;
   price?: number;
   free: boolean;
@@ -524,6 +527,9 @@ export interface CourseDetail {
   programCode?: string;
   directionId?: number;
   directionTitle?: string;
+  /** Группа каталога: предмет из Өрлеу («S42») или OTHER — код курса не из справочника Өрлеу. */
+  groupKey?: string;
+  groupTitle?: string;
   hours?: number;
   price?: number;
   free: boolean;

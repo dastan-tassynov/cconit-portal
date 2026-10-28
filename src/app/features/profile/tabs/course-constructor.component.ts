@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@ang
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AdminApiService } from '../../../core/api/admin-api.service';
-import { ConstructorSubject, ContentLanguage } from '../../../core/api/models';
+import { ConstructorSubject, ContentLanguage, OrleuProgram } from '../../../core/api/models';
 import { errorMessage } from '../../../core/http/error-message';
 import { ToastService } from '../../../core/ui/toast.service';
 import { saveBlob } from '../../../core/utils/download';
@@ -24,6 +24,8 @@ export class CourseConstructorComponent implements OnInit {
 
   protected readonly letters = ['A', 'B', 'C', 'D'];
   protected readonly subjects = signal<ConstructorSubject[]>([]);
+  /** Справочник программ Өрлеу: код курса выбирается из него, тогда курс попадает в группу предмета. */
+  protected readonly orleuPrograms = signal<OrleuProgram[]>([]);
   protected readonly saving = signal<'course' | 'lesson' | 'quiz' | null>(null);
   /** Редактируемые цены: id курса → значение в поле. */
   protected readonly priceDrafts = signal<Record<number, number | null>>({});
@@ -59,7 +61,17 @@ export class CourseConstructorComponent implements OnInit {
     return this.quizForm.controls.answers;
   }
 
+  /** Выбрали программу Өрлеу — подставим её название, если название курса ещё пустое. */
+  protected onCodeChosen(): void {
+    const code = this.courseForm.controls.programCode.value.trim().toUpperCase();
+    const program = this.orleuPrograms().find(p => p.code.toUpperCase() === code);
+    if (program && !this.courseForm.controls.title.value.trim()) {
+      this.courseForm.controls.title.setValue(program.name);
+    }
+  }
+
   ngOnInit(): void {
+    this.adminApi.orleuPrograms().subscribe({ next: p => this.orleuPrograms.set(p), error: () => this.orleuPrograms.set([]) });
     this.loadSubjects();
   }
 

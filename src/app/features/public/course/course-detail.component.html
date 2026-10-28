@@ -4,12 +4,12 @@
   @if (course(); as c) {
     <nav class="crumbs">
       <a routerLink="/">{{ 'CRUMB_HOME' | translate }}</a> <span>›</span>
-      <a routerLink="/courses" [queryParams]="c.directionId ? { direction: c.directionId } : {}">{{ 'SITE_NAV_COURSES' | translate }}</a> <span>›</span>
+      <a routerLink="/courses" [queryParams]="c.groupKey ? { group: c.groupKey } : {}">{{ 'SITE_NAV_COURSES' | translate }}</a> <span>›</span>
       <span class="crumbs__current">{{ c.title }}</span>
     </nav>
 
     <header class="head">
-      @if (c.directionTitle) { <span class="tag">{{ c.directionTitle }}</span> }
+      @if (c.groupTitle) { <span class="tag">{{ c.groupTitle }}</span> }
       <h1 class="page-title">{{ c.title }}</h1>
       @if (c.description) { <p class="lead">{{ c.description }}</p> }
     </header>

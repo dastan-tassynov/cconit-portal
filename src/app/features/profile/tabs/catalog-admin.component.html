@@ -1,41 +1,25 @@
 <h3 class="section-title">🗂 {{ 'CAB_MENU_CATALOG' | translate }}</h3>
 
-<!-- ============ Направления ============ -->
+<!-- ============ Группы каталога = предметы из Өрлеу ============ -->
 <div class="constructor-section">
   <div class="constructor-section-header">
-    <h4>{{ 'CATALOG_DIRECTIONS' | translate }}</h4>
-    <p>{{ 'CATALOG_DIRECTIONS_DESC' | translate }}</p>
+    <h4>{{ 'CATALOG_GROUPS' | translate }}</h4>
+    <p>{{ 'CATALOG_GROUPS_DESC' | translate }}</p>
   </div>
-
+  <div class="plan">
+    <button type="button" class="btn-small btn-small--green" [disabled]="syncing()" (click)="syncPrograms()">↻ {{ 'CATALOG_SYNC_ORLEU' | translate }}</button>
+    <span class="muted">{{ 'CATALOG_PROGRAMS_COUNT' | translate: { count: orleuPrograms().length } }}</span>
+  </div>
   <table class="data-table">
-    <thead>
-      <tr><th></th><th>RU</th><th>KZ</th><th class="text-center">{{ 'TH_COURSES_COUNT' | translate }}</th><th class="text-right">{{ 'TH_ACTION' | translate }}</th></tr>
-    </thead>
+    <thead><tr><th>{{ 'CATALOG_GROUP' | translate }}</th><th>{{ 'CATALOG_ORLEU_CODE' | translate }}</th><th>{{ 'CONTENT_TITLE' | translate }}</th></tr></thead>
     <tbody>
-      @for (d of directions(); track d.id) {
-        <tr>
-          <td>{{ d.icon }}</td>
-          <td>{{ d.titleRu }}</td>
-          <td>{{ d.titleKz }}</td>
-          <td class="text-center">{{ d.courseCount }}</td>
-          <td class="text-right">
-            <button type="button" class="btn-small btn-small--amber" (click)="editDirection(d)">{{ 'BTN_EDIT' | translate }}</button>
-            <button type="button" class="btn-small btn-small--red" (click)="deleteDirection(d)">{{ 'BTN_DELETE' | translate }}</button>
-          </td>
-        </tr>
+      @for (p of orleuPrograms(); track p.code) {
+        <tr [class.muted]="!p.enabled"><td>{{ p.subject }}</td><td><code>{{ p.code }}</code></td><td>{{ p.name }}</td></tr>
+      } @empty {
+        <tr><td colspan="3" class="muted">{{ 'CATALOG_PROGRAMS_EMPTY' | translate }}</td></tr>
       }
     </tbody>
   </table>
-
-  <form [formGroup]="directionForm" (ngSubmit)="saveDirection()" class="form-row direction-form">
-    <div class="form-group"><label>RU</label><input formControlName="titleRu" [placeholder]="'CATALOG_DIRECTION_PH_RU' | translate"></div>
-    <div class="form-group"><label>KZ</label><input formControlName="titleKz" [placeholder]="'CATALOG_DIRECTION_PH_KZ' | translate"></div>
-    <div class="form-group"><label>{{ 'CATALOG_ICON' | translate }}</label><input formControlName="icon" maxlength="4"></div>
-    <div class="form-group"><label>{{ 'CATALOG_SORT' | translate }}</label><input type="number" formControlName="sortOrder"></div>
-    <button type="submit" class="btn-primary">
-      {{ (directionForm.controls.id.value ? 'BTN_SAVE' : 'CATALOG_ADD_DIRECTION') | translate }}
-    </button>
-  </form>
 </div>
 
 <!-- ============ Страница курса ============ -->
@@ -58,15 +42,6 @@
   @if (selectedSubjectId()) {
     <form [formGroup]="detailsForm" (ngSubmit)="saveDetails()">
       <div class="form-row">
-        <div class="form-group">
-          <label>{{ 'CATALOG_DIRECTION' | translate }}</label>
-          <select formControlName="directionId">
-            <option [ngValue]="null">—</option>
-            @for (d of directions(); track d.id) {
-              <option [ngValue]="d.id">{{ d.icon }} {{ d.titleRu }}</option>
-            }
-          </select>
-        </div>
         <div class="form-group">
           <label>{{ 'CONSTRUCTOR_COURSE_HOURS' | translate }}</label>
           <input type="number" min="0" formControlName="hours">

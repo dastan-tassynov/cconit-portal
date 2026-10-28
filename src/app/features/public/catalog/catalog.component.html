@@ -20,10 +20,11 @@
     } @else {
       <div class="layout">
         <nav class="tabs">
-          @for (tab of tabs(); track tab.id) {
-            <button type="button" class="tab" [class.tab--active]="activeId() === tab.id" (click)="select(tab.id)">
-              <span aria-hidden="true">{{ tab.icon }}</span>
-              {{ isOther(tab.id) ? ('CATALOG_OTHER' | translate) : tab.title }}
+          @for (tab of tabs(); track tab.key) {
+            <button type="button" class="tab" [class.tab--active]="activeKey() === tab.key" (click)="select(tab.key)">
+              <span aria-hidden="true">{{ isOther(tab.key) ? '📚' : '🎓' }}</span>
+              {{ isOther(tab.key) ? ('CATALOG_OTHER' | translate) : tab.title }}
+              <span class="tab__count">{{ tab.courses.length }}</span>
             </button>
           }
         </nav>

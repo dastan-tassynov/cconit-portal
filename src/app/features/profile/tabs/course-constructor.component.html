@@ -17,7 +17,14 @@
     </div>
     <div class="form-group">
       <label for="c-code">{{ 'CONSTRUCTOR_COURSE_CODE' | translate }}</label>
-      <input id="c-code" type="text" formControlName="programCode" [placeholder]="'PH_COURSE_CODE' | translate">
+      <input id="c-code" type="text" formControlName="programCode" list="c-orleu-programs"
+             [placeholder]="'PH_COURSE_CODE' | translate" (change)="onCodeChosen()">
+      <datalist id="c-orleu-programs">
+        @for (p of orleuPrograms(); track p.code) {
+          <option [value]="p.code">{{ p.subject }} — {{ p.name }}</option>
+        }
+      </datalist>
+      <small class="muted">{{ 'CONSTRUCTOR_CODE_HINT' | translate }}</small>
     </div>
   </div>
 

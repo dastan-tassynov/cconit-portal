@@ -308,6 +308,10 @@ export class AdminApiService {
     return this.http.get<string[]>(api('/api/admin/orleu/ping'));
   }
 
+  orleuSyncPrograms(): Observable<MessageResponse> {
+    return this.http.post<MessageResponse>(api('/api/admin/orleu/programs/sync'), null);
+  }
+
   orleuPrograms(): Observable<OrleuProgram[]> {
     return this.http.get<OrleuProgram[]>(api('/api/admin/orleu/programs'));
   }
