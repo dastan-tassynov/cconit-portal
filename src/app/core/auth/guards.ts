@@ -28,7 +28,7 @@ export function roleGuard(...roles: UserRole[]): CanActivateFn {
 }
 
 /**
- * Перед обучением слушатель заполняет анкету (как в Telegram-боте).
+ * Перед обучением студент заполняет анкету (как в Telegram-боте).
  * Сотрудникам анкета не нужна. Если проверить не удалось — не блокируем.
  */
 export const surveyGuard: CanActivateFn = (_route, state) => {

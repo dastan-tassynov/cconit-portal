@@ -2,10 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angu
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { switchMap } from 'rxjs';
 import { AuthApiService } from '../../core/api/auth-api.service';
 import { errorMessage } from '../../core/http/error-message';
-import { safeReturnUrl } from '../../core/utils/return-url';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { LanguageSwitcherComponent } from '../../shared/language-switcher/language-switcher.component';
 
@@ -66,9 +64,12 @@ export class RegisterComponent {
         fullName: value.fullName.trim(),
         password: value.password,
       })
-      .pipe(switchMap(() => this.authApi.login({ username: value.email.trim(), password: value.password })))
       .subscribe({
-        next: () => this.router.navigateByUrl(safeReturnUrl(this.returnUrl())),
+        // На почту ушёл 4-значный код — подтверждаем e-mail, после этого вход
+        next: () =>
+          this.router.navigate(['/verify-email'], {
+            queryParams: { email: value.email.trim(), returnUrl: this.returnUrl() || null },
+          }),
         error: err => {
           this.loading.set(false);
           this.error.set(errorMessage(err, 'AUTH_REGISTER_ERROR'));

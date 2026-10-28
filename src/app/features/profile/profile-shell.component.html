@@ -20,28 +20,39 @@
       <a routerLink="/" class="menu__item">
         <span class="menu__icon">🌐</span><span class="menu__text">{{ 'CAB_MENU_SITE' | translate }}</span>
       </a>
-      @for (item of studentMenu; track item.path) {
-        <a [routerLink]="item.path" routerLinkActive="menu__item--active" class="menu__item" [attr.title]="item.key | translate">
-          <span class="menu__icon">{{ item.icon }}</span>
-          <span class="menu__text">{{ item.key | translate }}</span>
-          @if (item.path === 'notifications' && unread.count() > 0) {
-            <span class="menu__badge">{{ unread.count() }}</span>
-          }
+      @if (isAdminArea()) {
+        <!-- Кабинет администратора: только разделы управления -->
+        <a routerLink="/profile" class="menu__item menu__item--switch" [attr.title]="'CAB_TO_STUDENT' | translate">
+          <span class="menu__icon">🎓</span><span class="menu__text">{{ 'CAB_TO_STUDENT' | translate }}</span>
         </a>
-      }
-
-      @if (session.isAdmin()) {
         <p class="menu__label">{{ 'DIV_ADMIN' | translate }}</p>
         @for (item of adminMenu; track item.path) {
-          <a [routerLink]="item.path" routerLinkActive="menu__item--active" class="menu__item" [attr.title]="item.key | translate">
+          <a [routerLink]="['/admin', item.path]" routerLinkActive="menu__item--active" class="menu__item" [attr.title]="item.key | translate">
             <span class="menu__icon">{{ item.icon }}</span><span class="menu__text">{{ item.key | translate }}</span>
           </a>
         }
-      }
-      @if (session.isSuperAdmin()) {
-        <a routerLink="users" routerLinkActive="menu__item--active" class="menu__item" [attr.title]="'MENU_ROLES' | translate">
-          <span class="menu__icon">🔐</span><span class="menu__text">{{ 'MENU_ROLES' | translate }}</span>
-        </a>
+        @if (session.isSuperAdmin()) {
+          <a routerLink="/admin/users" routerLinkActive="menu__item--active" class="menu__item" [attr.title]="'MENU_ROLES' | translate">
+            <span class="menu__icon">🔐</span><span class="menu__text">{{ 'MENU_ROLES' | translate }}</span>
+          </a>
+        }
+      } @else {
+        @for (item of studentMenu; track item.path) {
+          <a [routerLink]="['/profile', item.path]" routerLinkActive="menu__item--active" class="menu__item" [attr.title]="item.key | translate">
+            <span class="menu__icon">{{ item.icon }}</span>
+            <span class="menu__text">{{ item.key | translate }}</span>
+            @if (item.path === 'notifications' && unread.count() > 0) {
+              <span class="menu__badge">{{ unread.count() }}</span>
+            }
+          </a>
+        }
+        @if (session.isAdmin()) {
+          <!-- Админ-разделы вынесены в отдельный кабинет -->
+          <a routerLink="/admin" class="menu__item menu__item--switch" [attr.title]="'CAB_TO_ADMIN' | translate">
+            <span class="menu__icon">🛠</span><span class="menu__text">{{ 'CAB_TO_ADMIN' | translate }}</span>
+            <span class="menu__arrow" aria-hidden="true">→</span>
+          </a>
+        }
       }
     </nav>
 
@@ -52,7 +63,7 @@
     </form>
 
     <div class="user-card">
-      <a routerLink="account" class="user-card__info" (click)="mobileOpen.set(false)">
+      <a routerLink="/profile/account" class="user-card__info" (click)="mobileOpen.set(false)">
         <span class="avatar">{{ initials() }}</span>
         <span class="user-card__text">
           <b>{{ session.fullName() || ('CAB_MENU_ACCOUNT' | translate) }}</b>
@@ -69,13 +80,16 @@
   <div class="main">
     <header class="topbar">
       <button type="button" class="icon-btn show-mobile" (click)="mobileOpen.set(true)" [attr.aria-label]="'SITE_MENU' | translate">☰</button>
+      <span class="area-title" [class.area-title--admin]="isAdminArea()">
+        {{ (isAdminArea() ? 'CAB_AREA_ADMIN' : 'CAB_AREA_STUDENT') | translate }}
+      </span>
       <div class="topbar__right">
         @for (lang of language.languages; track lang.code) {
           <button type="button" class="lang" [class.lang--active]="language.current() === lang.code" (click)="language.use(lang.code)">
             {{ lang.flag }} {{ lang.label }}
           </button>
         }
-        <a routerLink="notifications" class="bell" [attr.aria-label]="'CAB_MENU_NOTIFICATIONS' | translate">
+        <a routerLink="/profile/notifications" class="bell" [attr.aria-label]="'CAB_MENU_NOTIFICATIONS' | translate">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>
           @if (unread.count() > 0) {
             <span class="bell__badge">{{ unread.count() > 9 ? '9+' : unread.count() }}</span>

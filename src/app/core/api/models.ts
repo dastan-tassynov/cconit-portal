@@ -481,7 +481,7 @@ export interface DashboardSummary {
   courses: { id: number; title: string; progressPercent: number; isCompleted: boolean; lastScore?: number }[];
   profileCompleteness: number;
   regionMissing: boolean;
-  /** Анкета слушателя пройдена. */
+  /** Анкета студента пройдена. */
   surveyCompleted: boolean;
 }
 

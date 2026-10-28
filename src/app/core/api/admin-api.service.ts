@@ -253,7 +253,7 @@ export class AdminApiService {
     return this.http.get<ContestEntryAdmin[]>(api(`/api/admin/contests/${id}/entries`));
   }
 
-  // ---- поддержка слушателей
+  // ---- поддержка студентов
   searchStudents(query: string): Observable<StudentAdmin[]> {
     return this.http.get<StudentAdmin[]>(api('/api/admin/students'), { params: { q: query } });
   }

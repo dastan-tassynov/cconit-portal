@@ -1,17 +1,15 @@
 import { Routes } from '@angular/router';
-import { roleGuard } from '../../core/auth/guards';
 import { ProfileShellComponent } from './profile-shell.component';
 
-const ADMIN = roleGuard('ROLE_ADMIN', 'ROLE_SUPERADMIN');
-
 /**
- * Личный кабинет (структура как у kcppk-bilimzet.kz): оболочка с боковым меню
- * и разделы — каждый отдельный lazy-маршрут, поэтому студент не скачивает код админки.
+ * Кабинет студента (структура как у kcppk-bilimzet.kz): оболочка с боковым меню
+ * и разделы — каждый отдельный lazy-маршрут. Админ-разделы — в отдельном кабинете /admin.
  */
 export const PROFILE_ROUTES: Routes = [
   {
     path: '',
     component: ProfileShellComponent,
+    data: { area: 'student' },
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'home' },
 
@@ -34,21 +32,9 @@ export const PROFILE_ROUTES: Routes = [
         loadComponent: () => import('./tabs/applications.component').then(m => m.ApplicationsComponent),
       },
 
-      // ---- админ
-      { path: 'constructor', canActivate: [ADMIN], loadComponent: () => import('./tabs/course-constructor.component').then(m => m.CourseConstructorComponent) },
-      { path: 'catalog', canActivate: [ADMIN], loadComponent: () => import('./tabs/catalog-admin.component').then(m => m.CatalogAdminComponent) },
-      { path: 'translations', canActivate: [ADMIN], loadComponent: () => import('./tabs/translations.component').then(m => m.TranslationsComponent) },
-      { path: 'content', canActivate: [ADMIN], loadComponent: () => import('./tabs/content-admin.component').then(m => m.ContentAdminComponent) },
-      { path: 'applications', canActivate: [ADMIN], loadComponent: () => import('./tabs/applications-admin.component').then(m => m.ApplicationsAdminComponent) },
-      { path: 'requests', canActivate: [ADMIN], loadComponent: () => import('./tabs/contact-requests.component').then(m => m.ContactRequestsComponent) },
-      { path: 'contests-admin', canActivate: [ADMIN], loadComponent: () => import('./tabs/contests-admin.component').then(m => m.ContestsAdminComponent) },
-      { path: 'support', canActivate: [ADMIN], loadComponent: () => import('./tabs/support.component').then(m => m.SupportComponent) },
-      { path: 'ads', canActivate: [ADMIN], loadComponent: () => import('./tabs/advertisements.component').then(m => m.AdvertisementsComponent) },
-      {
-        path: 'users',
-        canActivate: [roleGuard('ROLE_SUPERADMIN')],
-        loadComponent: () => import('./tabs/users.component').then(m => m.UsersComponent),
-      },
+      // ---- старые адреса админ-разделов → кабинет администратора
+      ...['constructor', 'catalog', 'translations', 'content', 'applications', 'support', 'contests-admin', 'requests', 'ads', 'users']
+        .map(path => ({ path, redirectTo: `/admin/${path}` })),
     ],
   },
 ];

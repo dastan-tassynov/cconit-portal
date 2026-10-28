@@ -73,3 +73,12 @@
   .verify-widget { display: none; }
   .menu__item { padding-top: 8px; padding-bottom: 8px; }
 }
+
+/* Переход между кабинетами студента и администратора */
+.menu__item--switch { margin-top: 6px; background: #eef0ff; color: #3d37f0; font-weight: 600; }
+.menu__item--switch:hover { background: #e2e5ff; }
+.menu__arrow { margin-left: auto; }
+.area-title { font-weight: 700; font-size: 15px; color: #475569; margin-right: auto; }
+.area-title--admin { color: #b45309; }
+.area-title--admin::before { content: '🛠 '; }
+.menu__item--switch .menu__text { white-space: normal; line-height: 1.25; }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
 import { interval } from 'rxjs';
@@ -38,6 +38,8 @@ export class ProfileShellComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
+  /** Кабинет администратора (/admin) или студента (/profile) — задаётся в data маршрута. */
+  protected readonly isAdminArea = signal(inject(ActivatedRoute).snapshot.data['area'] === 'admin');
   protected readonly collapsed = signal(this.restoreCollapsed());
   protected readonly mobileOpen = signal(false);
   protected certificateCode = '';

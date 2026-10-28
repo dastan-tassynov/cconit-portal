@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, map, of, tap } from 'rxjs';
 import { AccountApiService } from '../api/account-api.service';
 
-/** Пройдена ли анкета слушателя. Ответ «да» кэшируется до перезагрузки страницы. */
+/** Пройдена ли анкета студента. Ответ «да» кэшируется до перезагрузки страницы. */
 @Injectable({ providedIn: 'root' })
 export class SurveyStatusService {
   private readonly accountApi = inject(AccountApiService);

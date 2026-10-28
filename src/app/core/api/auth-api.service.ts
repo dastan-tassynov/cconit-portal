@@ -19,6 +19,16 @@ export class AuthApiService {
     return this.http.post<MessageResponse>(api('/api/auth/register'), request);
   }
 
+  /** Код из письма; при успехе сразу вход. */
+  verifyEmail(email: string, code: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(api('/api/auth/verify-email'), { email, code })
+      .pipe(tap(response => this.session.start(response)));
+  }
+
+  resendCode(email: string): Observable<MessageResponse> {
+    return this.http.post<MessageResponse>(api('/api/auth/resend-code'), { email });
+  }
+
   me(): Observable<PortalUser> {
     return this.http.get<PortalUser>(api('/api/auth/me'));
   }

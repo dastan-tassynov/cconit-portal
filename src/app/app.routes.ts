@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, guestGuard, surveyGuard } from './core/auth/guards';
+import { authGuard, guestGuard, roleGuard, surveyGuard } from './core/auth/guards';
 import { PROGRAM_ROUTES } from './features/public/program/programs';
 
 export const routes: Routes = [
@@ -56,6 +56,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/auth.component').then(m => m.AuthComponent),
   },
   {
+    path: 'verify-email',
+    canActivate: [guestGuard],
+    loadComponent: () => import('./features/verify-email/verify-email.component').then(m => m.VerifyEmailComponent),
+  },
+  {
     path: 'register',
     canActivate: [guestGuard],
     loadComponent: () => import('./features/register/register.component').then(m => m.RegisterComponent),
@@ -78,6 +83,13 @@ export const routes: Routes = [
     path: 'profile',
     canActivate: [authGuard],
     loadChildren: () => import('./features/profile/profile.routes').then(m => m.PROFILE_ROUTES),
+  },
+
+  // ---------- кабинет администратора
+  {
+    path: 'admin',
+    canActivate: [authGuard, roleGuard('ROLE_ADMIN', 'ROLE_SUPERADMIN')],
+    loadChildren: () => import('./features/admin/admin.routes').then(m => m.ADMIN_ROUTES),
   },
 
   { path: '**', redirectTo: '' },
