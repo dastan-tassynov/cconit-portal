@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { PhonePipe } from '../../../shared/phone-input/phone.pipe';
 import { AdminApiService } from '../../../core/api/admin-api.service';
 import { ContactRequest } from '../../../core/api/models';
 import { ToastService } from '../../../core/ui/toast.service';
@@ -8,7 +9,7 @@ import { ToastService } from '../../../core/ui/toast.service';
 /** Заявки из формы «У вас есть вопросы?» на главной. */
 @Component({
   selector: 'app-contact-requests',
-  imports: [DatePipe, TranslatePipe],
+  imports: [DatePipe, TranslatePipe, PhonePipe],
   styleUrl: '../profile.shared.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -30,7 +31,7 @@ import { ToastService } from '../../../core/ui/toast.service';
               <td>{{ r.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
               <td>{{ r.name }}</td>
               <td>
-                @if (r.phone) { <a [href]="'tel:' + r.phone">{{ r.phone }}</a><br> }
+                @if (r.phone) { <a [href]="'tel:' + r.phone">{{ r.phone | phone }}</a><br> }
                 @if (r.email) { <a [href]="'mailto:' + r.email">{{ r.email }}</a> }
               </td>
               <td>{{ r.message }}</td>

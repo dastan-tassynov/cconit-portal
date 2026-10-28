@@ -8,11 +8,13 @@ import { SessionService } from '../../../core/auth/session.service';
 import { errorMessage } from '../../../core/http/error-message';
 import { ToastService } from '../../../core/ui/toast.service';
 import { saveBlob } from '../../../core/utils/download';
+import { normalizePhone, phoneErrorKey, phoneValidator } from '../../../core/utils/phone';
+import { PhoneInputComponent } from '../../../shared/phone-input/phone-input.component';
 
 /** Анкета: личная и профессиональная информация, документы об образовании, % заполнения. */
 @Component({
   selector: 'app-account',
-  imports: [ReactiveFormsModule, DecimalPipe, TranslatePipe],
+  imports: [ReactiveFormsModule, DecimalPipe, TranslatePipe, PhoneInputComponent],
   templateUrl: './account.component.html',
   styleUrls: ['../cabinet.css', './account.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,7 +45,7 @@ export class AccountComponent implements OnInit {
     lastName: ['', [Validators.required, Validators.maxLength(100)]],
     firstName: ['', [Validators.required, Validators.maxLength(100)]],
     middleName: ['', Validators.maxLength(100)],
-    phoneNumber: ['', Validators.pattern(/^$|^\+?[\d\s()-]{10,20}$/)],
+    phoneNumber: ['', phoneValidator()],
     region: ['', Validators.maxLength(150)],
     position: ['', Validators.maxLength(150)],
     workplace: ['', Validators.maxLength(300)],
@@ -107,6 +109,8 @@ export class AccountComponent implements OnInit {
     });
   }
 
+  protected readonly phoneError = () => phoneErrorKey(this.form.controls.phoneNumber.errors);
+
   protected invalid(name: 'lastName' | 'firstName' | 'phoneNumber'): boolean {
     const control = this.form.controls[name];
     return control.touched && control.invalid;
@@ -124,7 +128,7 @@ export class AccountComponent implements OnInit {
       lastName: profile.lastName ?? '',
       firstName: profile.firstName ?? '',
       middleName: profile.middleName ?? '',
-      phoneNumber: profile.phoneNumber ?? '',
+      phoneNumber: normalizePhone(profile.phoneNumber),
       region: profile.region ?? '',
       position: profile.position ?? '',
       workplace: profile.workplace ?? '',

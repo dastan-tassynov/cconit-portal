@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@ang
 import { DatePipe } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
+import { PhonePipe } from '../../../shared/phone-input/phone.pipe';
 import { AdminApiService } from '../../../core/api/admin-api.service';
 import { AdminContest, ContestEntryAdmin } from '../../../core/api/models';
 import { errorMessage } from '../../../core/http/error-message';
@@ -16,7 +17,7 @@ type NominationGroup = FormGroup<{
 /** Конкурсы: номинации, стоимость, участники (из раздела «Конкурсы» Telegram-бота). */
 @Component({
   selector: 'app-contests-admin',
-  imports: [ReactiveFormsModule, DatePipe, TranslatePipe],
+  imports: [ReactiveFormsModule, DatePipe, TranslatePipe, PhonePipe],
   styleUrl: '../profile.shared.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -58,7 +59,7 @@ type NominationGroup = FormGroup<{
           <tbody>
             @for (e of entries(); track e.id) {
               <tr><td>{{ e.participantNumber }}</td><td>{{ e.nominationTitle }}</td><td>{{ e.fullName }}</td>
-                  <td>{{ e.email }}@if (e.phone) {<br>{{ e.phone }}}</td><td>{{ e.createdAt | date: 'dd.MM.yyyy' }}</td></tr>
+                  <td>{{ e.email }}@if (e.phone) {<br>{{ e.phone | phone }}}</td><td>{{ e.createdAt | date: 'dd.MM.yyyy' }}</td></tr>
             } @empty {
               <tr><td colspan="5" class="muted">{{ 'CONTESTS_NO_ENTRIES' | translate }}</td></tr>
             }

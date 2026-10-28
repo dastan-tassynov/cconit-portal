@@ -7,6 +7,9 @@ import { ConstructorSubject, NameChange, OrleuOverview, QuizLocked, StudentAdmin
 import { errorMessage } from '../../../core/http/error-message';
 import { ToastService } from '../../../core/ui/toast.service';
 import { saveBlob } from '../../../core/utils/download';
+import { normalizePhone, phoneErrorKey, phoneValidator } from '../../../core/utils/phone';
+import { PhoneInputComponent } from '../../../shared/phone-input/phone-input.component';
+import { PhonePipe } from '../../../shared/phone-input/phone.pipe';
 
 /**
  * Поддержка студентов — то, что администратор делал в Telegram-боте:
@@ -15,7 +18,7 @@ import { saveBlob } from '../../../core/utils/download';
  */
 @Component({
   selector: 'app-support',
-  imports: [ReactiveFormsModule, DatePipe, TranslatePipe],
+  imports: [ReactiveFormsModule, DatePipe, TranslatePipe, PhoneInputComponent, PhonePipe],
   styleUrl: '../profile.shared.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -23,7 +26,7 @@ import { saveBlob } from '../../../core/utils/download';
 
     @switch (tab()) {
       @case ('students') {
-        <form class="plan" (ngSubmit)="search()">
+        <form class="plan" (submit)="$event.preventDefault(); search()">
           <input class="search" [value]="query()" (input)="query.set($any($event.target).value)" name="q"
                  [placeholder]="'SUPPORT_SEARCH_PH' | translate">
           <button type="submit" class="btn-primary">{{ 'SUPPORT_SEARCH' | translate }}</button>
@@ -34,7 +37,7 @@ import { saveBlob } from '../../../core/utils/download';
           <tbody>
             @for (s of results(); track s.id) {
               <tr [class.selected-row]="selected()?.id === s.id">
-                <td>{{ s.fullName || '—' }}</td><td>{{ s.iin }}</td><td>{{ s.email }}@if (s.phoneNumber) {<br>{{ s.phoneNumber }}}</td>
+                <td>{{ s.fullName || '—' }}</td><td>{{ s.iin }}</td><td>{{ s.email }}@if (s.phoneNumber) {<br>{{ s.phoneNumber | phone }}}</td>
                 <td class="text-right"><button type="button" class="btn-small btn-small--amber" (click)="open(s)">{{ 'BTN_EDIT' | translate }}</button></td>
               </tr>
             } @empty {
@@ -59,7 +62,13 @@ import { saveBlob } from '../../../core/utils/download';
               <div class="form-group"><label>{{ 'CAB_MIDDLE_NAME' | translate }}</label><input formControlName="middleName"></div>
               <div class="form-group"><label>{{ 'CAB_IIN' | translate }}</label><input formControlName="iin" maxlength="12"></div>
             </div>
-            <div class="form-group"><label>{{ 'CONTACT_PHONE' | translate }}</label><input formControlName="phoneNumber"></div>
+            <div class="form-group">
+              <label>{{ 'CONTACT_PHONE' | translate }}</label>
+              <app-phone-input formControlName="phoneNumber" [ariaLabel]="'CONTACT_PHONE' | translate" />
+              @if (form.controls.phoneNumber.touched && form.controls.phoneNumber.invalid) {
+                <small class="field-error">{{ phoneError() | translate }}</small>
+              }
+            </div>
             <button type="submit" class="btn-primary">{{ 'BTN_SAVE' | translate }}</button>
 
             <h4>{{ 'SUPPORT_COURSES' | translate }}</h4>
@@ -106,7 +115,7 @@ import { saveBlob } from '../../../core/utils/download';
               <tr>
                 <td>{{ l.fullName }}</td>
                 <td>{{ l.subjectTitle }}</td>
-                <td>{{ l.email }}@if (l.phone) {<br>{{ l.phone }}}</td>
+                <td>{{ l.email }}@if (l.phone) {<br>{{ l.phone | phone }}}</td>
                 <td>{{ l.lastScore ?? '—' }}% · {{ 'SUPPORT_ATTEMPTS_USED' | translate: { used: l.attemptsUsed } }}
                   @if (l.lastAttemptDate) {<br><span class="muted">{{ l.lastAttemptDate | date: 'dd.MM.yyyy HH:mm' }}</span>}</td>
                 <td class="text-right"><button type="button" class="btn-small btn-small--green" (click)="unlock(l.userId, l.subjectId)">{{ 'SUPPORT_UNLOCK' | translate }}</button></td>
@@ -255,7 +264,7 @@ export class SupportComponent implements OnInit {
     firstName: ['', [Validators.required, Validators.maxLength(100)]],
     middleName: [''],
     iin: ['', [Validators.required, Validators.pattern(/^\d{12}$/)]],
-    phoneNumber: ['', Validators.pattern(/^$|^\+?\d{10,15}$/)],
+    phoneNumber: ['', phoneValidator()],
   });
 
   ngOnInit(): void {
@@ -341,9 +350,11 @@ export class SupportComponent implements OnInit {
       firstName: s.firstName ?? '',
       middleName: s.middleName ?? '',
       iin: s.iin,
-      phoneNumber: s.phoneNumber ?? '',
+      phoneNumber: normalizePhone(s.phoneNumber),
     });
   }
+
+  protected readonly phoneError = () => phoneErrorKey(this.form.controls.phoneNumber.errors);
 
   protected saveStudent(): void {
     const s = this.selected();

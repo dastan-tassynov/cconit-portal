@@ -8,6 +8,8 @@ import { CourseApiService } from '../../../core/api/course-api.service';
 import { NewsItem, PublicCourse, PublicStats } from '../../../core/api/models';
 import { OTHER_GROUP, groupCourses } from '../../../core/utils/course-groups';
 import { errorMessage } from '../../../core/http/error-message';
+import { phoneErrorKey, phoneValidator } from '../../../core/utils/phone';
+import { PhoneInputComponent } from '../../../shared/phone-input/phone-input.component';
 import { LanguageService } from '../../../core/i18n/language.service';
 import { ToastService } from '../../../core/ui/toast.service';
 import { FooterComponent } from '../../../shared/footer/footer.component';
@@ -38,7 +40,7 @@ const CARD_ICONS = ['📘', '🧠', '🧩', '🌍', '⚖️', '🧬', '🛡️',
  */
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, FormsModule, ReactiveFormsModule, DatePipe, DecimalPipe, TranslatePipe, SiteHeaderComponent, FooterComponent],
+  imports: [RouterLink, FormsModule, ReactiveFormsModule, DatePipe, DecimalPipe, TranslatePipe, SiteHeaderComponent, FooterComponent, PhoneInputComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -78,7 +80,7 @@ export class HomeComponent {
   // ---------- форма обратной связи
   protected readonly contactForm = inject(FormBuilder).nonNullable.group({
     name: ['', [Validators.required, Validators.maxLength(200)]],
-    phone: ['', Validators.pattern(/^$|^\+?[\d\s()-]{10,20}$/)],
+    phone: ['', phoneValidator()],
     email: ['', Validators.email],
     message: ['', Validators.maxLength(2000)],
     website: [''],
@@ -122,7 +124,8 @@ export class HomeComponent {
     const value = this.contactForm.getRawValue();
     if (this.contactForm.invalid || (!value.phone.trim() && !value.email.trim())) {
       this.contactForm.markAllAsTouched();
-      this.toast.error('CONTACT_VALIDATION');
+      const phoneErrors = this.contactForm.controls.phone.errors;
+      this.toast.error(phoneErrors ? phoneErrorKey(phoneErrors) : 'CONTACT_VALIDATION');
       return;
     }
     this.contactSending.set(true);

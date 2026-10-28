@@ -41,8 +41,9 @@
         </div>
         <div class="field">
           <label for="phone">{{ 'CONTACT_PHONE' | translate }}</label>
-          <input id="phone" type="tel" formControlName="phoneNumber" placeholder="+7 7__ ___ __ __">
-          @if (invalid('phoneNumber')) { <small>{{ 'VALIDATION_PHONE' | translate }}</small> }
+          <app-phone-input inputId="phone" formControlName="phoneNumber" />
+          @if (invalid('phoneNumber')) { <small>{{ phoneError() | translate }}</small> }
+          @else { <span class="hint">{{ 'PHONE_HINT' | translate }}</span> }
         </div>
       </div>
     </section>

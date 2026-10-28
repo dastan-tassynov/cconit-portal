@@ -28,4 +28,5 @@
 .field input, .field textarea, .field select { padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: #f6f6f9; font: inherit; }
 .field input:disabled { color: var(--muted); }
 .field small { color: #dc2626; }
+.field .hint { color: var(--muted); font-size: 12px; }
 @media (max-width: 700px) { .form { grid-template-columns: 1fr; } }

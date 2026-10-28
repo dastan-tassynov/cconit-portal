@@ -179,7 +179,7 @@
             <form [formGroup]="contactForm" (ngSubmit)="sendContact()" novalidate>
               <input formControlName="name" [placeholder]="'CONTACT_NAME' | translate" autocomplete="name">
               <div class="contact__row">
-                <input formControlName="phone" type="tel" [placeholder]="'CONTACT_PHONE' | translate" autocomplete="tel">
+                <app-phone-input formControlName="phone" [ariaLabel]="'CONTACT_PHONE' | translate" />
                 <input formControlName="email" type="email" placeholder="Email" autocomplete="email">
               </div>
               <textarea formControlName="message" rows="2" [placeholder]="'CONTACT_MESSAGE' | translate"></textarea>

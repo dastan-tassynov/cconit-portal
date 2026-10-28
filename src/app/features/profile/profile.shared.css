@@ -961,3 +961,4 @@ a.menu-item, a.btn-sidebar-back { display: block; text-decoration: none; }
 .app-head { display: flex; justify-content: space-between; gap: 10px; }
 .decision { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 .decision input { flex: 1; min-width: 200px; padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 6px; }
+.field-error { display: block; color: #dc2626; font-size: 12px; margin-top: 4px; }
