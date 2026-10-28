@@ -1,0 +1,29 @@
+/* Глобальные стили. Стили страниц — в CSS их компонентов. */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background-color: #f9fafb;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: #1e293b;
+  /* Затрудняем копирование текста курсов (см. ContentProtectionService) */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Поля ввода должны оставаться удобными */
+input, textarea, select { -webkit-user-select: text; user-select: text; font: inherit; }
+
+/* Картинки нельзя перетащить/сохранить перетаскиванием.
+   Для <video> pointer-events не отключаем — иначе не работают кнопки плеера. */
+img { pointer-events: none; -webkit-user-drag: none; }
+
+/* Размытие страницы, когда вкладка неактивна */
+body.content-hidden app-root { filter: blur(40px); }
+
+/* Якоря не прячутся под липкой шапкой сайта */
+[id] { scroll-margin-top: 110px; }
+
+:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }

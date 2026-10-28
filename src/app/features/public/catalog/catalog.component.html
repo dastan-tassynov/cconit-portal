@@ -1,0 +1,53 @@
+<app-site-header />
+
+<main class="container">
+  <nav class="crumbs">
+    <a routerLink="/">{{ 'CRUMB_HOME' | translate }}</a> <span>›</span>
+    <span class="crumbs__current">{{ 'SITE_NAV_COURSES' | translate }}</span>
+  </nav>
+
+  <h1 class="page-title">{{ 'CATALOG_TITLE' | translate }}</h1>
+  <p class="lead">{{ 'CATALOG_LEAD' | translate }}</p>
+
+  <section class="section">
+    <h2 class="directions-title">{{ 'SITE_DIRECTIONS_TITLE' | translate }}</h2>
+    <p class="muted">{{ 'SITE_DIRECTIONS_COUNT' | translate }}: {{ tabs().length }}</p>
+
+    @if (loading()) {
+      <p class="muted">{{ 'LOADING' | translate }}</p>
+    } @else if (tabs().length === 0) {
+      <p class="muted">{{ 'SITE_COURSES_EMPTY' | translate }}</p>
+    } @else {
+      <div class="layout">
+        <nav class="tabs">
+          @for (tab of tabs(); track tab.id) {
+            <button type="button" class="tab" [class.tab--active]="activeId() === tab.id" (click)="select(tab.id)">
+              <span aria-hidden="true">{{ tab.icon }}</span>
+              {{ isOther(tab.id) ? ('CATALOG_OTHER' | translate) : tab.title }}
+            </button>
+          }
+        </nav>
+
+        <div class="grid">
+          @for (course of visibleCourses(); track course.id; let i = $index) {
+            <a class="card" [routerLink]="['/courses', course.id]">
+              <span class="card__thumb" [style.background]="background(i)">📘</span>
+              <span class="card__body">
+                <b>{{ course.title }}</b>
+                <span class="muted card__meta">
+                  @if (course.hours) { {{ course.hours }} {{ 'HOURS_SHORT' | translate }} · }
+                  @if (course.free) { {{ 'PRICE_FREE' | translate }} } @else { {{ course.price | number: '1.0-0' }} ₸ }
+                </span>
+              </span>
+              <span class="card__arrow" aria-hidden="true">↗</span>
+            </a>
+          } @empty {
+            <p class="muted">{{ 'MSG_NOT_FOUND' | translate }}</p>
+          }
+        </div>
+      </div>
+    }
+  </section>
+</main>
+
+<app-footer />

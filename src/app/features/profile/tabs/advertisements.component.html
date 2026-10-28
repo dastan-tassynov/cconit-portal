@@ -1,0 +1,61 @@
+<h3 class="section-title">📢 {{ 'TITLE_ADS_PANEL' | translate }}</h3>
+
+<form class="constructor-section" [formGroup]="form" (ngSubmit)="create(imageInput)">
+  <div class="form-group">
+    <label for="ad-title">{{ 'LABEL_AD_TITLE' | translate }}</label>
+    <input id="ad-title" type="text" formControlName="title">
+  </div>
+  <div class="form-group">
+    <label for="ad-link">{{ 'LABEL_AD_LINK' | translate }}</label>
+    <input id="ad-link" type="url" formControlName="linkUrl" [placeholder]="'PH_LINK' | translate">
+  </div>
+  <div class="form-group">
+    <label for="ad-image">{{ 'LABEL_BANNER_IMAGE' | translate }}</label>
+    <input id="ad-image" #imageInput type="file" accept="image/png,image/jpeg,image/webp,image/gif" (change)="onImageSelected($event)">
+  </div>
+  <button type="submit" class="btn-primary" [disabled]="saving()">➕ {{ 'BTN_CREATE_AD' | translate }}</button>
+</form>
+
+<h4>{{ 'TITLE_REGISTERED_ADS' | translate }}</h4>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>{{ 'TH_LINK' | translate }}</th>
+      <th class="text-center">{{ 'TH_STATUS' | translate }}</th>
+      <th class="text-right">{{ 'TH_ACTION' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (ad of ads(); track ad.id) {
+      <tr>
+        <td>{{ ad.title || ad.linkUrl || ('VAL_NO_LINK' | translate) }}</td>
+        <td class="text-center">
+          <span class="pill" [class.pill--ok]="ad.active" [class.pill--no]="!ad.active">
+            {{ (ad.active ? 'VAL_ACTIVE' : 'VAL_HIDDEN') | translate }}
+          </span>
+        </td>
+        <td class="text-right">
+          <button type="button" class="btn-small" [class.btn-small--amber]="ad.active" [class.btn-small--green]="!ad.active"
+                  (click)="toggle(ad)">
+            {{ (ad.active ? 'BTN_DISABLE' : 'BTN_ENABLE') | translate }}
+          </button>
+          <button type="button" class="btn-small btn-small--red" (click)="toDelete.set(ad)">{{ 'BTN_DELETE' | translate }}</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (toDelete()) {
+  <div class="course-modal-overlay" (click)="toDelete.set(null)">
+    <div class="course-modal-card" (click)="$event.stopPropagation()">
+      <div class="course-modal-icon">⚠️</div>
+      <h2 class="course-modal-title">{{ 'DELETE_TITLE' | translate }}</h2>
+      <p class="course-modal-text">{{ 'DELETE_TEXT' | translate }}</p>
+      <div class="course-modal-actions">
+        <button type="button" class="btn-modal-secondary" (click)="toDelete.set(null)">{{ 'BTN_CANCEL' | translate }}</button>
+        <button type="button" class="btn-modal-primary btn-small--red" (click)="confirmDelete()">{{ 'BTN_DELETE_CONFIRM' | translate }}</button>
+      </div>
+    </div>
+  </div>
+}

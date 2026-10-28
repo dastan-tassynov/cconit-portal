@@ -1,0 +1,51 @@
+<app-site-header />
+
+@if (program(); as p) {
+  <section class="banner">
+    <div class="container">
+      <a routerLink="/" fragment="news" class="back">← {{ 'SITE_NAV_NEWS' | translate }}</a>
+      <div class="banner__icon">{{ p.icon }}</div>
+      <h1>{{ p.titleKey | translate }}</h1>
+      <p>{{ p.descriptionKey | translate }}</p>
+      <div class="banner__actions">
+        <a routerLink="/" fragment="directions" class="btn btn--primary btn--lg">{{ 'SITE_ALL_COURSES' | translate }}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section__title">{{ 'PROGRAM_DOCUMENTS' | translate }}</h2>
+      <div class="grid grid--3">
+        @for (doc of documents(); track doc.id) {
+          <div class="card doc">
+            <div class="doc__head">
+              <span class="doc__icon">📄</span>
+              <span class="tag tag--muted">{{ doc.lang === 'kk' ? 'ҚАЗ' : 'РУС' }}</span>
+            </div>
+            <p class="doc__name">{{ doc.name }}</p>
+            <button type="button" class="btn btn--outline" (click)="open(doc)">{{ 'BTN_OPEN_PDF' | translate }}</button>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+} @else {
+  <section class="section">
+    <div class="container">
+      <h1 class="section__title">{{ 'PROGRAM_NOT_FOUND' | translate }}</h1>
+      <a routerLink="/" class="btn btn--primary">{{ 'BTN_BACK' | translate }}</a>
+    </div>
+  </section>
+}
+
+@if (openedPdf(); as src) {
+  <div class="viewer" (click)="close()">
+    <div class="viewer__box" (click)="$event.stopPropagation()">
+      <button type="button" class="viewer__close" (click)="close()">{{ 'BTN_CLOSE' | translate }} ✖</button>
+      <pdf-viewer [src]="src" [render-text]="false" [original-size]="false" class="viewer__pdf" />
+    </div>
+  </div>
+}
+
+<app-footer />

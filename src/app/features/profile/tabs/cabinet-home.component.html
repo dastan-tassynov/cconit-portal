@@ -1,0 +1,86 @@
+@if (summary(); as s) {
+  <div class="page">
+    @if (!s.surveyCompleted && !session.isAdmin()) {
+      <div class="notice notice--survey">
+        <span>📝 {{ 'CAB_SURVEY_MISSING' | translate }}</span>
+        <a routerLink="../survey" class="btn notice__btn">{{ 'CAB_SURVEY_GO' | translate }}</a>
+      </div>
+    }
+    @if (s.regionMissing) {
+      <div class="notice">
+        <span>{{ 'CAB_REGION_MISSING' | translate }}</span>
+        <a routerLink="../account" class="btn notice__btn">{{ 'CAB_SPECIFY' | translate }}</a>
+      </div>
+    }
+
+    <div class="hello">
+      <div>
+        <p class="muted hello__date">{{ s.today | date: 'EEEE, d MMMM' : '' : locale() }}</p>
+        <h1 class="page__title">{{ greetingKey() | translate }}@if (firstName()) {<span>, {{ firstName() }}</span>}!</h1>
+      </div>
+      <a routerLink="../account" class="btn btn--ghost">{{ 'CAB_EDIT_ACCOUNT' | translate }}</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="stat__icon stat__icon--fire">🔥</span>
+        <div><b>{{ s.streakDays }}</b><span>{{ 'CAB_STAT_STREAK' | translate }}</span></div>
+      </div>
+      <div class="stat">
+        <span class="stat__icon stat__icon--done">✓</span>
+        <div><b>{{ s.completedCount }}</b><span>{{ 'CAB_STAT_COMPLETED' | translate }}</span></div>
+      </div>
+      <div class="stat">
+        <span class="stat__icon stat__icon--wait">⏳</span>
+        <div><b>{{ s.inProgressCount }}</b><span>{{ 'CAB_STAT_IN_PROGRESS' | translate }}</span></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <h2 class="card__title">📂 {{ 'CAB_MY_COURSES' | translate }}</h2>
+        @for (course of s.courses; track course.id) {
+          <a class="course" [routerLink]="['/course', course.id]">
+            <span class="course__title">{{ course.title }}</span>
+            <span class="course__meta">
+              @if (course.isCompleted) {
+                <span class="pill pill--ok">{{ 'STATUS_PASSED' | translate }} · {{ course.lastScore }}%</span>
+              } @else {
+                {{ course.progressPercent }}%
+              }
+            </span>
+            <span class="progress"><span [style.width.%]="course.progressPercent"></span></span>
+          </a>
+        } @empty {
+          <div class="empty">
+            <span>{{ 'CAB_NO_COURSES' | translate }}</span>
+            <a routerLink="/courses" class="btn btn--primary">{{ 'CAB_SEE_ALL_COURSES' | translate }}</a>
+          </div>
+        }
+      </section>
+
+      <section class="card week">
+        <h2 class="card__title">📅 {{ 'CAB_MY_WEEK' | translate }} <span class="week__count">{{ activeDaysThisWeek() }}/7</span></h2>
+        <div class="week__days">
+          @for (day of s.week; track day.date) {
+            <div class="day" [class.day--today]="isToday(day.date)" [class.day--active]="day.active">
+              <small>{{ day.date | date: 'EEEEEE' : '' : locale() }}</small>
+              <b>{{ day.date | date: 'd' }}</b>
+              <span class="day__dot"></span>
+            </div>
+          }
+        </div>
+        <div class="week__today">
+          <b>{{ 'CAB_TODAY' | translate }}</b>
+          <span class="muted">{{ (activeDaysThisWeek() > 0 ? 'CAB_KEEP_GOING' : 'CAB_START_DAY') | translate }}</span>
+        </div>
+        <div class="week__profile">
+          <span class="muted">{{ 'CAB_PROFILE_FILLED' | translate }}: {{ s.profileCompleteness }}%</span>
+          <span class="progress"><span [style.width.%]="s.profileCompleteness"></span></span>
+        </div>
+      </section>
+    </div>
+  </div>
+} @else {
+  <p class="muted">{{ 'LOADING' | translate }}</p>
+}

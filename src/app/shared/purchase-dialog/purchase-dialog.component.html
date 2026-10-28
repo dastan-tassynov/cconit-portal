@@ -1,0 +1,55 @@
+<div class="overlay" (click)="closed.emit()">
+  <div class="dialog" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+    <button type="button" class="close" (click)="closed.emit()" [attr.aria-label]="'BTN_CLOSE' | translate">✖</button>
+
+    <h2>{{ (item().kind === 'CONTEST' ? 'PAY_TITLE_CONTEST' : 'PAY_TITLE') | translate }}</h2>
+    <p class="course">{{ item().title }}</p>
+
+    @if (loading()) {
+      <p class="muted">{{ 'LOADING' | translate }}</p>
+    } @else if (order(); as o) {
+      <div class="amount">{{ o.amount | number: '1.0-2' }} ₸</div>
+
+      @if (o.status === 'PAID') {
+        <p class="success">✅ {{ 'PAY_SUCCESS' | translate }}</p>
+      } @else if (o.status !== 'PENDING') {
+        <p class="warning">{{ 'PAY_CLOSED' | translate }}</p>
+      } @else {
+        @if (o.halykAvailable) {
+          <p class="hint">{{ 'PAY_CARD_HINT' | translate }}</p>
+          <div class="actions">
+            <button type="button" class="btn btn--primary btn--wide" [disabled]="busy()" (click)="payByCard()">
+              💳 {{ (redirecting() ? 'PAY_REDIRECTING' : 'PAY_BY_CARD') | translate }}
+            </button>
+          </div>
+          <p class="small muted">{{ 'PAY_CARD_SECURE' | translate }}</p>
+        } @else {
+          <ol class="instructions">
+            <li>{{ 'PAY_STEP_1' | translate }}</li>
+            <li>{{ 'PAY_STEP_2' | translate }} <b class="invoice">{{ o.invoiceNumber }}</b></li>
+            <li>{{ 'PAY_STEP_3' | translate }}</li>
+          </ol>
+        }
+
+        @if (notPaidYet()) {
+          <p class="warning">{{ 'PAY_NOT_YET' | translate }}</p>
+        }
+
+        <div class="actions">
+          <button type="button" class="btn btn--ghost" [disabled]="busy()" (click)="checkStatus()">
+            {{ 'PAY_CHECK' | translate }}
+          </button>
+          @if (o.stubPaymentAvailable) {
+            <button type="button" class="btn btn--test" [disabled]="busy()" (click)="payWithStub()">
+              🧪 {{ 'PAY_STUB' | translate }}
+            </button>
+          }
+        </div>
+      }
+    }
+
+    @if (error()) {
+      <p class="error" role="alert">⚠️ {{ error() | translate }}</p>
+    }
+  </div>
+</div>

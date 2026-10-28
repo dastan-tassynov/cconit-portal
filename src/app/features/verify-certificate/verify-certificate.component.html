@@ -1,0 +1,58 @@
+<div class="verify-container">
+  <div class="verify-lang"><app-language-switcher /></div>
+  <div class="verify-card" [class.valid-border]="certificate()" [class.invalid-border]="error()">
+
+    @if (loading()) {
+      <div class="loader-block">
+        <div class="spinner"></div>
+        <p>{{ 'VERIFY_LOADING' | translate }}</p>
+      </div>
+    } @else {
+      @if (certificate(); as cert) {
+        <div class="result-success">
+          <div class="status-icon success-icon">🛡️</div>
+          <h2 class="status-title text-success">{{ 'VERIFY_VALID_TITLE' | translate }}</h2>
+          <p class="status-subtitle">{{ 'VERIFY_VALID_TEXT' | translate }}</p>
+
+          <div class="cert-details">
+            <div class="detail-row">
+              <span class="detail-label">{{ 'VERIFY_NUMBER' | translate }}:</span>
+              <span class="detail-value highlight">{{ cert.certificateNumber }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">{{ 'VERIFY_STUDENT' | translate }}:</span>
+              <span class="detail-value">{{ cert.studentName }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">{{ 'VERIFY_COURSE' | translate }}:</span>
+              <span class="detail-value">«{{ cert.subjectTitle }}»</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">{{ 'VERIFY_DATE' | translate }}:</span>
+              <span class="detail-value">{{ cert.issuedAt | date: 'dd.MM.yyyy' }}</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (error(); as err) {
+        <div class="result-error">
+          <div class="status-icon error-icon">❌</div>
+          <h2 class="status-title text-danger">{{ 'VERIFY_INVALID_TITLE' | translate }}</h2>
+          <p class="status-subtitle">
+            {{ (err === 'not-found' ? 'VERIFY_NOT_FOUND' : 'ERR_NETWORK') | translate }}
+          </p>
+          @if (err === 'not-found') {
+            <p class="error-notice">{{ 'VERIFY_INVALID_NOTICE' | translate }}</p>
+          }
+        </div>
+      }
+
+      <div class="card-footer">
+        <hr>
+        <div class="footer-logo">ЦОНИТ</div>
+        <a routerLink="/" class="btn-home">{{ 'BTN_BACK' | translate }}</a>
+      </div>
+    }
+  </div>
+</div>

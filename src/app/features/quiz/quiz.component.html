@@ -1,0 +1,91 @@
+<div class="quiz-container">
+  @if (loading()) {
+    <div class="quiz-card"><p class="state-text">{{ 'LOADING' | translate }}</p></div>
+  } @else if (locked() && !result()) {
+    <div class="quiz-card results-card">
+      <div class="success-icon">🔒</div>
+      <h2 class="results-title results-title--fail">{{ 'QUIZ_LOCKED_TITLE' | translate }}</h2>
+      <p class="results-subtitle">{{ 'QUIZ_LOCKED_TEXT' | translate }}</p>
+      <p class="results-subtitle">📞 +7 707 713 11 31 · +7 701 389 28 33 · centr-bilim&#64;list.ru</p>
+      <div class="results-actions">
+        <button type="button" class="btn-dashboard" (click)="goToDashboard()">{{ 'BTN_DASHBOARD' | translate }}</button>
+      </div>
+    </div>
+  } @else if (error()) {
+    <div class="quiz-card results-card">
+      <div class="success-icon">ℹ️</div>
+      <p class="results-subtitle">{{ error() | translate }}</p>
+      <div class="results-actions">
+        <button type="button" class="btn-dashboard" (click)="goToDashboard()">{{ 'BTN_DASHBOARD' | translate }}</button>
+      </div>
+    </div>
+  } @else if (result(); as r) {
+    <div class="quiz-card results-card">
+      @if (r.passed) {
+        <div class="success-icon">🎉</div>
+        <h2 class="results-title">{{ 'RESULTS_SUCCESS_TITLE' | translate }}</h2>
+        <p class="results-subtitle">{{ 'RESULTS_SUCCESS_SUBTITLE' | translate }}</p>
+      } @else {
+        <div class="success-icon grayscale">❌</div>
+        <h2 class="results-title results-title--fail">{{ 'RESULTS_FAIL_TITLE' | translate }}</h2>
+        <p class="results-subtitle">{{ 'RESULTS_FAIL_SUBTITLE' | translate: { score: r.passingScorePercent } }}</p>
+      }
+
+      <div class="results-score-box">
+        <span class="score-label">{{ 'RESULTS_YOUR_SCORE' | translate }}:</span>
+        <div class="results-score" [class.results-score--fail]="!r.passed">
+          {{ r.lastScore }}<span class="score-total">%</span>
+        </div>
+        <small class="score-details">
+          {{ 'RESULTS_CORRECT' | translate: { correct: r.correctCount, total: r.totalQuestions } }} ·
+          {{ 'RESULTS_ATTEMPTS' | translate }}: {{ r.attemptsCount }}
+          @if (!r.completed) { · {{ 'QUIZ_ATTEMPTS_LEFT' | translate: { left: r.attemptsLeft } }} }
+        </small>
+        @if (!r.completed && r.attemptsLeft === 0) {
+          <p class="locked-note">🔒 {{ 'QUIZ_LOCKED_TEXT' | translate }}</p>
+        }
+      </div>
+
+      <div class="results-actions">
+        <button type="button" class="btn-dashboard" (click)="goToDashboard()">{{ 'BTN_DASHBOARD' | translate }}</button>
+        @if (r.completed) {
+          <button type="button" class="btn-restart-quiz" (click)="goToCertificates()">📥 {{ 'MENU_CERTIFICATES' | translate }}</button>
+        } @else if (r.attemptsLeft > 0) {
+          <button type="button" class="btn-restart-quiz" (click)="restart()">{{ 'BTN_RESTART' | translate }}</button>
+        }
+      </div>
+    </div>
+  } @else if (question(); as q) {
+    <div class="quiz-card">
+      <div class="quiz-header">
+        <app-language-switcher mode="inline" />
+        <span class="quiz-progress-text">
+          {{ 'QUIZ_QUESTION_PROGRESS' | translate }} {{ index() + 1 }} / {{ questions().length }}
+        </span>
+        <span class="quiz-timer">⏱ {{ 'QUIZ_TEST_TITLE' | translate }}</span>
+      </div>
+
+      <div class="progress-bar"><div [style.width.%]="(index() + 1) / questions().length * 100"></div></div>
+
+      <h2 class="quiz-question">{{ q.questionText }}</h2>
+
+      <div class="options-list">
+        @for (option of q.answers; track option.id; let i = $index) {
+          <button type="button" class="option-button" [class.selected]="selected() === option.id" (click)="select(option.id)">
+            <span class="option-marker">{{ letters[i] }}</span>
+            <span class="option-text">{{ option.answerText }}</span>
+          </button>
+        }
+      </div>
+
+      <div class="quiz-footer">
+        @if (index() > 0) {
+          <button type="button" class="btn-prev" (click)="previous()">← {{ 'BTN_PREV' | translate }}</button>
+        }
+        <button type="button" class="btn-next" [disabled]="selected() === null || submitting()" (click)="next()">
+          {{ (isLast() ? 'BTN_FINISH' : 'BTN_NEXT') | translate }}
+        </button>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,98 @@
+@if (profile(); as p) {
+  <form class="card account" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <h1 class="page__title">{{ 'CAB_ACCOUNT_TITLE' | translate }}</h1>
+
+    <section class="section">
+      <h2 class="section__title">{{ 'CAB_PERSONAL_INFO' | translate }}</h2>
+      @if (p.pendingFullName) {
+        <p class="name-note name-note--pending">⏳ {{ 'CAB_NAME_PENDING' | translate: { name: p.pendingFullName } }}</p>
+      } @else if (p.nameChangeNeedsApproval) {
+        <p class="name-note">ℹ️ {{ 'CAB_NAME_NEEDS_APPROVAL' | translate }}</p>
+      }
+      <div class="form">
+        <div class="field">
+          <label for="lastName">{{ 'CAB_LAST_NAME' | translate }}</label>
+          <input id="lastName" formControlName="lastName" [placeholder]="'CAB_LAST_NAME_PH' | translate">
+          @if (invalid('lastName')) { <small>{{ 'VALIDATION_REQUIRED' | translate }}</small> }
+        </div>
+        <div class="field">
+          <label for="email">{{ 'CAB_EMAIL' | translate }}</label>
+          <input id="email" [value]="p.email" disabled>
+        </div>
+        <div class="field">
+          <label for="firstName">{{ 'CAB_FIRST_NAME' | translate }}</label>
+          <input id="firstName" formControlName="firstName" [placeholder]="'CAB_FIRST_NAME_PH' | translate">
+          @if (invalid('firstName')) { <small>{{ 'VALIDATION_REQUIRED' | translate }}</small> }
+        </div>
+        <div class="field">
+          <label for="iin">{{ 'CAB_IIN' | translate }}</label>
+          <input id="iin" [value]="p.iin" disabled>
+        </div>
+        <div class="field">
+          <label for="middleName">{{ 'CAB_MIDDLE_NAME' | translate }} <span class="muted small">({{ 'CAB_IF_ANY' | translate }})</span></label>
+          <input id="middleName" formControlName="middleName" [placeholder]="'CAB_MIDDLE_NAME_PH' | translate">
+        </div>
+        <div class="field">
+          <label for="region">{{ 'CAB_REGION' | translate }}</label>
+          <input id="region" formControlName="region" list="regions" [placeholder]="'CAB_REGION_PH' | translate">
+          <datalist id="regions">
+            @for (region of regions; track region) { <option [value]="region"></option> }
+          </datalist>
+        </div>
+        <div class="field">
+          <label for="phone">{{ 'CONTACT_PHONE' | translate }}</label>
+          <input id="phone" type="tel" formControlName="phoneNumber" placeholder="+7 7__ ___ __ __">
+          @if (invalid('phoneNumber')) { <small>{{ 'VALIDATION_PHONE' | translate }}</small> }
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section__title">{{ 'CAB_PROFESSIONAL_INFO' | translate }}</h2>
+      <div class="form">
+        <div class="field">
+          <label for="position">{{ 'CAB_POSITION' | translate }}</label>
+          <input id="position" formControlName="position" list="positions" [placeholder]="'CAB_POSITION_PH' | translate">
+          <datalist id="positions">
+            @for (position of positions; track position) { <option [value]="position"></option> }
+          </datalist>
+        </div>
+        <div class="field">
+          <label for="workplace">{{ 'CAB_WORKPLACE' | translate }}</label>
+          <input id="workplace" formControlName="workplace" [placeholder]="'CAB_WORKPLACE_PH' | translate">
+        </div>
+      </div>
+
+      <div class="docs">
+        <p class="docs__hint">{{ 'CAB_EDUCATION_HINT' | translate }}</p>
+        @for (doc of p.documents; track doc.id) {
+          <div class="doc">
+            <span>📄</span>
+            <button type="button" class="doc__name" (click)="download(doc)">{{ doc.name }}</button>
+            <span class="muted small">{{ doc.sizeBytes / 1024 | number: '1.0-0' }} KB</span>
+            <button type="button" class="doc__remove" (click)="remove(doc)" [attr.aria-label]="'BTN_DELETE' | translate">✕</button>
+          </div>
+        }
+        <label class="btn btn--ghost upload" [class.upload--busy]="uploading()">
+          ⬆ {{ (uploading() ? 'UPLOADING' : 'CAB_UPLOAD_DOCS') | translate }}
+          <input #fileInput type="file" accept=".pdf,.jpg,.jpeg,.png" (change)="upload(fileInput)" [disabled]="uploading()" hidden>
+        </label>
+      </div>
+    </section>
+
+    <div class="completeness">
+      <div class="completeness__head">
+        <span>{{ 'CAB_PROFILE_PROGRESS' | translate }}</span>
+        <b>{{ p.completeness }} %</b>
+      </div>
+      <span class="progress"><span [style.width.%]="p.completeness"></span></span>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn btn--ghost" (click)="reset()">{{ 'CAB_CANCEL_EDIT' | translate }}</button>
+      <button type="submit" class="btn btn--primary" [disabled]="saving()">{{ 'BTN_SAVE' | translate }}</button>
+    </div>
+  </form>
+} @else {
+  <p class="muted">{{ 'LOADING' | translate }}</p>
+}

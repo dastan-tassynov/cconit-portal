@@ -1,0 +1,81 @@
+<app-site-header />
+
+<main class="container">
+  @if (course(); as c) {
+    <nav class="crumbs">
+      <a routerLink="/">{{ 'CRUMB_HOME' | translate }}</a> <span>›</span>
+      <a routerLink="/courses" [queryParams]="c.directionId ? { direction: c.directionId } : {}">{{ 'SITE_NAV_COURSES' | translate }}</a> <span>›</span>
+      <span class="crumbs__current">{{ c.title }}</span>
+    </nav>
+
+    <header class="head">
+      @if (c.directionTitle) { <span class="tag">{{ c.directionTitle }}</span> }
+      <h1 class="page-title">{{ c.title }}</h1>
+      @if (c.description) { <p class="lead">{{ c.description }}</p> }
+    </header>
+
+    <section class="format">
+      <div class="format__head">
+        <h2>{{ 'COURSE_MATERIAL_TYPE' | translate }}</h2>
+      </div>
+
+      <div class="format-card">
+        <div class="format-card__top">
+          <b>{{ 'COURSE_FORMAT_GENERAL' | translate }}</b>
+          <span class="format-card__meta">
+            @if (c.hours) { 🕒 <b>{{ c.hours }}</b> {{ 'COURSE_ACAD_HOURS' | translate }} · }
+            @if (c.free) { {{ 'PRICE_FREE' | translate }} } @else { ₸ {{ c.price | number: '1.0-0' }} {{ 'CURRENCY_TG' | translate }} }
+          </span>
+        </div>
+        <div class="format-card__body">
+          <div class="format-card__progress">
+            <span>{{ 'COURSE_PROGRESS' | translate }}</span><b>{{ progress() }}%</b>
+          </div>
+          <span class="bar"><span [style.width.%]="progress()"></span></span>
+          @if (c.hasPlan) {
+            <button type="button" class="btn btn--outline" (click)="downloadPlan()">{{ 'COURSE_DOWNLOAD_PLAN' | translate }}</button>
+          }
+          <button type="button" class="btn btn--primary" (click)="primaryAction()">{{ actionKey() | translate }}</button>
+          @if (c.lessonCount) { <small class="muted">{{ 'COURSE_LESSONS_COUNT' | translate: { count: c.lessonCount } }}</small> }
+        </div>
+      </div>
+    </section>
+
+    @if (c.objectives.length) {
+      <section class="objectives">
+        <p class="eyebrow">{{ 'COURSE_WHAT_YOU_LEARN' | translate }}</p>
+        <h2>{{ 'COURSE_OBJECTIVES' | translate }}</h2>
+        <ul>
+          @for (item of c.objectives; track $index) { <li>{{ item }}</li> }
+        </ul>
+      </section>
+    }
+
+    @if (c.authors.length) {
+      <section class="authors">
+        <h2>{{ 'COURSE_AUTHORS' | translate }}</h2>
+        <div class="authors__grid">
+          @for (a of c.authors; track $index) {
+            <div class="author">
+              <span class="author__avatar">{{ a.fullName.charAt(0) }}</span>
+              <span><small class="muted">{{ a.position }}</small><b>{{ a.fullName }}</b></span>
+            </div>
+          }
+        </div>
+      </section>
+    }
+  } @else if (notFound()) {
+    <section class="section">
+      <h1 class="page-title">{{ 'COURSE_NOT_FOUND' | translate }}</h1>
+      <a routerLink="/courses" class="btn btn--primary">{{ 'SITE_ALL_COURSES' | translate }}</a>
+    </section>
+  } @else {
+    <p class="muted section">{{ 'LOADING' | translate }}</p>
+  }
+</main>
+
+@if (purchaseOpen() && course(); as c) {
+  <app-purchase-dialog [item]="{ kind: 'COURSE', id: c.id, title: c.title }" (closed)="purchaseOpen.set(false)" (paid)="onPaid($event)" />
+}
+
+<app-footer />

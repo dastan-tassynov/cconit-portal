@@ -1,0 +1,67 @@
+:host { display: block; position: sticky; top: 0; z-index: 100; --primary: #3d37f0; }
+.container { max-width: 1140px; margin: 0 auto; padding: 0 16px; }
+
+/* ---- верхняя полоса ---- */
+.topbar { background: var(--primary); color: #fff; font-size: 13px; }
+.topbar__inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 46px; }
+.topbar__phone { color: #fff; text-decoration: none; white-space: nowrap; }
+.promo { display: inline-flex; align-items: center; gap: 10px; padding: 3px 3px 3px 12px; border-radius: 999px;
+         background: #1f1d3b; color: #fff; text-decoration: none; font-size: 13px; }
+.promo b { color: #e6ef5b; }
+.promo__tag { background: #e6ef5b; color: #1f1d3b; border-radius: 999px; padding: 3px 12px; font-weight: 600; }
+.langs { display: flex; gap: 8px; }
+.lang { border: 0; border-radius: 6px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer;
+        background: rgb(255 255 255 / .15); color: #fff; }
+.lang--active { background: #fff; color: var(--primary); }
+
+/* ---- шапка ---- */
+.header { background: #fff; border-bottom: 1px solid #ececf4; position: relative; }
+.header__inner { display: flex; align-items: center; justify-content: space-between; min-height: 80px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand__logo { width: 58px; height: 58px; object-fit: contain; }
+.brand__name { font-size: 32px; font-weight: 800; color: #1f1d2b; letter-spacing: -.5px; }
+.actions { display: flex; align-items: center; gap: 14px; }
+.icon-btn { width: 38px; height: 38px; border-radius: 50%; background: #f1f1f8; color: #3d37f0;
+            display: inline-flex; align-items: center; justify-content: center; }
+.login { background: var(--primary); color: #fff; text-decoration: none; padding: 11px 18px; border-radius: 999px; font-size: 14px; white-space: nowrap; }
+.login:hover { background: #2c27d0; }
+.burger { background: none; border: 0; color: var(--primary); cursor: pointer; font-size: 20px; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; }
+
+/* ---- выпадающее меню на всю ширину ---- */
+.menu { position: absolute; left: 0; right: 0; top: 100%; background: #fff; box-shadow: 0 16px 30px rgb(0 0 0 / .08); padding: 16px 0 24px; }
+.menu__link { display: block; padding: 14px 0; border-bottom: 1px solid #ececf4; color: #1f1d2b; text-decoration: none; font-size: 17px; }
+.menu__link:hover { color: var(--primary); }
+.menu__footer { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px; }
+.menu__flags { display: flex; gap: 10px; }
+.flag { font-size: 28px; background: none; border: 0; cursor: pointer; }
+.menu__footer a { color: #1f1d2b; }
+
+@media (max-width: 860px) {
+  .promo { display: none; }
+}
+@media (max-width: 560px) {
+  .topbar__inner { justify-content: center; }
+  .topbar__phone { display: none; }
+  .brand__name { font-size: 24px; }
+  .brand__logo { width: 44px; height: 44px; }
+  .login { padding: 9px 12px; font-size: 13px; }
+  .icon-btn { display: none; }
+  .actions { gap: 8px; }
+  .header__inner { gap: 8px; }
+  .login { white-space: nowrap; max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
+}
+@media (max-width: 400px) {
+  .brand__name { font-size: 20px; }
+  .brand__logo { width: 38px; height: 38px; }
+  .brand { gap: 8px; }
+}
+
+/* меню в строку на широких экранах (как у образца после входа) */
+.topbar__left { display: flex; align-items: center; gap: 10px; }
+.guide { background: #e6ef5b; color: #1f1d3b; border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 600; text-decoration: none; }
+.inline-nav { display: flex; gap: 22px; margin: 0 auto 0 48px; }
+.inline-nav__link { color: #1f1d2b; text-decoration: none; font-size: 15px; padding: 26px 0; border-bottom: 2px solid transparent; }
+.inline-nav__link:hover { color: var(--primary); }
+.inline-nav__link--active { border-bottom-color: var(--primary); }
+@media (max-width: 1100px) { .inline-nav { display: none; } }
+@media (min-width: 1101px) { .burger { display: none; } }

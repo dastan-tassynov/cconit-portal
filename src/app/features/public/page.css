@@ -1,0 +1,17 @@
+/* Общие стили внутренних публичных страниц (каталог, курс, новости, FAQ). */
+:host { display: block; color: #1f1d2b; --primary: #3d37f0; --muted: #6b6b80; --line: #ececf4; --lavender: #f4f4fe; }
+.container { max-width: 1140px; margin: 0 auto; padding: 0 16px; }
+.crumbs { display: flex; gap: 8px; align-items: center; color: var(--muted); font-size: 14px; margin: 24px 0 18px; flex-wrap: wrap; }
+.crumbs a { color: var(--muted); text-decoration: none; }
+.crumbs a:hover { color: var(--primary); }
+.crumbs__current { color: var(--primary); max-width: 420px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.page-title { font-size: clamp(22px, 2.6vw, 30px); font-weight: 800; margin: 0 0 12px; }
+.lead { color: #3f3f50; line-height: 1.6; margin: 0 0 32px; max-width: 900px; }
+.muted { color: var(--muted); }
+.section { padding: 24px 0 56px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; padding: 12px 22px; font-weight: 600;
+       font-size: 15px; text-decoration: none; cursor: pointer; border: 1px solid transparent; }
+.btn:disabled { opacity: .6; cursor: default; }
+.btn--primary { background: var(--primary); color: #fff; }
+.btn--primary:hover { background: #2c27d0; }
+.btn--outline { background: #fff; color: var(--primary); border-color: #c9c7fb; }

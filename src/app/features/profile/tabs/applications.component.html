@@ -1,0 +1,71 @@
+<div class="page">
+  <div class="page__head">
+    <div>
+      <h1 class="page__title">{{ prefix() + '_TITLE' | translate }}</h1>
+      <p class="muted">{{ prefix() + '_SUBTITLE' | translate }}</p>
+    </div>
+  </div>
+
+  @if (type() === 'LECTURER') {
+    <section class="benefits">
+      <h2>{{ 'LECT_WHY' | translate }}</h2>
+      @for (b of lecturerBenefits; track b.title) {
+        <div class="benefit">
+          <span class="benefit__icon">{{ b.icon }}</span>
+          <div>
+            <b>{{ b.title | translate }}</b>
+            <p>{{ b.text | translate }}</p>
+          </div>
+        </div>
+      }
+    </section>
+  }
+
+  @if (open() === false) {
+    <div class="card paused">⏸ {{ 'APP_PAUSED' | translate }}</div>
+  } @else if (open()) {
+    @if (hasPending()) {
+      <div class="card paused">⏳ {{ 'APP_PENDING' | translate }}</div>
+    } @else if (formVisible()) {
+      <form class="card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="form">
+          <div class="field field--full">
+            <label for="topic">{{ prefix() + '_TOPIC' | translate }}</label>
+            <input id="topic" formControlName="topic" [placeholder]="prefix() + '_TOPIC_PH' | translate">
+            @if (form.controls.topic.touched && form.controls.topic.invalid) {
+              <small>{{ 'VALIDATION_REQUIRED' | translate }}</small>
+            }
+          </div>
+          <div class="field field--full">
+            <label for="message">{{ 'APP_MESSAGE' | translate }}</label>
+            <textarea id="message" rows="4" formControlName="message" [placeholder]="'APP_MESSAGE_PH' | translate"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn--ghost" (click)="formVisible.set(false)">{{ 'BTN_CANCEL' | translate }}</button>
+          <button type="submit" class="btn btn--primary" [disabled]="sending()">{{ 'APP_SUBMIT' | translate }}</button>
+        </div>
+      </form>
+    } @else {
+      <button type="button" class="btn btn--dark apply" (click)="formVisible.set(true)">{{ 'APP_APPLY' | translate }} →</button>
+    }
+  }
+
+  @if (mine().length) {
+    <section class="card">
+      <h2 class="card__title">{{ 'APP_MY_APPLICATIONS' | translate }}</h2>
+      @for (a of mine(); track a.id) {
+        <div class="app">
+          <div class="app__head">
+            <b>{{ a.topic }}</b>
+            <span class="pill" [class.pill--new]="a.status === 'NEW'" [class.pill--ok]="a.status === 'APPROVED'" [class.pill--no]="a.status === 'REJECTED'">
+              {{ 'APP_STATUS_' + a.status | translate }}
+            </span>
+          </div>
+          <small class="muted">{{ a.createdAt | date: 'dd.MM.yyyy' }}</small>
+          @if (a.adminComment) { <p class="app__comment">💬 {{ a.adminComment }}</p> }
+        </div>
+      }
+    </section>
+  }
+</div>

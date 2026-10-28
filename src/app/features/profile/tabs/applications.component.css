@@ -1,0 +1,13 @@
+.benefits { background: linear-gradient(160deg, #1f8bd6, #0f6fb8); color: #fff; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 18px; }
+.benefits h2 { margin: 0 0 4px; font-size: 26px; }
+.benefit { display: flex; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid rgb(255 255 255 / .2); }
+.benefit:last-child { border-bottom: 0; padding-bottom: 0; }
+.benefit__icon { width: 42px; height: 42px; flex: 0 0 auto; border-radius: 50%; background: rgb(255 255 255 / .15); display: inline-flex; align-items: center; justify-content: center; }
+.benefit p { margin: 4px 0 0; opacity: .9; }
+.paused { color: #92400e; background: #fffbea; border-color: #fde68a; }
+.apply { align-self: flex-start; padding: 12px 22px; }
+.actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+.app { padding: 12px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
+.app:last-child { border-bottom: 0; }
+.app__head { display: flex; justify-content: space-between; gap: 10px; }
+.app__comment { margin: 6px 0 0; background: #f6f6f9; padding: 8px 10px; border-radius: 8px; }

@@ -1,0 +1,200 @@
+<div class="course-page-container">
+  <!-- ШАБЛОН 1: СТАТУС-ЭКРАН КУРСА (СОДЕРЖАНИЕ И МОДУЛИ) -->
+  @if (viewMode() === 'syllabus') {
+    <header class="course-header">
+      <button class="btn-back" (click)="goToDashboard()">← {{ 'COURSE_BACK_PANEL' | translate }}</button>
+      <app-language-switcher mode="inline" />
+      <h1 class="course-page-title">{{ course()?.subjectTitle || ('COURSE_PLAN_TITLE' | translate) }}</h1>
+    </header>
+
+    <div class="syllabus-container">
+      <div class="syllabus-card-info">
+        <p class="syllabus-desc">
+          {{ 'COURSE_PLAN_DESC' | translate }}
+        </p>
+      </div>
+
+      <div class="course-description-box">
+        <h4>{{ 'COURSE_ABOUT' | translate }}</h4>
+        <p>
+          {{ course()?.subjectDescription }}
+        </p>
+      </div>
+
+      <h3 class="modules-title">📚 {{ 'COURSE_MODULES' | translate }}</h3>
+
+      <div class="lessons-steps-list">
+        @for (lesson of lessons(); track lesson.id) {
+          <div class="step-item"
+               [class.completed]="isDone(lesson)"
+               [class.active-step]="lesson.stepOrder === maxAvailableStep()"
+               [class.locked]="isLocked(lesson)"
+               (click)="openLesson(lesson)">
+
+            <div class="step-number-badge">
+              @if (isDone(lesson)) { ✅ } @else { {{ lesson.stepOrder }} }
+            </div>
+
+            <div class="step-details">
+              <h4 class="step-title">{{ lesson.title || ('COURSE_EMPTY_MODULE' | translate) }}</h4>
+
+              <p class="step-status-text">
+                @if (isDone(lesson)) {
+                  {{ 'COURSE_STATUS_DONE' | translate }}
+                }
+                @else if (lesson.stepOrder === maxAvailableStep()) {
+                  {{ 'COURSE_STATUS_AVAILABLE' | translate }}
+                }
+                @else {
+                  {{ 'COURSE_STATUS_LOCKED' | translate }}
+                }
+              </p>
+            </div>
+
+            <div class="step-arrow-indicator">
+              @if (isLocked(lesson)) { 🔒 } @else { → }
+            </div>
+          </div>
+        }
+      </div>
+
+      @if (lessons().length > 0 && maxAvailableStep() >= lastStep()) {
+        <div class="final-action-zone">
+          <button
+            class="btn-finish"
+            [class.course-done-btn]="courseFinished() || quizLocked()"
+            [disabled]="courseFinished() || quizLocked()"
+            (click)="goToQuiz()"
+          >
+            @if (courseFinished()) {
+              🔒 {{ 'COURSE_FINISHED' | translate }}
+            } @else if (quizLocked()) {
+              🔒 {{ 'QUIZ_LOCKED_SHORT' | translate }}
+            } @else {
+              🎯 {{ 'COURSE_START_TEST' | translate }}
+            }
+          </button>
+          @if (quizLocked()) {
+            <p class="quiz-locked-note">{{ 'QUIZ_LOCKED_TEXT' | translate }}</p>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ШАБЛОН 2: ЭКРАН ИЗУЧЕНИЯ КОНКРЕТНОГО УРОКА -->
+  @if (viewMode() === 'lesson' && currentLesson(); as lesson) {
+    <header class="course-header">
+      <button class="btn-back" (click)="showSyllabus()">← {{ 'COURSE_BACK_MODULES' | translate }}</button>
+      <app-language-switcher mode="inline" />
+      <span class="step-counter-top">
+        {{ 'COURSE_STEP' | translate }} {{ lesson.stepOrder }} {{ 'COURSE_OF' | translate }} {{ lessons().length }}
+      </span>
+    </header>
+
+    <h1 class="lesson-active-title">
+      {{ lesson.title }}
+    </h1>
+
+    <div class="course-main-content">
+
+      @if (videoSrc(lesson); as src) {
+        <div class="video-section">
+          <h3 class="section-subtitle">📺 {{ 'COURSE_VIDEO' | translate }}</h3>
+
+          <div class="video-wrapper">
+            <video
+              controls
+              controlsList="nodownload"
+              disablePictureInPicture
+              [src]="src"
+              class="lesson-video"
+              preload="metadata"
+              (error)="onVideoError()">
+              {{ 'COURSE_VIDEO_NOT_SUPPORTED' | translate }}
+            </video>
+            <div class="video-watermark" [style.top]="watermark().top" [style.left]="watermark().left">
+              {{ session.fullName() }}
+            </div>
+          </div>
+        </div>
+      }
+
+      <div class="text-section">
+        <h3 class="section-subtitle">📖 {{ 'COURSE_THEORY' | translate }}</h3>
+
+        <div class="text-card">
+          <p class="lesson-text">
+            {{ lesson.textMaterial || ('COURSE_NO_TEXT' | translate) }}
+          </p>
+        </div>
+      </div>
+
+      <footer class="course-action-footer">
+        <p class="action-hint">
+          {{ 'COURSE_CONFIRM_READ' | translate }}
+        </p>
+
+        <button class="btn-finish btn-finish--green" (click)="nextStep()">
+          @if (lesson.stepOrder < lastStep()) {
+            {{ 'COURSE_NEXT_MODULE' | translate }}
+          } @else {
+            {{ 'COURSE_FINISH_AND_TEST' | translate }}
+          }
+        </button>
+      </footer>
+
+    </div>
+  }
+
+  @if (blockedModalOpen()) {
+    <div class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-icon">🔒</div>
+          <h2>{{ 'COURSE_BLOCKED_TITLE' | translate }}</h2>
+        </div>
+
+        <div class="modal-body">
+          <p>{{ 'COURSE_BLOCKED_TEXT1' | translate }}</p>
+          <p class="sub-text">{{ 'COURSE_BLOCKED_TEXT2' | translate }}</p>
+        </div>
+
+        <div class="modal-footer">
+          <button class="modal-btn-primary" (click)="blockedModalOpen.set(false)">
+            {{ 'BTN_OK' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+    @if (completionModalOpen()) {
+  <div class="course-modal-overlay">
+    <div class="course-modal-card">
+      <div class="course-modal-icon">🎉</div>
+
+      <h2 class="course-modal-title">
+        {{ 'COURSE_CONGRATS' | translate }}
+      </h2>
+
+      <p class="course-modal-text">
+        {{ 'COURSE_COMPLETE_TEXT' | translate }}
+      </p>
+
+      <div class="course-modal-actions">
+        <button class="btn-modal-secondary" (click)="goToDashboard()">
+          🏠 {{ 'BTN_DASHBOARD' | translate }}
+        </button>
+
+        <button class="btn-modal-primary" (click)="goToQuiz()">
+          📝 {{ 'COURSE_GO_TEST' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+
+</div>
+
+<app-footer />

@@ -1,0 +1,19 @@
+<div [class]="'language-switcher mode-' + mode()">
+  <button type="button" class="lang-button" (click)="toggle($event)" [attr.aria-expanded]="opened()">
+    🌐 {{ language.current().toUpperCase() }}
+    <span class="arrow" [class.open]="opened()">▾</span>
+  </button>
+
+  @if (opened()) {
+    <div class="lang-menu" (click)="$event.stopPropagation()">
+      @for (lang of language.languages; track lang.code) {
+        <button type="button" (click)="select(lang.code)" [class.active]="language.current() === lang.code">
+          {{ lang.flag }} {{ lang.label }}
+          @if (language.current() === lang.code) {
+            <span>✓</span>
+          }
+        </button>
+      }
+    </div>
+  }
+</div>

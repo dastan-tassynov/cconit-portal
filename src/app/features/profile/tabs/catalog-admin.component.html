@@ -1,0 +1,116 @@
+<h3 class="section-title">🗂 {{ 'CAB_MENU_CATALOG' | translate }}</h3>
+
+<!-- ============ Направления ============ -->
+<div class="constructor-section">
+  <div class="constructor-section-header">
+    <h4>{{ 'CATALOG_DIRECTIONS' | translate }}</h4>
+    <p>{{ 'CATALOG_DIRECTIONS_DESC' | translate }}</p>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr><th></th><th>RU</th><th>KZ</th><th class="text-center">{{ 'TH_COURSES_COUNT' | translate }}</th><th class="text-right">{{ 'TH_ACTION' | translate }}</th></tr>
+    </thead>
+    <tbody>
+      @for (d of directions(); track d.id) {
+        <tr>
+          <td>{{ d.icon }}</td>
+          <td>{{ d.titleRu }}</td>
+          <td>{{ d.titleKz }}</td>
+          <td class="text-center">{{ d.courseCount }}</td>
+          <td class="text-right">
+            <button type="button" class="btn-small btn-small--amber" (click)="editDirection(d)">{{ 'BTN_EDIT' | translate }}</button>
+            <button type="button" class="btn-small btn-small--red" (click)="deleteDirection(d)">{{ 'BTN_DELETE' | translate }}</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <form [formGroup]="directionForm" (ngSubmit)="saveDirection()" class="form-row direction-form">
+    <div class="form-group"><label>RU</label><input formControlName="titleRu" [placeholder]="'CATALOG_DIRECTION_PH_RU' | translate"></div>
+    <div class="form-group"><label>KZ</label><input formControlName="titleKz" [placeholder]="'CATALOG_DIRECTION_PH_KZ' | translate"></div>
+    <div class="form-group"><label>{{ 'CATALOG_ICON' | translate }}</label><input formControlName="icon" maxlength="4"></div>
+    <div class="form-group"><label>{{ 'CATALOG_SORT' | translate }}</label><input type="number" formControlName="sortOrder"></div>
+    <button type="submit" class="btn-primary">
+      {{ (directionForm.controls.id.value ? 'BTN_SAVE' : 'CATALOG_ADD_DIRECTION') | translate }}
+    </button>
+  </form>
+</div>
+
+<!-- ============ Страница курса ============ -->
+<div class="constructor-section">
+  <div class="constructor-section-header">
+    <h4>{{ 'CATALOG_COURSE_PAGE' | translate }}</h4>
+    <p>{{ 'CATALOG_COURSE_PAGE_DESC' | translate }}</p>
+  </div>
+
+  <div class="form-group">
+    <label for="cat-subject">{{ 'CONSTRUCTOR_SELECT_COURSE' | translate }}</label>
+    <select id="cat-subject" [ngModel]="selectedSubjectId()" (ngModelChange)="selectSubject($event)">
+      <option [ngValue]="null" disabled>{{ 'PH_SELECT_COURSE' | translate }}</option>
+      @for (s of subjects(); track s.id) {
+        <option [ngValue]="s.id">{{ s.title }} ({{ s.programCode }})</option>
+      }
+    </select>
+  </div>
+
+  @if (selectedSubjectId()) {
+    <form [formGroup]="detailsForm" (ngSubmit)="saveDetails()">
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ 'CATALOG_DIRECTION' | translate }}</label>
+          <select formControlName="directionId">
+            <option [ngValue]="null">—</option>
+            @for (d of directions(); track d.id) {
+              <option [ngValue]="d.id">{{ d.icon }} {{ d.titleRu }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>{{ 'CONSTRUCTOR_COURSE_HOURS' | translate }}</label>
+          <input type="number" min="0" formControlName="hours">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'CATALOG_ORLEU_CODE' | translate }}</label>
+        <input formControlName="programCode" list="orleu-programs" [placeholder]="'CATALOG_ORLEU_CODE_PH' | translate">
+        <datalist id="orleu-programs">
+          @for (p of orleuPrograms(); track p.code) {
+            <option [value]="p.code">{{ p.name }}</option>
+          }
+        </datalist>
+        <p class="muted">{{ 'CATALOG_ORLEU_CODE_HINT' | translate }}</p>
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'CATALOG_OBJECTIVES' | translate }}</label>
+        <textarea class="form-textarea large" formControlName="objectives" [placeholder]="'CATALOG_OBJECTIVES_PH' | translate"></textarea>
+        <p class="muted">{{ 'CATALOG_OBJECTIVES_HINT' | translate }}</p>
+      </div>
+
+      <label>{{ 'CATALOG_AUTHORS' | translate }}</label>
+      <div formArrayName="authors">
+        @for (author of authors.controls; track $index; let i = $index) {
+          <div class="form-row author-row" [formGroupName]="i">
+            <input formControlName="fullName" [placeholder]="'CATALOG_AUTHOR_NAME' | translate">
+            <input formControlName="position" [placeholder]="'CATALOG_AUTHOR_POSITION' | translate">
+            <button type="button" class="btn-small btn-small--red" (click)="removeAuthor(i)">✕</button>
+          </div>
+        }
+      </div>
+      <button type="button" class="btn-small btn-small--green" (click)="addAuthor()">+ {{ 'CATALOG_ADD_AUTHOR' | translate }}</button>
+
+      <div class="file-upload-dashed plan">
+        <label>📄 {{ 'CATALOG_PLAN' | translate }}: {{ (hasPlan() ? 'CATALOG_PLAN_LOADED' : 'CATALOG_PLAN_NONE') | translate }}</label>
+        <input #planInput type="file" accept="application/pdf" (change)="uploadPlan(planInput)">
+        @if (hasPlan()) {
+          <button type="button" class="btn-small btn-small--red" (click)="deletePlan()">{{ 'BTN_DELETE' | translate }}</button>
+        }
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="saving()">{{ 'BTN_SAVE' | translate }}</button>
+    </form>
+  }
+</div>

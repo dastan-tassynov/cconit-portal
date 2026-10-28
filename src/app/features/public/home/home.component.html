@@ -1,0 +1,199 @@
+<app-site-header />
+
+<main>
+  <!-- ===================== ГЕРОЙ ===================== -->
+  <section class="hero">
+    <div class="hero__blob hero__blob--left" aria-hidden="true"><span>👩‍🏫</span></div>
+    <div class="hero__blob hero__blob--right" aria-hidden="true"><span>👨‍🏫</span></div>
+
+    <div class="hero__content">
+      <p class="hero__welcome">{{ 'SITE_WELCOME' | translate }} <span class="brand-badge">ЦОНИТ</span></p>
+      <h1>{{ 'SITE_HERO_TITLE' | translate }}</h1>
+      <p class="hero__text">
+        {{ 'SITE_HERO_TEXT_1' | translate }}
+        <span class="accent">{{ 'SITE_HERO_TEXT_ACCENT' | translate }}</span>
+        {{ 'SITE_HERO_TEXT_2' | translate }}
+      </p>
+      <a routerLink="/courses" class="btn-pill">{{ 'SITE_ALL_COURSES' | translate }} <span>→</span></a>
+
+      @if (stats(); as s) {
+        @if (s.completedCourses > 0) {
+          <div class="hero__social">
+            <div class="avatars" aria-hidden="true"><span>👩</span><span>🧑</span><span>👨</span><span>👩‍🦱</span></div>
+            <span>+{{ s.completedCourses | number }} {{ 'SITE_COMPLETED_COURSES' | translate }}</span>
+          </div>
+        }
+      }
+    </div>
+  </section>
+
+  <!-- ===================== О СЕРВИСЕ ===================== -->
+  <section class="container">
+    <div class="service-card">
+      <p class="eyebrow">{{ 'SITE_SERVICE_EYEBROW' | translate }}</p>
+      <h2>{{ 'SITE_SERVICE_TITLE' | translate }}</h2>
+      <p>{{ 'SITE_SERVICE_TEXT_1' | translate }}</p>
+      <p>{{ 'SITE_SERVICE_TEXT_2' | translate }}</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ===================== НОВОСТИ ===================== -->
+  <section id="news" class="container section">
+    <h2 class="section-title">{{ 'SITE_NEWS_TITLE' | translate }}</h2>
+    <div class="section-head">
+      <p>{{ 'SITE_NEWS_SUBTITLE' | translate }}</p>
+      <a routerLink="/news" class="link-arrow">{{ 'SITE_NEWS_ALL' | translate }} →</a>
+    </div>
+    <div class="news-grid">
+      @for (n of news(); track n.id) {
+        <a class="news-card" [routerLink]="['/news', n.id]">
+          <span class="news-card__title">{{ n.title }}</span>
+          <span class="news-card__meta">{{ n.publishedAt | date: 'dd.MM.yyyy' }}</span>
+        </a>
+      } @empty {
+        @for (program of programDrafts; track program.id) {
+          <a class="news-card" [routerLink]="['/programs', program.id]">
+            <span class="news-card__title">{{ 'SITE_NEWS_PROJECT' | translate }} «{{ program.titleKey | translate }}»</span>
+            <span class="news-card__meta">{{ 'SITE_NEWS_META' | translate }}</span>
+          </a>
+        }
+      }
+    </div>
+
+    <!-- «Рабочие группы», как у образца -->
+    <div class="banner-card">
+      <div>
+        <h3>{{ 'WG_TITLE' | translate }}</h3>
+        <p>{{ 'WG_BANNER_TEXT' | translate }}</p>
+      </div>
+      <a routerLink="/profile/workgroups" class="btn-rect">{{ 'APP_APPLY' | translate }} →</a>
+    </div>
+
+    <!-- баннер (как «Рабочие группы» у образца) -->
+    <div id="verify" class="banner-card">
+      <div>
+        <h3>{{ 'SITE_VERIFY_TITLE' | translate }}</h3>
+        <p>{{ 'SITE_VERIFY_TEXT' | translate }}</p>
+      </div>
+      <form class="banner-card__form" (ngSubmit)="verifyCertificate()">
+        <input name="code" [(ngModel)]="certificateCode" [placeholder]="'SITE_VERIFY_PLACEHOLDER' | translate">
+        <button type="submit" class="btn-rect">{{ 'SITE_VERIFY_BTN' | translate }} →</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===================== О ЦЕНТРЕ ===================== -->
+  <section id="about" class="about">
+    <div class="container-narrow">
+      <div class="about__head">
+        <div>
+          <h2 class="section-title">{{ 'SITE_ABOUT_TITLE' | translate }}</h2>
+          <p class="about__statement">{{ 'SITE_ABOUT_STATEMENT' | translate }}</p>
+        </div>
+        <div>
+          <p class="muted">{{ 'SITE_MISSION_LABEL' | translate }}</p>
+          <p class="about__mission">{{ 'SITE_MISSION_TEXT' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="about__grid">
+        <div class="team-card">
+          <div class="team-card__art" aria-hidden="true">🎓</div>
+          <div class="team-card__text">
+            <h3>{{ 'SITE_TEAM_TITLE' | translate }}</h3>
+            <p>{{ 'SITE_TEAM_TEXT' | translate }}</p>
+          </div>
+        </div>
+        <div class="about__cards">
+          <div class="feature-card">
+            <div>
+              <h3>{{ 'SITE_EXPERIENCE_TITLE' | translate }}</h3>
+              <p>{{ 'SITE_EXPERIENCE_TEXT' | translate }}</p>
+            </div>
+            <div class="feature-card__art" aria-hidden="true">🛡️</div>
+          </div>
+          <div class="feature-card">
+            <div>
+              <h3>{{ 'SITE_METHODS_TITLE' | translate }}</h3>
+              <p>{{ 'SITE_METHODS_TEXT' | translate }}</p>
+            </div>
+            <div class="feature-card__art" aria-hidden="true">🧩</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== НАПРАВЛЕНИЯ И КУРСЫ ===================== -->
+  <section id="directions" class="container-narrow section">
+    <h2 class="directions__title">{{ 'SITE_DIRECTIONS_TITLE' | translate }}</h2>
+    <p class="muted">{{ 'SITE_DIRECTIONS_COUNT' | translate }}: {{ directions().length }}</p>
+
+    @if (coursesLoading()) {
+      <p class="muted">{{ 'LOADING' | translate }}</p>
+    } @else if (directions().length === 0) {
+      <p class="muted">{{ 'SITE_COURSES_EMPTY' | translate }}</p>
+    } @else {
+      <div class="directions">
+        <nav class="directions__tabs">
+          @for (dir of directions(); track dir.code) {
+            <button type="button" class="tab" [class.tab--active]="activeCode() === dir.code"
+                    (click)="openDirection(dir.code)">
+              <span aria-hidden="true">{{ dir.icon }}</span> {{ dir.code === 'OTHER' ? ('CATALOG_OTHER' | translate) : dir.title }}
+            </button>
+          }
+        </nav>
+
+        <div class="directions__grid">
+          @for (course of visibleCourses(); track course.id; let i = $index) {
+            <button type="button" class="course-card" (click)="enroll(course)">
+              <span class="course-card__thumb" [style.background]="cardBackground(i)">{{ cardIcon(i) }}</span>
+              <span class="course-card__body">
+                <span class="course-card__title">{{ course.title }}</span>
+                <span class="course-card__meta">
+                  @if (course.hours) { {{ course.hours }} {{ 'HOURS_SHORT' | translate }} · }
+                  @if (course.free) { {{ 'PRICE_FREE' | translate }} } @else { {{ course.price | number: '1.0-0' }} ₸ }
+                </span>
+              </span>
+              <span class="course-card__arrow" aria-hidden="true">↗</span>
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </section>
+
+  <!-- ===================== ФОРМА ОБРАТНОЙ СВЯЗИ ===================== -->
+  <section id="contacts" class="contact">
+    <div class="container-narrow">
+      <div class="contact__card">
+        <div class="contact__form">
+          <h2>{{ 'SITE_CONTACT_TITLE' | translate }}</h2>
+          <p class="muted">{{ 'SITE_CONTACT_TEXT' | translate }}</p>
+
+          @if (contactSent()) {
+            <p class="contact__success">✅ {{ 'CONTACT_SENT' | translate }}</p>
+          } @else {
+            <form [formGroup]="contactForm" (ngSubmit)="sendContact()" novalidate>
+              <input formControlName="name" [placeholder]="'CONTACT_NAME' | translate" autocomplete="name">
+              <div class="contact__row">
+                <input formControlName="phone" type="tel" [placeholder]="'CONTACT_PHONE' | translate" autocomplete="tel">
+                <input formControlName="email" type="email" placeholder="Email" autocomplete="email">
+              </div>
+              <textarea formControlName="message" rows="2" [placeholder]="'CONTACT_MESSAGE' | translate"></textarea>
+              <!-- ловушка для ботов: скрыта от людей -->
+              <input formControlName="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <button type="submit" class="btn-pill" [disabled]="contactSending()">{{ 'CONTACT_SEND' | translate }} <span>→</span></button>
+              <p class="consent">{{ 'CONTACT_CONSENT' | translate }}</p>
+            </form>
+          }
+        </div>
+        <div class="contact__art" aria-hidden="true"><span>💬</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<app-footer />

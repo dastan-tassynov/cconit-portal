@@ -1,0 +1,94 @@
+<h3 class="section-title">🌐 {{ 'MENU_TRANSLATIONS' | translate }}</h3>
+
+<!-- ============ Перевод курса ============ -->
+<form class="constructor-section" [formGroup]="courseForm" (ngSubmit)="saveCourseTranslation()">
+  <div class="constructor-section-header">
+    <h4>🌍 {{ 'TRANSLATION_COURSE' | translate }}</h4>
+    <p>{{ 'TRANSLATION_COURSE_DESC' | translate }}</p>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="t-subject">{{ 'CONSTRUCTOR_SELECT_COURSE' | translate }}</label>
+      <select id="t-subject" formControlName="subjectId">
+        <option [ngValue]="null" disabled>{{ 'PH_SELECT_COURSE' | translate }}</option>
+        @for (s of subjects(); track s.id) {
+          <option [ngValue]="s.id">
+            {{ s.title }} ({{ s.programCode }}) {{ s.hasRu ? '✓RU' : '' }} {{ s.hasKz ? '✓KZ' : '' }}
+          </option>
+        }
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="t-lang">{{ 'LABEL_TRANSLATION_LANGUAGE' | translate }}</label>
+      <select id="t-lang" formControlName="language">
+        <option value="RU">Русский</option>
+        <option value="KZ">Қазақша</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="t-title">{{ 'CONSTRUCTOR_COURSE_TITLE' | translate }}</label>
+    <input id="t-title" type="text" formControlName="title" [placeholder]="'PH_COURSE_TITLE' | translate">
+  </div>
+  <div class="form-group">
+    <label for="t-desc">{{ 'CONSTRUCTOR_COURSE_DESCRIPTION' | translate }}</label>
+    <textarea id="t-desc" class="form-textarea" formControlName="description"
+              [placeholder]="'PH_COURSE_DESCRIPTION' | translate"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="t-obj">{{ 'CATALOG_OBJECTIVES' | translate }}</label>
+    <textarea id="t-obj" class="form-textarea" formControlName="objectives" [placeholder]="'CATALOG_OBJECTIVES_PH' | translate"></textarea>
+  </div>
+
+  <button type="submit" class="btn-primary" [disabled]="saving()">🌐 {{ 'BTN_SAVE_TRANSLATION' | translate }}</button>
+</form>
+
+<!-- ============ Перевод модуля ============ -->
+<form class="constructor-section" [formGroup]="lessonForm" (ngSubmit)="saveLessonTranslation()">
+  <div class="constructor-section-header">
+    <h4>📚 {{ 'TRANSLATION_MODULE' | translate }}</h4>
+    <p>{{ 'TRANSLATION_MODULE_DESC' | translate }}</p>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="tl-subject">{{ 'CONSTRUCTOR_SELECT_COURSE' | translate }}</label>
+      <select id="tl-subject" formControlName="subjectId">
+        <option [ngValue]="null" disabled>{{ 'PH_SELECT_COURSE' | translate }}</option>
+        @for (s of subjects(); track s.id) {
+          <option [ngValue]="s.id">{{ s.title }}</option>
+        }
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="tl-lesson">{{ 'TRANSLATION_SELECT_MODULE' | translate }}</label>
+      <select id="tl-lesson" formControlName="lessonId">
+        <option [ngValue]="null" disabled>{{ 'TRANSLATION_SELECT_MODULE' | translate }}</option>
+        @for (l of lessons(); track l.id) {
+          <option [ngValue]="l.id">{{ l.stepOrder }}. {{ l.title }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="tl-lang">{{ 'LABEL_TRANSLATION_LANGUAGE' | translate }}</label>
+    <select id="tl-lang" formControlName="language">
+      <option value="RU">Русский</option>
+      <option value="KZ">Қазақша</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="tl-title">{{ 'CONSTRUCTOR_MODULE_TITLE' | translate }}</label>
+    <input id="tl-title" type="text" formControlName="title">
+  </div>
+  <div class="form-group">
+    <label for="tl-text">{{ 'CONSTRUCTOR_MODULE_CONTENT' | translate }}</label>
+    <textarea id="tl-text" class="form-textarea large" formControlName="textMaterial"></textarea>
+  </div>
+
+  <button type="submit" class="btn-module" [disabled]="saving()">🌐 {{ 'BTN_SAVE_TRANSLATION' | translate }}</button>
+</form>

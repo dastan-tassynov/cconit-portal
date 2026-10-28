@@ -1,0 +1,186 @@
+<h3 class="section-title">🛠 {{ 'MENU_CONSTRUCTOR' | translate }}</h3>
+
+<!-- ============ 1. Новый курс ============ -->
+<form class="constructor-section" [formGroup]="courseForm" (ngSubmit)="createCourse()">
+  <div class="constructor-section-header">
+    <h4>1️⃣ {{ 'CONSTRUCTOR_CREATE_COURSE' | translate }}</h4>
+    <p>{{ 'CONSTRUCTOR_CREATE_COURSE_DESC' | translate }}</p>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="c-lang">{{ 'CONSTRUCTOR_COURSE_LANGUAGE' | translate }}</label>
+      <select id="c-lang" formControlName="language">
+        <option value="RU">Русский</option>
+        <option value="KZ">Қазақша</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="c-code">{{ 'CONSTRUCTOR_COURSE_CODE' | translate }}</label>
+      <input id="c-code" type="text" formControlName="programCode" [placeholder]="'PH_COURSE_CODE' | translate">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="c-title">{{ 'CONSTRUCTOR_COURSE_TITLE' | translate }}</label>
+    <input id="c-title" type="text" formControlName="title" [placeholder]="'PH_COURSE_TITLE' | translate">
+  </div>
+
+  <div class="form-group">
+    <label for="c-desc">{{ 'CONSTRUCTOR_COURSE_DESCRIPTION' | translate }}</label>
+    <textarea id="c-desc" class="form-textarea" formControlName="description"
+              [placeholder]="'PH_COURSE_DESCRIPTION' | translate"></textarea>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="c-hours">{{ 'CONSTRUCTOR_COURSE_HOURS' | translate }}</label>
+      <input id="c-hours" type="number" min="0" formControlName="hours">
+    </div>
+    <div class="form-group">
+      <label for="c-price">{{ 'CONSTRUCTOR_COURSE_PRICE' | translate }}</label>
+      <input id="c-price" type="number" min="0" step="100" formControlName="price" [placeholder]="'PH_PRICE' | translate">
+    </div>
+  </div>
+
+  <button type="submit" class="btn-primary" [disabled]="saving() === 'course'">➕ {{ 'BTN_CREATE_COURSE' | translate }}</button>
+</form>
+
+<!-- ============ Список курсов, цены, отчёты ============ -->
+<div class="constructor-section">
+  <div class="constructor-section-header">
+    <h4>📋 {{ 'CONSTRUCTOR_COURSES_LIST' | translate }}</h4>
+    <p>{{ 'CONSTRUCTOR_COURSES_LIST_DESC' | translate }}</p>
+  </div>
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>{{ 'TH_COURSE' | translate }}</th>
+          <th>{{ 'TH_LANGS' | translate }}</th>
+          <th>{{ 'TH_PRICE' | translate }}</th>
+          <th class="text-right">{{ 'TH_ACTION' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (s of subjects(); track s.id) {
+          <tr>
+            <td [class.muted]="s.hidden">{{ s.title }} <span class="muted">({{ s.programCode }})</span>
+              @if (s.hidden) { <span class="pill pill--no">{{ 'CONSTRUCTOR_HIDDEN' | translate }}</span> }</td>
+            <td>
+              <span class="pill" [class.pill--ok]="s.hasRu" [class.pill--no]="!s.hasRu">RU</span>
+              <span class="pill" [class.pill--ok]="s.hasKz" [class.pill--no]="!s.hasKz">KZ</span>
+            </td>
+            <td>
+              <input type="number" min="0" step="100" class="price-input"
+                     [value]="s.price ?? ''" [placeholder]="'PRICE_FREE' | translate"
+                     (input)="setPriceDraft(s.id, $any($event.target).value)">
+              <span class="muted">₸</span>
+            </td>
+            <td class="text-right">
+              <button type="button" class="btn-small btn-small--green" (click)="savePrice(s)">{{ 'BTN_SAVE' | translate }}</button>
+              <button type="button" class="btn-small btn-small--amber" (click)="downloadReport(s)">📊 {{ 'BTN_REPORT' | translate }}</button>
+              <button type="button" class="btn-small" [class.btn-small--muted]="!s.hidden" [class.btn-small--red]="s.hidden"
+                      [title]="(s.hidden ? 'CONSTRUCTOR_SHOW' : 'CONSTRUCTOR_HIDE') | translate" (click)="toggleHidden(s)">
+                {{ s.hidden ? '🙈' : '👁' }}
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ 2. Модули ============ -->
+<form class="constructor-section" [formGroup]="lessonForm" (ngSubmit)="addLesson(videoInput)">
+  <div class="constructor-section-header">
+    <h4>2️⃣ {{ 'CONSTRUCTOR_MODULES' | translate }}</h4>
+    <p>{{ 'CONSTRUCTOR_MODULES_DESC' | translate }}</p>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="l-subject">{{ 'CONSTRUCTOR_SELECT_COURSE' | translate }}</label>
+      <select id="l-subject" formControlName="subjectId">
+        <option [ngValue]="null" disabled>{{ 'PH_SELECT_COURSE' | translate }}</option>
+        @for (s of subjects(); track s.id) {
+          <option [ngValue]="s.id">{{ s.title }}</option>
+        }
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="l-lang">{{ 'LABEL_TRANSLATION_LANGUAGE' | translate }}</label>
+      <select id="l-lang" formControlName="language">
+        <option value="RU">Русский</option>
+        <option value="KZ">Қазақша</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="l-title">{{ 'CONSTRUCTOR_MODULE_TITLE' | translate }}</label>
+    <input id="l-title" type="text" formControlName="title" [placeholder]="'PH_MODULE_TITLE' | translate">
+  </div>
+
+  <div class="form-group">
+    <label for="l-text">{{ 'CONSTRUCTOR_MODULE_CONTENT' | translate }}</label>
+    <textarea id="l-text" class="form-textarea large" formControlName="textMaterial"
+              [placeholder]="'PH_MODULE_CONTENT' | translate"></textarea>
+  </div>
+
+  <div class="file-upload-dashed">
+    <label for="l-video">🎬 {{ 'CONSTRUCTOR_VIDEO' | translate }}</label>
+    <input id="l-video" #videoInput type="file" accept="video/mp4,video/webm" (change)="onVideoSelected($event)">
+  </div>
+
+  <button type="submit" class="btn-module" [disabled]="saving() === 'lesson'">
+    🚀 {{ (saving() === 'lesson' ? 'UPLOADING' : 'BTN_ADD_MODULE') | translate }}
+  </button>
+</form>
+
+<!-- ============ 3. Тесты ============ -->
+<form class="constructor-section" [formGroup]="quizForm" (ngSubmit)="addQuestion()">
+  <div class="constructor-section-header">
+    <h4>3️⃣ {{ 'CONSTRUCTOR_TESTS' | translate }}</h4>
+    <p>{{ 'CONSTRUCTOR_TESTS_DESC' | translate }}</p>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="q-subject">{{ 'CONSTRUCTOR_SELECT_COURSE' | translate }}</label>
+      <select id="q-subject" formControlName="subjectId">
+        <option [ngValue]="null" disabled>{{ 'PH_SELECT_COURSE' | translate }}</option>
+        @for (s of subjects(); track s.id) {
+          <option [ngValue]="s.id">{{ s.title }}</option>
+        }
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="q-lang">{{ 'LABEL_TRANSLATION_LANGUAGE' | translate }}</label>
+      <select id="q-lang" formControlName="language">
+        <option value="RU">Русский</option>
+        <option value="KZ">Қазақша</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="q-text">{{ 'CONSTRUCTOR_QUESTION' | translate }}</label>
+    <textarea id="q-text" class="form-textarea" formControlName="questionText" [placeholder]="'PH_QUESTION' | translate"></textarea>
+  </div>
+
+  <label>{{ 'CONSTRUCTOR_ANSWERS' | translate }}</label>
+  <p class="muted">{{ 'CONSTRUCTOR_ANSWERS_HINT' | translate }}</p>
+  <div formArrayName="answers">
+    @for (control of answerControls.controls; track $index; let i = $index) {
+      <div class="quiz-answer-row">
+        <input type="radio" [value]="i" [formControl]="quizForm.controls.correctIndex" [attr.aria-label]="letters[i]">
+        <span>{{ letters[i] }}</span>
+        <input type="text" [formControlName]="i" [placeholder]="'PH_ANSWER' | translate">
+      </div>
+    }
+  </div>
+
+  <button type="submit" class="btn-quiz-save" [disabled]="saving() === 'quiz'">➕ {{ 'BTN_ADD_QUESTION' | translate }}</button>
+</form>

@@ -1,0 +1,75 @@
+<div class="topbar">
+  <div class="container topbar__inner">
+    <span class="topbar__left">
+      <a [href]="phoneHref" class="topbar__phone">{{ phone }}</a>
+      <a routerLink="/faq" class="guide">{{ 'FAQ_GUIDE' | translate }}</a>
+    </span>
+
+    <a routerLink="/courses" class="promo">
+      <span><b>{{ 'SITE_PROMO_BOLD' | translate }}</b> {{ 'SITE_PROMO_TEXT' | translate }}</span>
+      <span class="promo__tag">{{ 'SITE_PROMO_TAG' | translate }} →</span>
+    </a>
+
+    <div class="langs">
+      @for (lang of language.languages; track lang.code) {
+        <button type="button" class="lang" [class.lang--active]="language.current() === lang.code"
+                (click)="language.use(lang.code)">
+          {{ lang.flag }} {{ lang.label }}
+        </button>
+      }
+    </div>
+  </div>
+</div>
+
+<header class="header">
+  <div class="container header__inner">
+    <a routerLink="/" class="brand" (click)="menuOpen.set(false)">
+      <img src="favion.png" alt="" class="brand__logo">
+      <span class="brand__name">ЦОНИТ</span>
+    </a>
+
+    <nav class="inline-nav">
+      @for (link of links; track link.key) {
+        <a [routerLink]="link.path" [fragment]="link.fragment" routerLinkActive="inline-nav__link--active"
+           [routerLinkActiveOptions]="{ exact: link.path === '/' }" class="inline-nav__link">{{ link.key | translate }}</a>
+      }
+    </nav>
+
+    <div class="actions">
+      <a routerLink="/courses" class="icon-btn" [attr.aria-label]="'SEARCH_PLACEHOLDER' | translate">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </a>
+      @if (session.isLoggedIn()) {
+        <a routerLink="/profile" class="login">{{ 'SITE_CABINET' | translate }}</a>
+      } @else {
+        <a routerLink="/auth" class="login">{{ 'SITE_LOGIN_REGISTER' | translate }}</a>
+      }
+      <button type="button" class="burger" (click)="menuOpen.set(!menuOpen())"
+              [attr.aria-expanded]="menuOpen()" [attr.aria-label]="'SITE_MENU' | translate">
+        @if (menuOpen()) { ✕ } @else {
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        }
+      </button>
+    </div>
+  </div>
+
+  @if (menuOpen()) {
+    <nav class="menu">
+      <div class="container">
+        @for (link of links; track link.key) {
+          <a [routerLink]="link.path" [fragment]="link.fragment" class="menu__link" (click)="menuOpen.set(false)">
+            {{ link.key | translate }}
+          </a>
+        }
+        <div class="menu__footer">
+          <div class="menu__flags">
+            @for (lang of language.languages; track lang.code) {
+              <button type="button" class="flag" (click)="language.use(lang.code)" [attr.aria-label]="lang.label">{{ lang.flag }}</button>
+            }
+          </div>
+          <a [href]="phoneHref">{{ phone }}</a>
+        </div>
+      </div>
+    </nav>
+  }
+</header>

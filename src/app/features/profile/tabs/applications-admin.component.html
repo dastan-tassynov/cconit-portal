@@ -1,0 +1,55 @@
+<h3 class="section-title">📋 {{ 'CAB_MENU_APPLICATIONS' | translate }}</h3>
+
+@if (settings(); as s) {
+  <div class="constructor-section switches">
+    <label class="checkbox"><input type="checkbox" [checked]="s.workgroupsOpen" (change)="toggleOpen('workgroupsOpen')"> {{ 'ADMIN_WG_OPEN' | translate }}</label>
+    <label class="checkbox"><input type="checkbox" [checked]="s.lecturerOpen" (change)="toggleOpen('lecturerOpen')"> {{ 'ADMIN_LECT_OPEN' | translate }}</label>
+  </div>
+}
+
+<div class="custom-tabs">
+  <button type="button" class="btn-small" [class.btn-small--green]="type() === 'WORKGROUP'" [class.btn-small--muted]="type() !== 'WORKGROUP'" (click)="type.set('WORKGROUP')">{{ 'CAB_MENU_WORKGROUPS' | translate }}</button>
+  <button type="button" class="btn-small" [class.btn-small--green]="type() === 'LECTURER'" [class.btn-small--muted]="type() !== 'LECTURER'" (click)="type.set('LECTURER')">{{ 'CAB_MENU_LECTURER' | translate }}</button>
+</div>
+
+@for (a of items(); track a.id) {
+  <div class="constructor-section">
+    <div class="app-head">
+      <b>{{ a.topic }}</b>
+      <span class="pill" [class.pill--ok]="a.status === 'APPROVED'" [class.pill--no]="a.status === 'REJECTED'" [class.pill--info]="a.status === 'NEW'">
+        {{ 'APP_STATUS_' + a.status | translate }}
+      </span>
+    </div>
+    <p class="muted">
+      {{ a.createdAt | date: 'dd.MM.yyyy HH:mm' }} · {{ a.userName }} · {{ a.userEmail }}
+      @if (a.userPhone) { · {{ a.userPhone }} }
+      @if (a.userPosition) { · {{ a.userPosition }} }
+      @if (a.userWorkplace) { · {{ a.userWorkplace }} }
+    </p>
+    @if (a.message) { <p>{{ a.message }}</p> }
+
+    @if (a.userId) {
+      @if (documents()[a.userId]; as docs) {
+        <p>
+          @for (d of docs; track d.id) {
+            <button type="button" class="btn-small btn-small--muted" (click)="download(d)">📄 {{ d.name }}</button>
+          } @empty { <span class="muted">{{ 'ADMIN_NO_DOCS' | translate }}</span> }
+        </p>
+      } @else {
+        <button type="button" class="btn-small btn-small--muted" (click)="loadDocuments(a)">📄 {{ 'ADMIN_SHOW_DOCS' | translate }}</button>
+      }
+    }
+
+    @if (a.status === 'NEW') {
+      <div class="decision">
+        <input [(ngModel)]="comments[a.id]" [placeholder]="'ADMIN_COMMENT_PH' | translate">
+        <button type="button" class="btn-small btn-small--green" (click)="decide(a, 'APPROVED')">{{ 'ADMIN_APPROVE' | translate }}</button>
+        <button type="button" class="btn-small btn-small--red" (click)="decide(a, 'REJECTED')">{{ 'ADMIN_REJECT' | translate }}</button>
+      </div>
+    } @else if (a.adminComment) {
+      <p class="muted">💬 {{ a.adminComment }}</p>
+    }
+  </div>
+} @empty {
+  <p class="muted">{{ 'CONTACT_EMPTY' | translate }}</p>
+}
