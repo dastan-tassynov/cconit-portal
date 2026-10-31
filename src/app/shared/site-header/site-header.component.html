@@ -29,9 +29,10 @@
     </a>
 
     <nav class="inline-nav">
-      @for (link of links; track link.key) {
-        <a [routerLink]="link.path" [fragment]="link.fragment" routerLinkActive="inline-nav__link--active"
-           [routerLinkActiveOptions]="{ exact: link.path === '/' }" class="inline-nav__link">{{ link.key | translate }}</a>
+      @for (link of inlineLinks; track link.key) {
+        <a [routerLink]="link.path" [fragment]="link.fragment"
+           [routerLinkActive]="link.fragment ? [] : 'inline-nav__link--active'"
+           class="inline-nav__link">{{ link.key | translate }}</a>
       }
     </nav>
 

@@ -143,6 +143,32 @@
     </div>
   </section>
 
+  <!-- ===================== ПРОЕКТЫ ПРОГРАММ (PDF) ===================== -->
+  <section id="projects" class="container section">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">{{ 'SITE_NEWS_META' | translate }}</p>
+        <h2 class="section-title">{{ 'HOME_PROJECTS_TITLE' | translate }}</h2>
+        <p class="muted">{{ 'HOME_PROJECTS_TEXT' | translate }}</p>
+      </div>
+    </div>
+    <div class="projects">
+      @for (program of programs; track program.id) {
+        <a class="project" [routerLink]="['/programs', program.id]">
+          <span class="project__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+          </span>
+          <span class="project__body">
+            <span class="project__title">{{ program.titleKey | translate }}</span>
+            <span class="project__desc">{{ program.descriptionKey | translate }}</span>
+            <span class="project__meta">PDF · {{ program.documents.length }} {{ 'HOME_PROJECTS_DOCS' | translate }}</span>
+          </span>
+          <span class="project__arrow" aria-hidden="true">→</span>
+        </a>
+      }
+    </div>
+  </section>
+
   <!-- ===================== НОВОСТИ ===================== -->
   <section id="news" class="container section">
     <div class="section-head">
@@ -160,13 +186,7 @@
           <span class="news-card__more">{{ 'HOME_READ_MORE' | translate }} →</span>
         </a>
       } @empty {
-        @for (program of programDrafts; track program.id) {
-          <a class="news-card" [routerLink]="['/programs', program.id]">
-            <span class="news-card__meta">{{ 'SITE_NEWS_META' | translate }}</span>
-            <span class="news-card__title">{{ 'SITE_NEWS_PROJECT' | translate }} «{{ program.titleKey | translate }}»</span>
-            <span class="news-card__more">{{ 'HOME_READ_MORE' | translate }} →</span>
-          </a>
-        }
+        <p class="muted">{{ 'NEWS_EMPTY' | translate }}</p>
       }
     </div>
 

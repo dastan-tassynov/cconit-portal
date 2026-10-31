@@ -63,5 +63,5 @@
 .inline-nav__link { color: #1c2733; text-decoration: none; font-size: 15px; white-space: nowrap; padding: 26px 0; border-bottom: 2px solid transparent; }
 .inline-nav__link:hover { color: var(--primary); }
 .inline-nav__link--active { border-bottom-color: var(--primary); }
-@media (max-width: 1240px) { .inline-nav { display: none; } }
+@media (max-width: 1280px) { .inline-nav { display: none; } }
 @media (min-width: 1101px) { .burger { display: none; } }

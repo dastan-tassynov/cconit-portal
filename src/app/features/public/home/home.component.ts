@@ -49,9 +49,11 @@ export class HomeComponent {
   // ---------- статистика
   protected readonly stats = signal<PublicStats | null>(null);
 
-  // ---------- новости (из админки); пока их нет — проекты образовательных программ
+  // ---------- новости (из админки)
   protected readonly news = signal<NewsItem[]>([]);
-  protected readonly programDrafts = PROGRAMS.slice(0, NEWS_PREVIEW);
+
+  // ---------- проекты образовательных программ (PDF для публичного обсуждения) — все, всегда
+  protected readonly programs = PROGRAMS;
 
   // ---------- направления и курсы
   protected readonly coursesLoading = signal(true);

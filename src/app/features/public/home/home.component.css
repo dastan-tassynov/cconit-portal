@@ -95,6 +95,19 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round
 .course-card__arrow { color: #9aa7b6; padding: 0 6px; }
 .soon { align-self: flex-start; font-size: 12px; font-weight: 600; color: #8a6d12; background: var(--gold-soft); border-radius: 999px; padding: 2px 8px; }
 
+/* ===== проекты программ ===== */
+.projects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.project { display: flex; align-items: center; gap: 16px; padding: 18px; background: #fff; border: 1px solid var(--line);
+           border-radius: 12px; text-decoration: none; color: inherit; transition: border-color .15s, box-shadow .15s; }
+.project:hover { border-color: #b8c7da; box-shadow: 0 10px 24px rgb(14 42 71 / .07); }
+.project__icon { flex: 0 0 48px; height: 48px; border-radius: 10px; background: #fbeeee; color: #b42318; display: flex; align-items: center; justify-content: center; }
+.project__icon svg { width: 24px; height: 24px; }
+.project__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.project__title { font-weight: 600; color: var(--navy); }
+.project__desc { color: var(--muted); font-size: 14px; line-height: 1.45; }
+.project__meta { color: #9aa7b6; font-size: 12px; font-weight: 600; }
+.project__arrow { color: #9aa7b6; }
+
 /* ===== новости ===== */
 .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .news-card { display: flex; flex-direction: column; gap: 12px; min-height: 170px; padding: 22px; background: #fff; border: 1px solid var(--line);
@@ -153,7 +166,7 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round
 }
 @media (max-width: 860px) {
   .section { padding-top: 52px; padding-bottom: 52px; }
-  .news-grid, .about__head, .values, .directions, .directions__grid, .contact, .banners { grid-template-columns: 1fr; }
+  .projects, .news-grid, .about__head, .values, .directions, .directions__grid, .contact, .banners { grid-template-columns: 1fr; }
   .about__head { gap: 24px; }
   .directions__tabs { flex-direction: row; flex-wrap: wrap; }
   .tab { white-space: nowrap; padding: 10px 12px; }

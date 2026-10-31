@@ -28,9 +28,12 @@ export class SiteHeaderComponent {
     { path: '/courses', key: 'SITE_NAV_COURSES' },
     { path: '/contests', key: 'SITE_NAV_CONTESTS' },
     { path: '/news', key: 'SITE_NAV_NEWS' },
+    { path: '/', fragment: 'projects', key: 'SITE_NAV_PROJECTS' },
     { path: '/about', key: 'SITE_NAV_ABOUT' },
     { path: '/', fragment: 'contacts', key: 'SITE_NAV_CONTACTS' },
     { path: '/profile/workgroups', key: 'CAB_MENU_WORKGROUPS' },
     { path: '/faq', key: 'FAQ_GUIDE' },
   ];
+  /** В строке меню «Гид» не дублируем — он есть в верхней полосе. */
+  protected readonly inlineLinks = this.links.filter(l => l.key !== 'FAQ_GUIDE');
 }
