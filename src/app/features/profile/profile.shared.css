@@ -940,6 +940,7 @@ a.menu-item, a.btn-sidebar-back { display: block; text-decoration: none; }
 .pill--info { background: #e0f2fe; color: #0369a1; margin-right: 4px; }
 .btn-small { border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; color: #fff; }
 .btn-small--green { background: #059669; }
+.btn-small--blue { background: #2563eb; }
 .btn-small--amber { background: #f59e0b; }
 .btn-small--red { background: #ef4444; }
 .btn-small:disabled { opacity: .6; cursor: default; }

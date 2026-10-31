@@ -47,7 +47,7 @@ type DocKind = 'certificate' | 'appendix';
               <td class="text-right actions">
                 <button type="button" class="btn-small btn-small--green" [disabled]="busy() === key(c, 'certificate')"
                         (click)="download(c, 'certificate')">📥 {{ 'CERT_DOWNLOAD_CERT' | translate }}</button>
-                <button type="button" class="btn-small" [disabled]="busy() === key(c, 'appendix')"
+                <button type="button" class="btn-small btn-small--blue" [disabled]="busy() === key(c, 'appendix')"
                         (click)="download(c, 'appendix')">📄 {{ 'CERT_DOWNLOAD_APPENDIX' | translate }}</button>
               </td>
             </tr>
