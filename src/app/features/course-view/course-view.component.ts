@@ -9,6 +9,7 @@ import { SessionService } from '../../core/auth/session.service';
 import { api } from '../../core/http/api-url';
 import { LanguageService } from '../../core/i18n/language.service';
 import { ToastService } from '../../core/ui/toast.service';
+import { isHtml } from '../../core/utils/word-import';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { LanguageSwitcherComponent } from '../../shared/language-switcher/language-switcher.component';
 
@@ -22,6 +23,7 @@ type ViewMode = 'syllabus' | 'lesson';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseViewComponent {
+  protected readonly isHtml = isHtml;
   private readonly courseApi = inject(CourseApiService);
   private readonly language = inject(LanguageService);
   private readonly router = inject(Router);

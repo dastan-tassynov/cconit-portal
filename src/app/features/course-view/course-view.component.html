@@ -124,9 +124,14 @@
         <h3 class="section-subtitle">📖 {{ 'COURSE_THEORY' | translate }}</h3>
 
         <div class="text-card">
-          <p class="lesson-text">
-            {{ lesson.textMaterial || ('COURSE_NO_TEXT' | translate) }}
-          </p>
+          @if (isHtml(lesson.textMaterial)) {
+            <!-- текст из Word: Angular очищает HTML от скриптов и опасных атрибутов -->
+            <div class="lesson-html" [innerHTML]="lesson.textMaterial"></div>
+          } @else {
+            <p class="lesson-text">
+              {{ lesson.textMaterial || ('COURSE_NO_TEXT' | translate) }}
+            </p>
+          }
         </div>
       </div>
 

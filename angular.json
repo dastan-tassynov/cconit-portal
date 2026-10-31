@@ -27,6 +27,25 @@
             ],
             "styles": [
               "src/styles.css"
+            ],
+            "allowedCommonJsDependencies": [
+              "@xmldom/xmldom",
+              "argparse",
+              "base64-js",
+              "bluebird",
+              "dingbat-to-unicode",
+              "duck",
+              "jszip",
+              "lie",
+              "lop",
+              "mammoth",
+              "option",
+              "pako",
+              "readable-stream",
+              "sax",
+              "setimmediate",
+              "underscore",
+              "xmlbuilder"
             ]
           },
           "configurations": {

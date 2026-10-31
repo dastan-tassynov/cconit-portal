@@ -152,6 +152,7 @@
               <span class="course-card__thumb" [style.background]="cardBackground(i)">{{ cardIcon(i) }}</span>
               <span class="course-card__body">
                 <span class="course-card__title">{{ course.title }}</span>
+                @if (!course.lessonCount) { <span class="soon">⏳ {{ 'COURSE_PREPARING' | translate }}</span> }
                 <span class="course-card__meta">
                   @if (course.hours) { {{ course.hours }} {{ 'HOURS_SHORT' | translate }} · }
                   @if (course.free) { {{ 'PRICE_FREE' | translate }} } @else { {{ course.price | number: '1.0-0' }} ₸ }

@@ -963,3 +963,19 @@ a.menu-item, a.btn-sidebar-back { display: block; text-decoration: none; }
 .decision { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 .decision input { flex: 1; min-width: 200px; padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 6px; }
 .field-error { display: block; color: #dc2626; font-size: 12px; margin-top: 4px; }
+
+/* Импорт из Word в конструкторе */
+.word-import { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 4px 0 14px; }
+.btn-word { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 8px; cursor: pointer;
+            background: #1d4ed8; color: #fff; font-weight: 600; font-size: 14px; }
+.btn-word--busy { opacity: .7; cursor: progress; }
+.word-split { border: 1px solid #bfdbfe; background: #eff6ff; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+.word-split ol { margin: 8px 0 12px; padding-left: 22px; max-height: 220px; overflow: auto; }
+.word-split__actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.word-split__actions .btn-module { margin: 0; width: auto; }
+.btn-secondary { background: #fff; border: 1px solid #cbd5e1; color: #1e293b; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.link-btn { background: none; border: 0; color: #2563eb; cursor: pointer; font: inherit; padding: 0; }
+.word-preview { margin-top: 10px; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; background: #fff; max-height: 420px; overflow: auto; }
+.word-preview summary { cursor: pointer; font-weight: 600; color: #475569; margin-bottom: 8px; }
+/* кнопка-label: общий стиль подписей полей не должен перекрашивать текст */
+.constructor-section label.btn-word, .word-import label.btn-word { color: #fff; font-size: 14px; margin: 0; }

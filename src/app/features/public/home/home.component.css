@@ -131,3 +131,4 @@
 }
 .banner-card + .banner-card { margin-top: 16px; }
 a.link-arrow, a.btn-rect { text-decoration: none; }
+.soon { align-self: flex-start; font-size: 12px; font-weight: 600; color: #92400e; background: #fef3c7; border-radius: 999px; padding: 2px 8px; }

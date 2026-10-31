@@ -5,6 +5,7 @@ import { AdminApiService } from '../../../core/api/admin-api.service';
 import { AdminLesson, ConstructorSubject, ContentLanguage } from '../../../core/api/models';
 import { errorMessage } from '../../../core/http/error-message';
 import { ToastService } from '../../../core/ui/toast.service';
+import { WordImportError, docxToHtml, isHtml } from '../../../core/utils/word-import';
 
 /** Переводы контента курса на второй язык (RU ↔ KZ). */
 @Component({
@@ -17,6 +18,25 @@ import { ToastService } from '../../../core/ui/toast.service';
 export class TranslationsComponent implements OnInit {
   private readonly adminApi = inject(AdminApiService);
   private readonly toast = inject(ToastService);
+  protected readonly isHtml = isHtml;
+  protected readonly wordBusy = signal(false);
+
+  /** Текст перевода модуля — из Word (.docx) целиком. */
+  protected async onWordSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+    this.wordBusy.set(true);
+    try {
+      this.lessonForm.patchValue({ textMaterial: await docxToHtml(file) });
+      this.toast.success('WORD_INSERTED');
+    } catch (e) {
+      this.toast.error(e instanceof WordImportError ? e.key : 'WORD_READ_ERROR');
+    } finally {
+      this.wordBusy.set(false);
+    }
+  }
   private readonly fb = inject(FormBuilder).nonNullable;
 
   protected readonly subjects = signal<ConstructorSubject[]>([]);

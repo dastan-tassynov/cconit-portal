@@ -6,6 +6,8 @@ import { ConstructorSubject, ContentLanguage, OrleuProgram } from '../../../core
 import { errorMessage } from '../../../core/http/error-message';
 import { ToastService } from '../../../core/ui/toast.service';
 import { saveBlob } from '../../../core/utils/download';
+import { WordImportError, WordLesson, docxToHtml, isHtml, splitByHeadings } from '../../../core/utils/word-import';
+import { concatMap, from, tap, toArray } from 'rxjs';
 
 const ANSWER_COUNT = 4;
 
@@ -46,6 +48,14 @@ export class CourseConstructorComponent implements OnInit {
     textMaterial: [''],
   });
   protected lessonVideo: File | null = null;
+
+  /** Импорт из Word: модули, найденные по заголовкам документа. */
+  protected readonly wordLessons = signal<WordLesson[]>([]);
+  protected readonly wordFileName = signal('');
+  protected readonly wordBusy = signal(false);
+  protected readonly wordProgress = signal(0);
+  private wordHtml = '';
+  protected readonly isHtml = isHtml;
 
   protected readonly quizForm = this.fb.group({
     subjectId: this.fb.control<number | null>(null, Validators.required),
@@ -157,6 +167,77 @@ export class CourseConstructorComponent implements OnInit {
           this.lessonForm.markAsUntouched();
           this.lessonVideo = null;
           fileInput.value = '';
+          this.saving.set(null);
+        },
+        error: err => this.fail(err),
+      });
+  }
+
+  // ---------------------------------------------------------------- Word
+
+  protected async onWordSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file) return;
+    this.wordBusy.set(true);
+    try {
+      const html = await docxToHtml(file);
+      const lessons = splitByHeadings(html);
+      this.wordHtml = html;
+      this.wordFileName.set(file.name);
+      if (lessons.length > 1) {
+        // несколько разделов — предложим сразу создать модули
+        this.wordLessons.set(lessons);
+      } else {
+        const title = lessons[0]?.title;
+        this.lessonForm.patchValue({
+          textMaterial: lessons.length === 1 ? lessons[0].html : html,
+          ...(title && !this.lessonForm.controls.title.value.trim() ? { title } : {}),
+        });
+        this.toast.success('WORD_INSERTED');
+      }
+    } catch (e) {
+      this.toast.error(e instanceof WordImportError ? e.key : 'WORD_READ_ERROR');
+    } finally {
+      this.wordBusy.set(false);
+    }
+  }
+
+  protected useWholeDocument(): void {
+    this.lessonForm.patchValue({ textMaterial: this.wordHtml });
+    this.clearWord();
+  }
+
+  protected clearWord(): void {
+    this.wordLessons.set([]);
+    this.wordFileName.set('');
+    this.wordProgress.set(0);
+  }
+
+  /** Все модули из документа — по очереди, в выбранный курс и язык. */
+  protected createLessonsFromWord(): void {
+    const { subjectId, language } = this.lessonForm.getRawValue();
+    if (!subjectId) {
+      this.lessonForm.controls.subjectId.markAsTouched();
+      this.toast.error('PH_SELECT_COURSE');
+      return;
+    }
+    this.saving.set('lesson');
+    this.wordProgress.set(0);
+    from(this.wordLessons())
+      .pipe(
+        concatMap(lesson => this.adminApi.createLesson(subjectId, {
+          language,
+          title: lesson.title.slice(0, 255),
+          textMaterial: lesson.html,
+        }).pipe(tap(() => this.wordProgress.update(n => n + 1)))),
+        toArray(),
+      )
+      .subscribe({
+        next: () => {
+          this.toast.success('WORD_MODULES_CREATED');
+          this.clearWord();
           this.saving.set(null);
         },
         error: err => this.fail(err),

@@ -89,6 +89,8 @@ export interface PublicCourse {
   hours?: number;
   price?: number;
   free: boolean;
+  /** 0 — курс ещё готовится (нет модулей). */
+  lessonCount?: number;
 }
 
 export interface Lesson {

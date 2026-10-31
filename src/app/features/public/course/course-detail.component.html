@@ -35,7 +35,11 @@
           @if (c.hasPlan) {
             <button type="button" class="btn btn--outline" (click)="downloadPlan()">{{ 'COURSE_DOWNLOAD_PLAN' | translate }}</button>
           }
-          <button type="button" class="btn btn--primary" (click)="primaryAction()">{{ actionKey() | translate }}</button>
+          @if (!c.lessonCount && !c.viewer?.enrolled) {
+            <button type="button" class="btn btn--primary" disabled>⏳ {{ 'COURSE_PREPARING' | translate }}</button>
+          } @else {
+            <button type="button" class="btn btn--primary" (click)="primaryAction()">{{ actionKey() | translate }}</button>
+          }
           @if (c.lessonCount) { <small class="muted">{{ 'COURSE_LESSONS_COUNT' | translate: { count: c.lessonCount } }}</small> }
         </div>
       </div>

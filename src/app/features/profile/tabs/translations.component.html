@@ -87,7 +87,21 @@
   </div>
   <div class="form-group">
     <label for="tl-text">{{ 'CONSTRUCTOR_MODULE_CONTENT' | translate }}</label>
+    <div class="word-import">
+      <label class="btn-word" [class.btn-word--busy]="wordBusy()">
+        📄 {{ (wordBusy() ? 'WORD_READING' : 'WORD_UPLOAD') | translate }}
+        <input type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+               (change)="onWordSelected($event)" [disabled]="wordBusy()" hidden>
+      </label>
+      <span class="muted">{{ 'WORD_HINT_SINGLE' | translate }}</span>
+    </div>
     <textarea id="tl-text" class="form-textarea large" formControlName="textMaterial"></textarea>
+    @if (isHtml(lessonForm.controls.textMaterial.value)) {
+      <details class="word-preview" open>
+        <summary>{{ 'WORD_PREVIEW' | translate }}</summary>
+        <div class="lesson-html" [innerHTML]="lessonForm.controls.textMaterial.value"></div>
+      </details>
+    }
   </div>
 
   <button type="submit" class="btn-module" [disabled]="saving()">🌐 {{ 'BTN_SAVE_TRANSLATION' | translate }}</button>
