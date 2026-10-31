@@ -45,6 +45,17 @@ export interface PortalUser {
 
 // ---------- courses ----------
 
+/** Выданный сертификат (страница «Сертификаты»). */
+export interface MyCertificate {
+  subjectId: number;
+  courseTitle: string;
+  certificateNumber: string;
+  issuedAt: string;
+  hours?: number | null;
+  score?: number | null;
+  inRegistry: boolean;
+}
+
 export interface CourseCard {
   id: number;
   title: string;

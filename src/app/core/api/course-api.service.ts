@@ -5,12 +5,13 @@ import { api } from '../http/api-url';
 import {
   Advertisement,
   CertificateVerification,
+  ContactRequest,
   CourseCard,
   CourseGroup,
   CourseLessons,
   CourseProgress,
-  ContactRequest,
   MessageResponse,
+  MyCertificate,
   PublicCourse,
   PublicStats,
   QuizAttempt,
@@ -77,8 +78,17 @@ export class CourseApiService {
   }
 
   // ---- сертификаты
+  myCertificates(): Observable<MyCertificate[]> {
+    return this.http.get<MyCertificate[]>(api('/api/student/certificates'));
+  }
+
   downloadCertificate(courseId: number): Observable<Blob> {
     return this.http.get(api(`/api/student/certificates/download/${courseId}`), { responseType: 'blob' });
+  }
+
+  /** Приложение к сертификату: модули программы и часы. */
+  downloadAppendix(courseId: number): Observable<Blob> {
+    return this.http.get(api(`/api/student/certificates/download/${courseId}/appendix`), { responseType: 'blob' });
   }
 
   verifyCertificate(uuid: string): Observable<CertificateVerification> {

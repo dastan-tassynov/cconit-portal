@@ -4,6 +4,10 @@ export function saveBlob(blob: Blob, fileName: string): void {
   const link = document.createElement('a');
   link.href = url;
   link.download = fileName;
+  link.style.display = 'none';
+  // ссылка должна быть в документе — иначе часть браузеров игнорирует имя файла
+  document.body.appendChild(link);
   link.click();
+  link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
