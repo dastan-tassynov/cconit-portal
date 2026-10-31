@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -95,6 +95,15 @@ export class HomeComponent {
   /** Карточка курса ведёт на его страницу: там описание, план и покупка. */
   protected openDirection(code: string): void {
     this.activeDirection.set(code);
+    this.slider()?.nativeElement.scrollTo({ left: 0 });
+  }
+
+  private readonly slider = viewChild<ElementRef<HTMLElement>>('slider');
+
+  /** Стрелки слайдера: листаем на ширину видимой части. */
+  protected scrollCourses(direction: 1 | -1): void {
+    const el = this.slider()?.nativeElement;
+    if (el) el.scrollBy({ left: direction * el.clientWidth * 0.9, behavior: 'smooth' });
   }
 
   protected enroll(course: PublicCourse): void {

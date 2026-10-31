@@ -68,31 +68,38 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round
 .step h3 { margin: 0 0 8px; font-size: 17px; color: var(--navy); }
 .step p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 14px; }
 
-/* ===== направления ===== */
+/* ===== направления: список + слайдер ===== */
 .directions-section { background: #f3f6fa; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.directions { display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: start; }
-.directions__tabs { display: flex; flex-direction: column; gap: 2px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 6px; }
-.tab { display: flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left; border: 0; background: none;
-       padding: 12px 14px; border-radius: 8px; font: inherit; font-size: 15px; color: #33414f; cursor: pointer; }
-.tab:hover { background: #f3f6fa; }
-.tab__count { font-size: 12px; color: var(--muted); background: #eef2f7; border-radius: 999px; padding: 1px 8px; }
-.tab--active { background: var(--navy); color: #fff; font-weight: 600; }
-.tab--active:hover { background: var(--navy); }
-.tab--active .tab__count { background: rgb(255 255 255 / .15); color: #fff; }
-.directions__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.course-card { display: flex; align-items: center; gap: 16px; padding: 14px; border: 1px solid var(--line); border-radius: 12px;
-               background: #fff; text-align: left; cursor: pointer; font: inherit; color: inherit; transition: border-color .15s, box-shadow .15s; }
+.section--compact { padding-top: 48px; padding-bottom: 48px; }
+.section--compact .section-head { margin-bottom: 20px; }
+.dir-bar { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+.dir-select { display: flex; flex-direction: column; gap: 6px; flex: 0 1 460px; min-width: 0; }
+.dir-select__label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.dir-select select { appearance: none; width: 100%; padding: 12px 40px 12px 14px; border: 1px solid #c9d4e2; border-radius: 10px; font: inherit;
+                     font-weight: 600; color: var(--navy); cursor: pointer; text-overflow: ellipsis;
+                     background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231b4f8a' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center; }
+.dir-select select:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgb(27 79 138 / .12); }
+.slider-nav { display: flex; gap: 8px; }
+.slider-nav button { width: 42px; height: 42px; border-radius: 50%; border: 1px solid #c9d4e2; background: #fff; color: var(--navy);
+                     font-size: 22px; line-height: 1; cursor: pointer; }
+.slider-nav button:hover { border-color: var(--brand); color: var(--brand); }
+.slider { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 3 * 14px) / 4); gap: 14px; overflow-x: auto;
+          scroll-snap-type: x mandatory; scrollbar-width: none; padding: 2px 2px 8px; }
+.slider::-webkit-scrollbar { display: none; }
+.course-card { scroll-snap-align: start; display: flex; flex-direction: column; align-items: stretch; gap: 10px; padding: 16px; min-height: 170px;
+               border: 1px solid var(--line); border-radius: 12px; background: #fff; text-align: left; cursor: pointer; font: inherit; color: inherit;
+               transition: border-color .15s, box-shadow .15s; }
 .course-card:hover { border-color: #b8c7da; box-shadow: 0 10px 24px rgb(14 42 71 / .08); }
-.course-card__thumb { flex: 0 0 56px; height: 56px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-.course-card__thumb svg { width: 26px; height: 26px; }
+.course-card__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.course-card__thumb { flex: 0 0 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.course-card__thumb svg { width: 22px; height: 22px; }
 .course-card__thumb[data-tone="0"] { background: #e8eff8; color: var(--brand); }
 .course-card__thumb[data-tone="1"] { background: var(--gold-soft); color: #8a6d12; }
 .course-card__thumb[data-tone="2"] { background: #e6f3ef; color: #1f6f5c; }
 .course-card__thumb[data-tone="3"] { background: #f1ecf6; color: #5b3f86; }
-.course-card__body { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.course-card__title { font-weight: 600; line-height: 1.35; color: var(--navy); }
-.course-card__meta { color: var(--muted); font-size: 13px; }
-.course-card__arrow { color: #9aa7b6; padding: 0 6px; }
+.course-card__title { font-weight: 600; line-height: 1.35; color: var(--navy); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.course-card__meta { margin-top: auto; display: flex; align-items: center; gap: 4px; color: var(--muted); font-size: 13px; }
+.course-card__arrow { margin-left: auto; color: #9aa7b6; }
 .soon { align-self: flex-start; font-size: 12px; font-weight: 600; color: #8a6d12; background: var(--gold-soft); border-radius: 999px; padding: 2px 8px; }
 
 /* ===== проекты программ ===== */
@@ -161,19 +168,21 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round
 
 /* ===== адаптив ===== */
 @media (max-width: 1000px) {
+  .slider { grid-auto-columns: calc((100% - 2 * 14px) / 3); }
   .hero__inner { grid-template-columns: 1fr; gap: 40px; }
   .steps { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 860px) {
   .section { padding-top: 52px; padding-bottom: 52px; }
-  .projects, .news-grid, .about__head, .values, .directions, .directions__grid, .contact, .banners { grid-template-columns: 1fr; }
+  .projects, .news-grid, .about__head, .values, .contact, .banners { grid-template-columns: 1fr; }
   .about__head { gap: 24px; }
-  .directions__tabs { flex-direction: row; flex-wrap: wrap; }
-  .tab { white-space: nowrap; padding: 10px 12px; }
+  .slider { grid-auto-columns: calc((100% - 14px) / 2); }
 }
 @media (max-width: 560px) {
   .hero { padding-top: 36px; }
   .hero__actions .btn { flex: 1 1 100%; }
+  .slider { grid-auto-columns: 82%; }
+  .slider-nav { display: none; }
   .steps { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr; gap: 14px; }
   .stats div + div { border-left: 0; padding-left: 8px; }

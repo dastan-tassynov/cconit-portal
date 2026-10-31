@@ -16,9 +16,17 @@ export interface CourseGroup {
  */
 export function groupCourses(courses: PublicCourse[]): CourseGroup[] {
   const groups = new Map<string, CourseGroup>();
+  // В справочнике Өрлеу у разных кодов бывает одинаковое название («Педагоги») — такие группы объединяем
+  const keyByTitle = new Map<string, string>();
   for (const course of courses) {
-    const key = course.groupKey || OTHER_GROUP;
-    const group = groups.get(key) ?? { key, title: key === OTHER_GROUP ? '' : course.groupTitle ?? '', courses: [] };
+    let key = course.groupKey || OTHER_GROUP;
+    const title = key === OTHER_GROUP ? '' : (course.groupTitle ?? '').trim();
+    if (key !== OTHER_GROUP && title) {
+      const norm = title.toLocaleLowerCase('ru').replace(/\s+/g, ' ');
+      key = keyByTitle.get(norm) ?? key;
+      keyByTitle.set(norm, key);
+    }
+    const group = groups.get(key) ?? { key, title, courses: [] };
     group.courses.push(course);
     groups.set(key, group);
   }

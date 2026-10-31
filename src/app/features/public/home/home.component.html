@@ -90,10 +90,10 @@
 
   <!-- ===================== НАПРАВЛЕНИЯ И КУРСЫ ===================== -->
   <section id="directions" class="directions-section">
-    <div class="container section">
+    <div class="container section section--compact">
       <div class="section-head">
         <div>
-          <h2 class="section-title">{{ 'SITE_DIRECTIONS_TITLE' | translate }}</h2>
+          <h2 class="section-title">{{ 'HOME_DIRECTIONS_TITLE' | translate }}</h2>
           <p class="muted">{{ 'SITE_DIRECTIONS_COUNT' | translate }}: {{ directions().length }}</p>
         </div>
         <a routerLink="/courses" class="link-arrow">{{ 'SITE_ALL_COURSES' | translate }} →</a>
@@ -104,20 +104,27 @@
       } @else if (directions().length === 0) {
         <p class="muted">{{ 'SITE_COURSES_EMPTY' | translate }}</p>
       } @else {
-        <div class="directions">
-          <nav class="directions__tabs">
-            @for (dir of directions(); track dir.code) {
-              <button type="button" class="tab" [class.tab--active]="activeCode() === dir.code"
-                      (click)="openDirection(dir.code)">
-                {{ dir.code === 'OTHER' ? ('CATALOG_OTHER' | translate) : dir.title }}
-                <span class="tab__count">{{ dir.courses.length }}</span>
-              </button>
-            }
-          </nav>
+        <div class="dir-bar">
+          <label class="dir-select">
+            <span class="dir-select__label">{{ 'HOME_DIRECTION' | translate }}</span>
+            <select (change)="openDirection($any($event.target).value)">
+              @for (dir of directions(); track dir.code) {
+                <option [value]="dir.code" [selected]="activeCode() === dir.code">
+                  {{ dir.code === 'OTHER' ? ('CATALOG_OTHER' | translate) : dir.title }} ({{ dir.courses.length }})
+                </option>
+              }
+            </select>
+          </label>
+          <div class="slider-nav">
+            <button type="button" (click)="scrollCourses(-1)" [attr.aria-label]="'CAL_PREV' | translate">‹</button>
+            <button type="button" (click)="scrollCourses(1)" [attr.aria-label]="'CAL_NEXT' | translate">›</button>
+          </div>
+        </div>
 
-          <div class="directions__grid">
-            @for (course of visibleCourses(); track course.id; let i = $index) {
-              <button type="button" class="course-card" (click)="enroll(course)">
+        <div class="slider" #slider>
+          @for (course of visibleCourses(); track course.id; let i = $index) {
+            <button type="button" class="course-card" (click)="enroll(course)">
+              <span class="course-card__top">
                 <span class="course-card__thumb" [attr.data-tone]="i % 4" aria-hidden="true">
                   @switch (i % 4) {
                     @case (0) { <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8 7h7M8 11h5"/></svg> }
@@ -126,18 +133,16 @@
                     @default { <svg viewBox="0 0 24 24"><path d="M14 3h5v5M10 14 19 5M19 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h6"/></svg> }
                   }
                 </span>
-                <span class="course-card__body">
-                  <span class="course-card__title">{{ course.title }}</span>
-                  @if (!course.lessonCount) { <span class="soon">{{ 'COURSE_PREPARING' | translate }}</span> }
-                  <span class="course-card__meta">
-                    @if (course.hours) { {{ course.hours }} {{ 'HOURS_SHORT' | translate }} · }
-                    @if (course.free) { {{ 'PRICE_FREE' | translate }} } @else { {{ course.price | number: '1.0-0' }} ₸ }
-                  </span>
-                </span>
+                @if (!course.lessonCount) { <span class="soon">{{ 'COURSE_PREPARING' | translate }}</span> }
+              </span>
+              <span class="course-card__title">{{ course.title }}</span>
+              <span class="course-card__meta">
+                @if (course.hours) { {{ course.hours }} {{ 'HOURS_SHORT' | translate }} · }
+                @if (course.free) { {{ 'PRICE_FREE' | translate }} } @else { {{ course.price | number: '1.0-0' }} ₸ }
                 <span class="course-card__arrow" aria-hidden="true">→</span>
-              </button>
-            }
-          </div>
+              </span>
+            </button>
+          }
         </div>
       }
     </div>
