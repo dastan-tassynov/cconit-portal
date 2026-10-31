@@ -66,11 +66,11 @@ const RESEND_SECONDS = 60;
     .code { display: flex; gap: 12px; justify-content: center; margin: 24px 0 12px; }
     .code__digit { width: 56px; height: 64px; text-align: center; font-size: 28px; font-weight: 700; border: 1px solid #cbd5e1;
                    border-radius: 12px; background: #f8fafc; }
-    .code__digit:focus { outline: none; border-color: #3d37f0; box-shadow: 0 0 0 3px rgb(61 55 240 / .15); background: #fff; }
+    .code__digit:focus { outline: none; border-color: #1b4f8a; box-shadow: 0 0 0 3px rgb(27 79 138 / .15); background: #fff; }
     .code__error { color: #dc2626; text-align: center; margin: 0 0 12px; }
     .code__info { color: #059669; text-align: center; margin: 8px 0 0; }
     .code__hint { text-align: center; color: #64748b; margin: 16px 0 0; font-size: 14px; }
-    .link-btn { background: none; border: 0; color: #3d37f0; font-weight: 600; cursor: pointer; padding: 0; font: inherit; }
+    .link-btn { background: none; border: 0; color: #1b4f8a; font-weight: 600; cursor: pointer; padding: 0; font: inherit; }
     .muted { color: #94a3b8; }
   `,
 })

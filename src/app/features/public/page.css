@@ -1,5 +1,5 @@
 /* Общие стили внутренних публичных страниц (каталог, курс, новости, FAQ). */
-:host { display: block; color: #1f1d2b; --primary: #3d37f0; --muted: #6b6b80; --line: #ececf4; --lavender: #f4f4fe; }
+:host { display: block; color: #1f1d2b; --primary: #1b4f8a; --muted: #6b6b80; --line: #ececf4; --lavender: #f1f5fa; }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 16px; }
 .crumbs { display: flex; gap: 8px; align-items: center; color: var(--muted); font-size: 14px; margin: 24px 0 18px; flex-wrap: wrap; }
 .crumbs a { color: var(--muted); text-decoration: none; }
@@ -13,5 +13,5 @@
        font-size: 15px; text-decoration: none; cursor: pointer; border: 1px solid transparent; }
 .btn:disabled { opacity: .6; cursor: default; }
 .btn--primary { background: var(--primary); color: #fff; }
-.btn--primary:hover { background: #2c27d0; }
-.btn--outline { background: #fff; color: var(--primary); border-color: #c9c7fb; }
+.btn--primary:hover { background: #143c6b; }
+.btn--outline { background: #fff; color: var(--primary); border-color: #bcd0e6; }

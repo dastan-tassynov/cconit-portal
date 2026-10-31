@@ -499,6 +499,25 @@ export interface DashboardSummary {
   regionMissing: boolean;
   /** Анкета студента пройдена. */
   surveyCompleted: boolean;
+  /** Дни с учебной активностью за год (yyyy-MM-dd). */
+  activeDays: string[];
+  /** События по дням для календаря. */
+  events: CalendarEvent[];
+}
+
+export interface CalendarEvent {
+  date: string;
+  type: 'ENROLLED' | 'TEST' | 'CERTIFICATE';
+  courseId?: number;
+  title: string;
+  score?: number;
+}
+
+export interface RegisterResponse {
+  message: string;
+  /** true — на почту ушёл код; false — код отключён, сразу вход. */
+  verificationRequired: boolean;
+  auth?: AuthResponse;
 }
 
 export type NotificationType =

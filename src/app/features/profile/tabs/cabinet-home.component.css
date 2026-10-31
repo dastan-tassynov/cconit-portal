@@ -31,4 +31,34 @@
   .grid { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr; }
 }
-.notice--survey { background: #eef0ff; border-color: #c9c7fb; }
+.notice--survey { background: #e8eff8; border-color: #bcd0e6; }
+
+/* ---------- календарь ---------- */
+.cal__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.cal__title { margin: 0; text-transform: capitalize; }
+.cal__nav { width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--line); background: #fff;
+            font-size: 20px; line-height: 1; cursor: pointer; color: inherit; }
+.cal__nav:hover:not(:disabled) { background: #f3f5f9; }
+.cal__nav:disabled { opacity: .35; cursor: default; }
+.cal__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal__grid--names span { text-align: center; font-size: 11px; color: var(--muted); text-transform: capitalize; padding: 4px 0; }
+.cal__day { position: relative; aspect-ratio: 1; min-height: 34px; border: 0; border-radius: 10px; background: transparent;
+            font: inherit; font-size: 14px; cursor: pointer; color: inherit; }
+.cal__day:hover:not(:disabled) { background: #f1f4f9; }
+.cal__day:disabled { color: #c3c8d2; cursor: default; }
+.cal__day--active { background: #e7f6ec; color: #166534; font-weight: 700; }
+.cal__day--today { box-shadow: inset 0 0 0 2px var(--accent); }
+.cal__day--selected, .cal__day--selected:hover:not(:disabled) { background: var(--primary); color: #fff; }
+.cal__mark { position: absolute; left: 50%; bottom: 4px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: #f59e0b; }
+.cal__legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; margin: 10px 0 0; }
+.cal__count { margin-left: auto; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: middle; }
+.dot--active { background: #86d19c; }
+.dot--event { background: #f59e0b; }
+.cal__details { background: #f6f7fa; border-radius: 12px; padding: 12px; margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.cal__details b::first-letter { text-transform: uppercase; }
+.cal__studied { color: #15803d; font-size: 13px; font-weight: 600; }
+.cal__event { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; background: #fff; border-radius: 10px;
+              border: 1px solid var(--line); text-decoration: none; color: inherit; font-size: 14px; }
+.cal__event small { display: block; color: var(--muted); font-size: 12px; }
+.cal__event:hover { border-color: var(--accent); }

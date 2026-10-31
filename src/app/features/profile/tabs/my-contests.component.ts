@@ -39,7 +39,7 @@ import { MyContestEntry } from '../../../core/api/models';
   styles: `
     .entry { display: flex; gap: 20px; align-items: center; }
     .entry__number { min-width: 92px; text-align: center; font-size: 22px; font-weight: 800; color: var(--primary);
-                     background: #f4f4fe; border-radius: 12px; padding: 18px 10px; }
+                     background: #f1f5fa; border-radius: 12px; padding: 18px 10px; }
     .entry__body h3 { margin: 0 0 4px; }
     .entry__body p { margin: 0; }
     .entry__mail { margin-top: 10px !important; line-height: 1.5; }

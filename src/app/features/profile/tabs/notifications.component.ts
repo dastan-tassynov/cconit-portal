@@ -57,7 +57,7 @@ const ICONS: Record<string, string> = {
     .item--unread { background: #f0f8ff; }
     .item__icon { font-size: 22px; }
     .item__body { display: flex; flex-direction: column; gap: 4px; flex: 1; }
-    .item__dot { width: 8px; height: 8px; border-radius: 50%; background: #3d37f0; }
+    .item__dot { width: 8px; height: 8px; border-radius: 50%; background: #1b4f8a; }
   `,
 })
 export class NotificationsComponent implements OnInit {

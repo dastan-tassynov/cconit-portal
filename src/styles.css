@@ -1,5 +1,18 @@
+@import '@fontsource/pt-serif/400.css';
+@import '@fontsource/pt-serif/700.css';
 /* Глобальные стили. Стили страниц — в CSS их компонентов. */
 *, *::before, *::after { box-sizing: border-box; }
+
+/* Палитра портала: спокойный «академический» синий и золотой акцент. */
+:root {
+  --font-serif: 'PT Serif', Georgia, 'Times New Roman', serif;
+  --brand: #1b4f8a;
+  --brand-dark: #143c6b;
+  --navy: #0e2a47;
+  --gold: #c9a227;
+  --gold-soft: #f6efd9;
+  --paper: #f7f5f0;
+}
 
 html { scroll-behavior: smooth; }
 

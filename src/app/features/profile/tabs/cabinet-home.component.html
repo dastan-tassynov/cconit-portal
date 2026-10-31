@@ -59,21 +59,60 @@
         }
       </section>
 
-      <section class="card week">
-        <h2 class="card__title">📅 {{ 'CAB_MY_WEEK' | translate }} <span class="week__count">{{ activeDaysThisWeek() }}/7</span></h2>
-        <div class="week__days">
-          @for (day of s.week; track day.date) {
-            <div class="day" [class.day--today]="isToday(day.date)" [class.day--active]="day.active">
-              <small>{{ day.date | date: 'EEEEEE' : '' : locale() }}</small>
-              <b>{{ day.date | date: 'd' }}</b>
-              <span class="day__dot"></span>
-            </div>
+      <section class="card cal">
+        <div class="cal__head">
+          <button type="button" class="cal__nav" (click)="shiftMonth(-1)" [attr.aria-label]="'CAL_PREV' | translate">‹</button>
+          <h2 class="card__title cal__title">{{ month() | date: 'LLLL yyyy' : '' : locale() }}</h2>
+          <button type="button" class="cal__nav" (click)="shiftMonth(1)" [disabled]="!canGoNext()" [attr.aria-label]="'CAL_NEXT' | translate">›</button>
+        </div>
+        <div class="cal__grid cal__grid--names">
+          @for (w of weekdays; track w) { <span>{{ w | date: 'EEEEEE' : '' : locale() }}</span> }
+        </div>
+        <div class="cal__grid">
+          @for (cell of calendar(); track $index) {
+            @if (cell) {
+              <button type="button" class="cal__day"
+                      [class.cal__day--today]="isToday(cell.date)"
+                      [class.cal__day--active]="isActive(cell.date)"
+                      [class.cal__day--selected]="selected() === cell.date"
+                      [disabled]="isFuture(cell.date)"
+                      (click)="select(cell.date)">
+                {{ cell.day }}
+                @if (hasEvents(cell.date)) { <i class="cal__mark" aria-hidden="true"></i> }
+              </button>
+            } @else {
+              <span></span>
+            }
           }
         </div>
-        <div class="week__today">
-          <b>{{ 'CAB_TODAY' | translate }}</b>
-          <span class="muted">{{ (activeDaysThisWeek() > 0 ? 'CAB_KEEP_GOING' : 'CAB_START_DAY') | translate }}</span>
-        </div>
+        <p class="cal__legend muted">
+          <span><i class="dot dot--active"></i> {{ 'CAL_LEGEND_STUDY' | translate }}</span>
+          <span><i class="dot dot--event"></i> {{ 'CAL_LEGEND_EVENT' | translate }}</span>
+          <span class="cal__count">{{ 'CAL_ACTIVE_DAYS' | translate }}: {{ activeInMonth() }}</span>
+        </p>
+
+        @if (selected(); as day) {
+          <div class="cal__details">
+            <b>@if (isToday(day)) { <span>{{ 'CAB_TODAY' | translate }}, </span> }{{ day | date: 'd MMMM, EEEE' : '' : locale() }}</b>
+            @if (isActive(day)) {
+              <span class="cal__studied">✓ {{ 'CAL_STUDIED' | translate }}</span>
+            } @else if (isToday(day)) {
+              <span class="muted">{{ 'CAB_START_DAY' | translate }}</span>
+            } @else {
+              <span class="muted">{{ 'CAL_NO_STUDY' | translate }}</span>
+            }
+            @for (e of selectedEvents(); track $index) {
+              <a class="cal__event" [routerLink]="e.type === 'CERTIFICATE' ? '../certificates' : ['/course', e.courseId]">
+                <span aria-hidden="true">{{ eventIcon(e) }}</span>
+                <span>
+                  <small>{{ ('CAL_EVENT_' + e.type) | translate }}@if (e.type === 'TEST' && e.score != null) { · {{ e.score }}%}</small>
+                  {{ e.title }}
+                </span>
+              </a>
+            }
+          </div>
+        }
+
         <div class="week__profile">
           <span class="muted">{{ 'CAB_PROFILE_FILLED' | translate }}: {{ s.profileCompleteness }}%</span>
           <span class="progress"><span [style.width.%]="s.profileCompleteness"></span></span>

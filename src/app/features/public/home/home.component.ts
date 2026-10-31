@@ -6,7 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ContentApiService } from '../../../core/api/content-api.service';
 import { CourseApiService } from '../../../core/api/course-api.service';
 import { NewsItem, PublicCourse, PublicStats } from '../../../core/api/models';
-import { OTHER_GROUP, groupCourses } from '../../../core/utils/course-groups';
+import { groupCourses } from '../../../core/utils/course-groups';
 import { errorMessage } from '../../../core/http/error-message';
 import { phoneErrorKey, phoneValidator } from '../../../core/utils/phone';
 import { PhoneInputComponent } from '../../../shared/phone-input/phone-input.component';
@@ -19,24 +19,15 @@ import { PROGRAMS } from '../program/programs';
 interface Direction {
   code: string;
   title: string;
-  icon: string;
   courses: PublicCourse[];
 }
 
 const NEWS_PREVIEW = 3;
-const CARD_GRADIENTS = [
-  'linear-gradient(135deg,#e0e7ff,#c7d2fe)',
-  'linear-gradient(135deg,#dbeafe,#bfdbfe)',
-  'linear-gradient(135deg,#fef9c3,#fde68a)',
-  'linear-gradient(135deg,#dcfce7,#bbf7d0)',
-  'linear-gradient(135deg,#fce7f3,#fbcfe8)',
-];
-const CARD_ICONS = ['📘', '🧠', '🧩', '🌍', '⚖️', '🧬', '🛡️', '🎨'];
 
 /**
- * Главная страница. Структура повторяет kcppk-bilimzet.kz:
- * герой → о сервисе → новости → баннер → о центре → направления с курсами → форма обратной связи → футер.
- * Тексты, логотип и данные — ЦОНИТ.
+ * Главная страница портала повышения квалификации педагогов:
+ * герой с образцом сертификата → как проходит обучение → направления и курсы →
+ * новости и баннеры → о центре → обратная связь.
  */
 @Component({
   selector: 'app-home',
@@ -52,6 +43,9 @@ export class HomeComponent {
   private readonly router = inject(Router);
   private readonly toast = inject(ToastService);
 
+  /** Шаги «Как проходит обучение» (ключи HOME_STEP{n}_TITLE/TEXT). */
+  protected readonly steps = [1, 2, 3, 4];
+
   // ---------- статистика
   protected readonly stats = signal<PublicStats | null>(null);
 
@@ -64,7 +58,7 @@ export class HomeComponent {
   private readonly courses = signal<PublicCourse[]>([]);
   /** Вкладки — предметы из Өрлеу (как в каталоге), курсы с «ручным» кодом — «Другие курсы». */
   protected readonly directions = computed<Direction[]>(() =>
-    groupCourses(this.courses()).map(g => ({ code: g.key, title: g.title, icon: g.key === OTHER_GROUP ? '📚' : '🎓', courses: g.courses })),
+    groupCourses(this.courses()).map(g => ({ code: g.key, title: g.title, courses: g.courses })),
   );
   protected readonly activeDirection = signal<string | null>(null);
   protected readonly visibleCourses = computed(() => {
@@ -94,14 +88,6 @@ export class HomeComponent {
       this.loadCourses();
     });
     this.courseApi.getPublicStats().subscribe({ next: s => this.stats.set(s), error: () => undefined });
-  }
-
-  protected cardBackground(index: number): string {
-    return CARD_GRADIENTS[index % CARD_GRADIENTS.length];
-  }
-
-  protected cardIcon(index: number): string {
-    return CARD_ICONS[index % CARD_ICONS.length];
   }
 
   /** Карточка курса ведёт на его страницу: там описание, план и покупка. */

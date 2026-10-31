@@ -1,5 +1,5 @@
 :host { display: block; }
-.footer { background: #2b2933; color: #fff; padding: 40px 16px 24px; }
+.footer { background: #0b2239; color: #fff; padding: 40px 16px 24px; }
 .footer__inner { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr 1.3fr; gap: 32px; }
 .footer__logo-row { display: flex; gap: 12px; align-items: flex-start; }
 .footer__logo { width: 54px; height: 54px; object-fit: contain; flex: 0 0 auto; }

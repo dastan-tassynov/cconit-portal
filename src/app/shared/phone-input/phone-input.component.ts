@@ -25,7 +25,7 @@ import { formatLocal, localDigits, toPhoneValue } from '../../core/utils/phone';
     .phone { display: flex; align-items: center; gap: 6px; width: 100%; box-sizing: border-box; cursor: text;
              padding: var(--phone-padding, 11px 12px); border: 1px solid var(--phone-border, #d4d4de);
              border-radius: var(--phone-radius, 10px); background: var(--phone-bg, #f6f6f9); }
-    .phone:focus-within { border-color: #3d37f0; box-shadow: 0 0 0 3px rgb(61 55 240 / .12); background: #fff; }
+    .phone:focus-within { border-color: #1b4f8a; box-shadow: 0 0 0 3px rgb(27 79 138 / .12); background: #fff; }
     .phone--disabled { opacity: .6; cursor: default; }
     .phone__prefix { font-weight: 700; color: #1e1e2f; user-select: none; }
     .phone__input { flex: 1; min-width: 0; border: 0; outline: 0; padding: 0; background: transparent; font: inherit;

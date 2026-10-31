@@ -1,5 +1,5 @@
 /* Общие стили студенческих страниц кабинета. */
-:host { display: block; --primary: #3d37f0; --accent: #0f6fb8; --ink: #1f1d2b; --muted: #6b6b80; --line: #e9e9f1; color: var(--ink); }
+:host { display: block; --primary: #1b4f8a; --accent: #0f6fb8; --ink: #1f1d2b; --muted: #6b6b80; --line: #e9e9f1; color: var(--ink); }
 .page { display: flex; flex-direction: column; gap: 16px; }
 .page__head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .page__title { font-size: 26px; font-weight: 800; margin: 0; }

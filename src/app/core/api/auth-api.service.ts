@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { SessionService } from '../auth/session.service';
 import { api } from '../http/api-url';
-import { AuthResponse, LoginRequest, MessageResponse, PortalUser, RegisterRequest } from './models';
+import { AuthResponse, LoginRequest, MessageResponse, PortalUser, RegisterRequest, RegisterResponse } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApiService {
@@ -15,8 +15,13 @@ export class AuthApiService {
       .pipe(tap(response => this.session.start(response)));
   }
 
-  register(request: RegisterRequest): Observable<MessageResponse> {
-    return this.http.post<MessageResponse>(api('/api/auth/register'), request);
+  /** Регистрация. Если код из письма отключён на сервере — сразу вход. */
+  register(request: RegisterRequest): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(api('/api/auth/register'), request).pipe(
+      tap(response => {
+        if (!response.verificationRequired && response.auth) this.session.start(response.auth);
+      }),
+    );
   }
 
   /** Код из письма; при успехе сразу вход. */

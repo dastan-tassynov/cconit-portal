@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthApiService } from '../../core/api/auth-api.service';
 import { errorMessage } from '../../core/http/error-message';
+import { safeReturnUrl } from '../../core/utils/return-url';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { LanguageSwitcherComponent } from '../../shared/language-switcher/language-switcher.component';
 
@@ -65,11 +66,17 @@ export class RegisterComponent {
         password: value.password,
       })
       .subscribe({
-        // На почту ушёл 4-значный код — подтверждаем e-mail, после этого вход
-        next: () =>
+        next: response => {
+          // Код отключён на сервере — уже вошли
+          if (!response.verificationRequired) {
+            this.router.navigateByUrl(safeReturnUrl(this.returnUrl()));
+            return;
+          }
+          // На почту ушёл 4-значный код — подтверждаем e-mail, после этого вход
           this.router.navigate(['/verify-email'], {
             queryParams: { email: value.email.trim(), returnUrl: this.returnUrl() || null },
-          }),
+          });
+        },
         error: err => {
           this.loading.set(false);
           this.error.set(errorMessage(err, 'AUTH_REGISTER_ERROR'));

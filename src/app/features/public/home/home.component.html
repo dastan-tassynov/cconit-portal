@@ -3,196 +3,273 @@
 <main>
   <!-- ===================== ГЕРОЙ ===================== -->
   <section class="hero">
-    <div class="hero__blob hero__blob--left" aria-hidden="true"><span>👩‍🏫</span></div>
-    <div class="hero__blob hero__blob--right" aria-hidden="true"><span>👨‍🏫</span></div>
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <p class="eyebrow">{{ 'HOME_EYEBROW' | translate }}</p>
+        <h1>{{ 'SITE_HERO_TITLE' | translate }}</h1>
+        <p class="hero__text">
+          {{ 'SITE_HERO_TEXT_1' | translate }}
+          <span class="accent">{{ 'SITE_HERO_TEXT_ACCENT' | translate }}</span>
+          {{ 'SITE_HERO_TEXT_2' | translate }}
+        </p>
+        <div class="hero__actions">
+          <a routerLink="/courses" class="btn btn--primary">{{ 'SITE_ALL_COURSES' | translate }} <span aria-hidden="true">→</span></a>
+          <a routerLink="/" fragment="verify" class="btn btn--ghost">{{ 'SITE_NAV_VERIFY' | translate }}</a>
+        </div>
 
-    <div class="hero__content">
-      <p class="hero__welcome">{{ 'SITE_WELCOME' | translate }} <span class="brand-badge">ЦОНИТ</span></p>
-      <h1>{{ 'SITE_HERO_TITLE' | translate }}</h1>
-      <p class="hero__text">
-        {{ 'SITE_HERO_TEXT_1' | translate }}
-        <span class="accent">{{ 'SITE_HERO_TEXT_ACCENT' | translate }}</span>
-        {{ 'SITE_HERO_TEXT_2' | translate }}
-      </p>
-      <a routerLink="/courses" class="btn-pill">{{ 'SITE_ALL_COURSES' | translate }} <span>→</span></a>
+        <ul class="trust">
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+            {{ 'HOME_TRUST_REGISTRY' | translate }}
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M6 20V10M10 20V10M14 20V10M18 20V10M3 10l9-6 9 6z"/></svg>
+            {{ 'HOME_TRUST_MINISTRY' | translate }}
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+            {{ 'HOME_TRUST_ONLINE' | translate }}
+          </li>
+        </ul>
+      </div>
 
-      @if (stats(); as s) {
-        @if (s.completedCourses > 0) {
-          <div class="hero__social">
-            <div class="avatars" aria-hidden="true"><span>👩</span><span>🧑</span><span>👨</span><span>👩‍🦱</span></div>
-            <span>+{{ s.completedCourses | number }} {{ 'SITE_COMPLETED_COURSES' | translate }}</span>
+      <!-- Образец сертификата: показывает, что получит педагог -->
+      <div class="hero__visual" aria-hidden="true">
+        <div class="cert">
+          <div class="cert__frame">
+            <p class="cert__org">ЦОНИТ</p>
+            <p class="cert__title">{{ 'HOME_CERT_LABEL' | translate }}</p>
+            <p class="cert__sub">{{ 'HOME_CERT_SUB' | translate }}</p>
+            <span class="cert__line cert__line--name"></span>
+            <span class="cert__line"></span>
+            <span class="cert__line cert__line--short"></span>
+            <p class="cert__hours">{{ 'HOME_CERT_HOURS' | translate }}</p>
+            <div class="cert__bottom">
+              <svg class="cert__qr" viewBox="0 0 21 21" shape-rendering="crispEdges">
+                <path d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2zM8 0h2v2H8zM11 1h2v3h-2zM8 3h2v2H8zM9 6h3v2H9zM8 9h4v1H8zM13 8h2v3h-2zM16 8h3v2h-3zM0 8h3v2H0zM4 9h3v2H4zM8 11h2v3H8zM11 12h3v2h-3zM15 12h2v2h-2zM18 11h3v3h-3zM8 15h3v2H8zM12 15h2v3h-2zM15 15h3v2h-3zM19 16h2v2h-2zM8 18h3v3H8zM15 18h2v3h-2zM18 19h3v2h-3z"/>
+              </svg>
+              <div class="cert__seal">
+                <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28"/><circle cx="32" cy="32" r="21"/><path d="m32 19 3.8 7.8 8.6 1.2-6.2 6 1.5 8.5L32 38.5l-7.7 4 1.5-8.5-6.2-6 8.6-1.2z"/></svg>
+              </div>
+            </div>
           </div>
-        }
+        </div>
+        <div class="cert-note">
+          <svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+          <span>{{ 'HOME_CERT_QR' | translate }}</span>
+        </div>
+      </div>
+    </div>
+
+    @if (stats(); as s) {
+      <div class="container">
+        <dl class="stats">
+          <div><dt>{{ s.courses | number }}</dt><dd>{{ 'HOME_STAT_COURSES' | translate }}</dd></div>
+          <div><dt>{{ s.students | number }}</dt><dd>{{ 'HOME_STAT_TEACHERS' | translate }}</dd></div>
+          <div><dt>{{ s.completedCourses | number }}</dt><dd>{{ 'SITE_COMPLETED_COURSES' | translate }}</dd></div>
+        </dl>
+      </div>
+    }
+  </section>
+
+  <!-- ===================== КАК ПРОХОДИТ ОБУЧЕНИЕ ===================== -->
+  <section class="container section">
+    <p class="eyebrow">{{ 'SITE_SERVICE_EYEBROW' | translate }}</p>
+    <h2 class="section-title">{{ 'HOME_STEPS_TITLE' | translate }}</h2>
+    <p class="section-lead">{{ 'SITE_SERVICE_TEXT_1' | translate }}</p>
+    <ol class="steps">
+      @for (step of steps; track step; let i = $index) {
+        <li class="step">
+          <span class="step__num">{{ i + 1 }}</span>
+          <h3>{{ 'HOME_STEP' + step + '_TITLE' | translate }}</h3>
+          <p>{{ 'HOME_STEP' + step + '_TEXT' | translate }}</p>
+        </li>
+      }
+    </ol>
+  </section>
+
+  <!-- ===================== НАПРАВЛЕНИЯ И КУРСЫ ===================== -->
+  <section id="directions" class="directions-section">
+    <div class="container section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">{{ 'SITE_DIRECTIONS_TITLE' | translate }}</h2>
+          <p class="muted">{{ 'SITE_DIRECTIONS_COUNT' | translate }}: {{ directions().length }}</p>
+        </div>
+        <a routerLink="/courses" class="link-arrow">{{ 'SITE_ALL_COURSES' | translate }} →</a>
+      </div>
+
+      @if (coursesLoading()) {
+        <p class="muted">{{ 'LOADING' | translate }}</p>
+      } @else if (directions().length === 0) {
+        <p class="muted">{{ 'SITE_COURSES_EMPTY' | translate }}</p>
+      } @else {
+        <div class="directions">
+          <nav class="directions__tabs">
+            @for (dir of directions(); track dir.code) {
+              <button type="button" class="tab" [class.tab--active]="activeCode() === dir.code"
+                      (click)="openDirection(dir.code)">
+                {{ dir.code === 'OTHER' ? ('CATALOG_OTHER' | translate) : dir.title }}
+                <span class="tab__count">{{ dir.courses.length }}</span>
+              </button>
+            }
+          </nav>
+
+          <div class="directions__grid">
+            @for (course of visibleCourses(); track course.id; let i = $index) {
+              <button type="button" class="course-card" (click)="enroll(course)">
+                <span class="course-card__thumb" [attr.data-tone]="i % 4" aria-hidden="true">
+                  @switch (i % 4) {
+                    @case (0) { <svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8 7h7M8 11h5"/></svg> }
+                    @case (1) { <svg viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5M22 9v6"/></svg> }
+                    @case (2) { <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M12 16v4M8 20h8M7 12l3-3 2 2 4-4"/></svg> }
+                    @default { <svg viewBox="0 0 24 24"><path d="M14 3h5v5M10 14 19 5M19 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h6"/></svg> }
+                  }
+                </span>
+                <span class="course-card__body">
+                  <span class="course-card__title">{{ course.title }}</span>
+                  @if (!course.lessonCount) { <span class="soon">{{ 'COURSE_PREPARING' | translate }}</span> }
+                  <span class="course-card__meta">
+                    @if (course.hours) { {{ course.hours }} {{ 'HOURS_SHORT' | translate }} · }
+                    @if (course.free) { {{ 'PRICE_FREE' | translate }} } @else { {{ course.price | number: '1.0-0' }} ₸ }
+                  </span>
+                </span>
+                <span class="course-card__arrow" aria-hidden="true">→</span>
+              </button>
+            }
+          </div>
+        </div>
       }
     </div>
   </section>
 
-  <!-- ===================== О СЕРВИСЕ ===================== -->
-  <section class="container">
-    <div class="service-card">
-      <p class="eyebrow">{{ 'SITE_SERVICE_EYEBROW' | translate }}</p>
-      <h2>{{ 'SITE_SERVICE_TITLE' | translate }}</h2>
-      <p>{{ 'SITE_SERVICE_TEXT_1' | translate }}</p>
-      <p>{{ 'SITE_SERVICE_TEXT_2' | translate }}</p>
-    </div>
-  </section>
-
-  <hr class="divider">
-
   <!-- ===================== НОВОСТИ ===================== -->
   <section id="news" class="container section">
-    <h2 class="section-title">{{ 'SITE_NEWS_TITLE' | translate }}</h2>
     <div class="section-head">
-      <p>{{ 'SITE_NEWS_SUBTITLE' | translate }}</p>
+      <div>
+        <h2 class="section-title">{{ 'SITE_NEWS_TITLE' | translate }}</h2>
+        <p class="muted">{{ 'SITE_NEWS_SUBTITLE' | translate }}</p>
+      </div>
       <a routerLink="/news" class="link-arrow">{{ 'SITE_NEWS_ALL' | translate }} →</a>
     </div>
     <div class="news-grid">
       @for (n of news(); track n.id) {
         <a class="news-card" [routerLink]="['/news', n.id]">
-          <span class="news-card__title">{{ n.title }}</span>
           <span class="news-card__meta">{{ n.publishedAt | date: 'dd.MM.yyyy' }}</span>
+          <span class="news-card__title">{{ n.title }}</span>
+          <span class="news-card__more">{{ 'HOME_READ_MORE' | translate }} →</span>
         </a>
       } @empty {
         @for (program of programDrafts; track program.id) {
           <a class="news-card" [routerLink]="['/programs', program.id]">
-            <span class="news-card__title">{{ 'SITE_NEWS_PROJECT' | translate }} «{{ program.titleKey | translate }}»</span>
             <span class="news-card__meta">{{ 'SITE_NEWS_META' | translate }}</span>
+            <span class="news-card__title">{{ 'SITE_NEWS_PROJECT' | translate }} «{{ program.titleKey | translate }}»</span>
+            <span class="news-card__more">{{ 'HOME_READ_MORE' | translate }} →</span>
           </a>
         }
       }
     </div>
 
-    <!-- «Рабочие группы», как у образца -->
-    <div class="banner-card">
-      <div>
-        <h3>{{ 'WG_TITLE' | translate }}</h3>
-        <p>{{ 'WG_BANNER_TEXT' | translate }}</p>
+    <div class="banners">
+      <div class="banner-card">
+        <div>
+          <h3>{{ 'WG_TITLE' | translate }}</h3>
+          <p>{{ 'WG_BANNER_TEXT' | translate }}</p>
+        </div>
+        <a routerLink="/profile/workgroups" class="btn btn--primary">{{ 'APP_APPLY' | translate }} →</a>
       </div>
-      <a routerLink="/profile/workgroups" class="btn-rect">{{ 'APP_APPLY' | translate }} →</a>
-    </div>
 
-    <!-- баннер (как «Рабочие группы» у образца) -->
-    <div id="verify" class="banner-card">
-      <div>
-        <h3>{{ 'SITE_VERIFY_TITLE' | translate }}</h3>
-        <p>{{ 'SITE_VERIFY_TEXT' | translate }}</p>
+      <div id="verify" class="banner-card banner-card--dark">
+        <div>
+          <h3>{{ 'SITE_VERIFY_TITLE' | translate }}</h3>
+          <p>{{ 'SITE_VERIFY_TEXT' | translate }}</p>
+        </div>
+        <form class="banner-card__form" (ngSubmit)="verifyCertificate()">
+          <input name="code" [(ngModel)]="certificateCode" [placeholder]="'SITE_VERIFY_PLACEHOLDER' | translate">
+          <button type="submit" class="btn btn--gold">{{ 'SITE_VERIFY_BTN' | translate }}</button>
+        </form>
       </div>
-      <form class="banner-card__form" (ngSubmit)="verifyCertificate()">
-        <input name="code" [(ngModel)]="certificateCode" [placeholder]="'SITE_VERIFY_PLACEHOLDER' | translate">
-        <button type="submit" class="btn-rect">{{ 'SITE_VERIFY_BTN' | translate }} →</button>
-      </form>
     </div>
   </section>
 
   <!-- ===================== О ЦЕНТРЕ ===================== -->
   <section id="about" class="about">
-    <div class="container-narrow">
+    <div class="container section">
       <div class="about__head">
         <div>
-          <h2 class="section-title">{{ 'SITE_ABOUT_TITLE' | translate }}</h2>
-          <p class="about__statement">{{ 'SITE_ABOUT_STATEMENT' | translate }}</p>
+          <p class="eyebrow">{{ 'SITE_ABOUT_TITLE' | translate }}</p>
+          <h2 class="about__statement">{{ 'SITE_ABOUT_STATEMENT' | translate }}</h2>
         </div>
-        <div>
-          <p class="muted">{{ 'SITE_MISSION_LABEL' | translate }}</p>
-          <p class="about__mission">{{ 'SITE_MISSION_TEXT' | translate }}</p>
-        </div>
+        <blockquote class="about__mission">
+          <span>{{ 'SITE_MISSION_LABEL' | translate }}</span>
+          {{ 'SITE_MISSION_TEXT' | translate }}
+        </blockquote>
       </div>
 
-      <div class="about__grid">
-        <div class="team-card">
-          <div class="team-card__art" aria-hidden="true">🎓</div>
-          <div class="team-card__text">
-            <h3>{{ 'SITE_TEAM_TITLE' | translate }}</h3>
-            <p>{{ 'SITE_TEAM_TEXT' | translate }}</p>
-          </div>
+      <div class="values">
+        <div class="value">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.7-3.6 3.3-5.5 6.5-5.5s5.8 1.9 6.5 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14.5c2.4.2 4 1.8 4.5 4.5"/></svg>
+          <h3>{{ 'SITE_TEAM_TITLE' | translate }}</h3>
+          <p>{{ 'SITE_TEAM_TEXT' | translate }}</p>
         </div>
-        <div class="about__cards">
-          <div class="feature-card">
-            <div>
-              <h3>{{ 'SITE_EXPERIENCE_TITLE' | translate }}</h3>
-              <p>{{ 'SITE_EXPERIENCE_TEXT' | translate }}</p>
-            </div>
-            <div class="feature-card__art" aria-hidden="true">🛡️</div>
-          </div>
-          <div class="feature-card">
-            <div>
-              <h3>{{ 'SITE_METHODS_TITLE' | translate }}</h3>
-              <p>{{ 'SITE_METHODS_TEXT' | translate }}</p>
-            </div>
-            <div class="feature-card__art" aria-hidden="true">🧩</div>
-          </div>
+        <div class="value">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+          <h3>{{ 'SITE_EXPERIENCE_TITLE' | translate }}</h3>
+          <p>{{ 'SITE_EXPERIENCE_TEXT' | translate }}</p>
+        </div>
+        <div class="value">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M9 8h6M9 12h4"/></svg>
+          <h3>{{ 'SITE_METHODS_TITLE' | translate }}</h3>
+          <p>{{ 'SITE_METHODS_TEXT' | translate }}</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== НАПРАВЛЕНИЯ И КУРСЫ ===================== -->
-  <section id="directions" class="container-narrow section">
-    <h2 class="directions__title">{{ 'SITE_DIRECTIONS_TITLE' | translate }}</h2>
-    <p class="muted">{{ 'SITE_DIRECTIONS_COUNT' | translate }}: {{ directions().length }}</p>
-
-    @if (coursesLoading()) {
-      <p class="muted">{{ 'LOADING' | translate }}</p>
-    } @else if (directions().length === 0) {
-      <p class="muted">{{ 'SITE_COURSES_EMPTY' | translate }}</p>
-    } @else {
-      <div class="directions">
-        <nav class="directions__tabs">
-          @for (dir of directions(); track dir.code) {
-            <button type="button" class="tab" [class.tab--active]="activeCode() === dir.code"
-                    (click)="openDirection(dir.code)">
-              <span aria-hidden="true">{{ dir.icon }}</span> {{ dir.code === 'OTHER' ? ('CATALOG_OTHER' | translate) : dir.title }}
-            </button>
-          }
-        </nav>
-
-        <div class="directions__grid">
-          @for (course of visibleCourses(); track course.id; let i = $index) {
-            <button type="button" class="course-card" (click)="enroll(course)">
-              <span class="course-card__thumb" [style.background]="cardBackground(i)">{{ cardIcon(i) }}</span>
-              <span class="course-card__body">
-                <span class="course-card__title">{{ course.title }}</span>
-                @if (!course.lessonCount) { <span class="soon">⏳ {{ 'COURSE_PREPARING' | translate }}</span> }
-                <span class="course-card__meta">
-                  @if (course.hours) { {{ course.hours }} {{ 'HOURS_SHORT' | translate }} · }
-                  @if (course.free) { {{ 'PRICE_FREE' | translate }} } @else { {{ course.price | number: '1.0-0' }} ₸ }
-                </span>
-              </span>
-              <span class="course-card__arrow" aria-hidden="true">↗</span>
-            </button>
-          }
-        </div>
-      </div>
-    }
-  </section>
-
   <!-- ===================== ФОРМА ОБРАТНОЙ СВЯЗИ ===================== -->
-  <section id="contacts" class="contact">
-    <div class="container-narrow">
-      <div class="contact__card">
-        <div class="contact__form">
-          <h2>{{ 'SITE_CONTACT_TITLE' | translate }}</h2>
-          <p class="muted">{{ 'SITE_CONTACT_TEXT' | translate }}</p>
+  <section id="contacts" class="container section">
+    <div class="contact">
+      <div class="contact__form">
+        <h2 class="section-title">{{ 'SITE_CONTACT_TITLE' | translate }}</h2>
+        <p class="muted">{{ 'SITE_CONTACT_TEXT' | translate }}</p>
 
-          @if (contactSent()) {
-            <p class="contact__success">✅ {{ 'CONTACT_SENT' | translate }}</p>
-          } @else {
-            <form [formGroup]="contactForm" (ngSubmit)="sendContact()" novalidate>
-              <input formControlName="name" [placeholder]="'CONTACT_NAME' | translate" autocomplete="name">
-              <div class="contact__row">
-                <app-phone-input formControlName="phone" [ariaLabel]="'CONTACT_PHONE' | translate" />
-                <input formControlName="email" type="email" placeholder="Email" autocomplete="email">
-              </div>
-              <textarea formControlName="message" rows="2" [placeholder]="'CONTACT_MESSAGE' | translate"></textarea>
-              <!-- ловушка для ботов: скрыта от людей -->
-              <input formControlName="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-              <button type="submit" class="btn-pill" [disabled]="contactSending()">{{ 'CONTACT_SEND' | translate }} <span>→</span></button>
-              <p class="consent">{{ 'CONTACT_CONSENT' | translate }}</p>
-            </form>
-          }
-        </div>
-        <div class="contact__art" aria-hidden="true"><span>💬</span></div>
+        @if (contactSent()) {
+          <p class="contact__success">✓ {{ 'CONTACT_SENT' | translate }}</p>
+        } @else {
+          <form [formGroup]="contactForm" (ngSubmit)="sendContact()" novalidate>
+            <input formControlName="name" [placeholder]="'CONTACT_NAME' | translate" autocomplete="name">
+            <div class="contact__row">
+              <app-phone-input formControlName="phone" [ariaLabel]="'CONTACT_PHONE' | translate" />
+              <input formControlName="email" type="email" placeholder="Email" autocomplete="email">
+            </div>
+            <textarea formControlName="message" rows="3" [placeholder]="'CONTACT_MESSAGE' | translate"></textarea>
+            <!-- ловушка для ботов: скрыта от людей -->
+            <input formControlName="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button type="submit" class="btn btn--primary" [disabled]="contactSending()">{{ 'CONTACT_SEND' | translate }} →</button>
+            <p class="consent">{{ 'CONTACT_CONSENT' | translate }}</p>
+          </form>
+        }
       </div>
+
+      <aside class="contact__info">
+        <h3>{{ 'SITE_NAV_CONTACTS' | translate }}</h3>
+        <p>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <span>{{ 'FOOTER_ADDRESS' | translate }}</span>
+        </p>
+        <p>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
+          <span><a href="tel:+77077131131">+7 (707) 713 11 31</a><br><a href="tel:+77013892833">+7 (701) 389 28 33</a></span>
+        </p>
+        <p>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          <a href="mailto:centr-bilim@list.ru">centr-bilim&#64;list.ru</a>
+        </p>
+        <p>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4 3 11l6 2 2 6 3-4 5 4z"/></svg>
+          <a href="https://t.me/CONITkz_bot" target="_blank" rel="noopener noreferrer">{{ 'ABOUT_BOT' | translate }}</a>
+        </p>
+      </aside>
     </div>
   </section>
 </main>

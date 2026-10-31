@@ -85,11 +85,11 @@ const OTHER = '__other';
     .question { display: flex; flex-direction: column; gap: 12px; }
     .question--missing { border-color: #f59e0b; box-shadow: 0 0 0 3px #fef3c7; }
     .question__text { margin: 0; font-weight: 600; line-height: 1.4; }
-    .question__num { display: inline-flex; width: 26px; height: 26px; border-radius: 50%; background: #eef0ff; color: var(--primary);
+    .question__num { display: inline-flex; width: 26px; height: 26px; border-radius: 50%; background: #e8eff8; color: var(--primary);
                      align-items: center; justify-content: center; font-size: 13px; margin-right: 6px; }
     .options { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
     .option { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; line-height: 1.35; }
-    .option--active { border-color: var(--primary); background: #f4f4fe; }
+    .option--active { border-color: var(--primary); background: #f1f5fa; }
     .option input { margin-top: 3px; }
     .input { padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: #f6f6f9; font: inherit; }
     .submit { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }

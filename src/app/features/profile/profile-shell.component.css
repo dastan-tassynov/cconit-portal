@@ -1,4 +1,4 @@
-:host { display: block; --primary: #3d37f0; --accent: #0f6fb8; --ink: #1f1d2b; --muted: #6b6b80; --line: #e9e9f1; }
+:host { display: block; --primary: #1b4f8a; --accent: #0f6fb8; --ink: #1f1d2b; --muted: #6b6b80; --line: #e9e9f1; }
 .cabinet { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; background: #f6f6f8; gap: 12px; padding: 12px; }
 .cabinet--collapsed { grid-template-columns: 76px 1fr; }
 
@@ -75,7 +75,7 @@
 }
 
 /* Переход между кабинетами студента и администратора */
-.menu__item--switch { margin-top: 6px; background: #eef0ff; color: #3d37f0; font-weight: 600; }
+.menu__item--switch { margin-top: 6px; background: #e8eff8; color: #1b4f8a; font-weight: 600; }
 .menu__item--switch:hover { background: #e2e5ff; }
 .menu__arrow { margin-left: auto; }
 .area-title { font-weight: 700; font-size: 15px; color: #475569; margin-right: auto; }
